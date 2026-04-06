@@ -50,3 +50,7 @@ Desktop.ini
 ## Logs
 *.log
 
+# Appsettings (for security reasons)
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json

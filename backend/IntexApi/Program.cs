@@ -22,7 +22,7 @@ builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("frontend", p =>
-        p.WithOrigins("http://localhost:5173")
+        p.WithOrigins("http://localhost:5173", "https://intex-2.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
