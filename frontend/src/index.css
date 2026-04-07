@@ -386,6 +386,18 @@ select {
   color: var(--ink);
 }
 
+input[type='checkbox'] {
+  width: auto;
+  padding: 0;
+}
+
+.checkRow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
 input:focus,
 select:focus {
   outline: 2px solid rgba(139, 107, 47, 0.25);

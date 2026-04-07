@@ -1,8 +1,8 @@
+import type { ReactElement } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { CookieConsent } from './components/CookieConsent'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
-import { AboutUsPage } from './pages/AboutUsPage'
 import { AdminDashboardPage } from './pages/AdminDashboardPage'
 import { CaseloadInventoryPage } from './pages/CaseloadInventoryPage'
 import { DonorDashboardPage } from './pages/DonorDashboardPage'
@@ -20,6 +20,15 @@ import { useAuth } from './state/auth'
 
 function App() {
   const { user } = useAuth()
+  const isDonor = !!user?.isDonor
+  const isAdmin = !!user?.isAdmin
+
+  function requireRole(allowed: 'donor' | 'admin', element: ReactElement) {
+    if (!user) return <Navigate to="/login" />
+    if (allowed === 'donor' && !isDonor) return <Navigate to="/" />
+    if (allowed === 'admin' && !isAdmin) return <Navigate to="/" />
+    return element
+  }
 
   return (
     <div className="siteShell">
@@ -27,20 +36,19 @@ function App() {
       <main className="siteMain">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/donors" element={<DonorsPage />} />
+          <Route path="/donors" element={requireRole('admin', <DonorsPage />)} />
           <Route path="/volunteer" element={<VolunteerPage />} />
           <Route path="/impact" element={<ImpactPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/donor" element={user ? <DonorDashboardPage /> : <Navigate to="/login" />} />
-          <Route path="/admin" element={user ? <AdminDashboardPage /> : <Navigate to="/login" />} />
-          <Route path="/admin/caseloads" element={user ? <CaseloadInventoryPage /> : <Navigate to="/login" />} />
+          <Route path="/donor" element={requireRole('donor', <DonorDashboardPage />)} />
+          <Route path="/admin" element={requireRole('admin', <AdminDashboardPage />)} />
+          <Route path="/admin/caseloads" element={requireRole('admin', <CaseloadInventoryPage />)} />
           <Route
             path="/admin/process-recording"
-            element={user ? <ProcessRecordingPage /> : <Navigate to="/login" />}
+            element={requireRole('admin', <ProcessRecordingPage />)}
           />
-          <Route path="/admin/visits" element={user ? <HomeVisitationCaseConferencesPage /> : <Navigate to="/login" />} />
-          <Route path="/admin/reports" element={user ? <ReportsAnalyticsPage /> : <Navigate to="/login" />} />
+          <Route path="/admin/visits" element={requireRole('admin', <HomeVisitationCaseConferencesPage />)} />
+          <Route path="/admin/reports" element={requireRole('admin', <ReportsAnalyticsPage />)} />
           <Route path="/login" element={user ? <Navigate to="/impact" /> : <LoginPage />} />
           <Route path="/register" element={user ? <Navigate to="/impact" /> : <RegisterPage />} />
           <Route path="*" element={<Navigate to="/" />} />

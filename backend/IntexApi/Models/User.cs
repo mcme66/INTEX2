@@ -18,6 +18,10 @@ public sealed class User
     [Required]
     public string PasswordHash { get; set; } = "";
 
+    public bool IsDonor { get; set; } = false;
+
+    public bool IsAdmin { get; set; } = false;
+
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
 }
 

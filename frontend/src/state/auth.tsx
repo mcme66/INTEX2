@@ -12,8 +12,16 @@ import { apiGetMe, apiLogin, apiRegister, type UserDto } from '../utils/api'
 type AuthState = {
   user: UserDto | null
   token: string | null
-  login: (username: string, password: string) => Promise<void>
-  register: (firstName: string, email: string, username: string, password: string) => Promise<void>
+  login: (username: string, password: string) => Promise<UserDto>
+  register: (
+    firstName: string,
+    email: string,
+    username: string,
+    password: string,
+    isDonor: boolean,
+    isAdmin: boolean,
+    adminCode?: string,
+  ) => Promise<UserDto>
   logout: () => void
   refreshMe: () => Promise<void>
 }
@@ -42,12 +50,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (username: string, password: string) => {
     const res = await apiLogin({ username, password })
     persist(res.token, res.user)
+    return res.user
   }, [persist])
 
   const register = useCallback(
-    async (firstName: string, email: string, username: string, password: string) => {
-      const res = await apiRegister({ firstName, email, username, password })
+    async (
+      firstName: string,
+      email: string,
+      username: string,
+      password: string,
+      isDonor: boolean,
+      isAdmin: boolean,
+      adminCode?: string,
+    ) => {
+      const res = await apiRegister({ firstName, email, username, password, isDonor, isAdmin, adminCode })
       persist(res.token, res.user)
+      return res.user
     },
     [persist],
   )

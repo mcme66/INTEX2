@@ -28,8 +28,8 @@ export function LoginPage() {
             setError(null)
             setLoading(true)
             try {
-              await login(username, password)
-              navigate('/impact')
+              const user = await login(username, password)
+              navigate(user.isAdmin ? '/admin' : user.isDonor ? '/donor' : '/')
             } catch (err) {
               setError(err instanceof Error ? err.message : 'Login failed')
             } finally {

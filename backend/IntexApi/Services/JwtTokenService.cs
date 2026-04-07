@@ -34,6 +34,8 @@ public sealed class JwtTokenService(IOptions<JwtOptions> options) : IJwtTokenSer
             new(JwtRegisteredClaimNames.UniqueName, user.Username),
             new("firstName", user.FirstName),
             new(JwtRegisteredClaimNames.Email, user.Email),
+            new("isDonor", user.IsDonor ? "true" : "false"),
+            new("isAdmin", user.IsAdmin ? "true" : "false"),
         };
 
         var token = new JwtSecurityToken(
