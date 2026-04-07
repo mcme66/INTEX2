@@ -21,7 +21,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 group">
-          <img src="/kid_stars.svg" alt="North Star" className="w-8 h-8" />
+          <img src="/icons/kid_stars.svg" alt="North Star" className="w-8 h-8" />
           <span className="font-heading text-xl font-semibold tracking-tight text-foreground">
             North Star
           </span>
