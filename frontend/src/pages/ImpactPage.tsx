@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-export function ImpactPage() {
-  return (
-    <section>
-      <h1>Impact</h1>
-      <p>Coming soon.</p>
-    </section>
-  )
-}
-
-=======
 const impactMetrics = [
   { label: 'Children served across partner safehouses', value: '126', note: 'Rolling 12-month total, anonymized and aggregated.' },
   { label: 'Average stabilization window', value: '17 days', note: 'Time from crisis intake to documented care plan.' },
@@ -116,4 +105,3 @@ export function ImpactPage() {
     </div>
   )
 }
->>>>>>> 7dde4dd8470964e9f266560477a298d4c2101003

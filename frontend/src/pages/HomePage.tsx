@@ -42,12 +42,6 @@ export function HomePage() {
           </div>
         </div>
 
-<<<<<<< HEAD
-      <div className="row">
-        {user ? (
-          <Link className="button" to="/donor">
-            Go to your dashboard
-=======
         <aside className="heroPanel">
           <p className="panelLabel">Why this site exists</p>
           {commitments.map((item) => (
@@ -84,7 +78,6 @@ export function HomePage() {
           </p>
           <Link to="/admin" className="textLink">
             Go to the admin dashboard
->>>>>>> 7dde4dd8470964e9f266560477a298d4c2101003
           </Link>
         </div>
       </section>

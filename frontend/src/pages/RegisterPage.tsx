@@ -23,51 +23,6 @@ export function RegisterPage() {
           approved users in production.
         </p>
 
-<<<<<<< HEAD
-      <form
-        className="form"
-        onSubmit={async (e) => {
-          e.preventDefault()
-          setError(null)
-          setLoading(true)
-          try {
-            await register(firstName, email, username, password)
-            navigate('/donor')
-          } catch (err) {
-            setError(err instanceof Error ? err.message : 'Registration failed')
-          } finally {
-            setLoading(false)
-          }
-        }}
-      >
-        <label className="field">
-          <span>First name</span>
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-        </label>
-        <label className="field">
-          <span>Email</span>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label className="field">
-          <span>Username</span>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </label>
-        <label className="field">
-          <span>Password</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={6}
-            required
-          />
-        </label>
-=======
         <form
           className="form"
           onSubmit={async (event) => {
@@ -76,7 +31,7 @@ export function RegisterPage() {
             setLoading(true)
             try {
               await register(firstName, email, username, password)
-              navigate('/welcome')
+              navigate('/impact')
             } catch (err) {
               setError(err instanceof Error ? err.message : 'Registration failed')
             } finally {
@@ -111,7 +66,6 @@ export function RegisterPage() {
               required
             />
           </label>
->>>>>>> 7dde4dd8470964e9f266560477a298d4c2101003
 
           {error ? <div className="error">{error}</div> : null}
 

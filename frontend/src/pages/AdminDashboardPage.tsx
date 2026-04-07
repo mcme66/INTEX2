@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-export function AdminDashboardPage() {
-  return (
-    <section>
-      <h1>Admin Dashboard</h1>
-      <p>Coming soon.</p>
-    </section>
-  )
-}
-
-=======
 const residentStats = [
   { label: 'Active residents', value: '28' },
   { label: 'Partner safehouses', value: '4' },
@@ -115,4 +104,3 @@ export function AdminDashboardPage() {
     </div>
   )
 }
->>>>>>> 7dde4dd8470964e9f266560477a298d4c2101003

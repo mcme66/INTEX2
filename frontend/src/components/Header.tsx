@@ -1,57 +1,49 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../state/auth'
 
-<<<<<<< HEAD
+type NavItem = { to: string; label: string }
+
+const authGroup1: NavItem[] = [
+  { to: '/donor', label: 'Donor Dashboard' },
+  { to: '/donors', label: 'Donor Information' },
+]
+
+const authGroup2: NavItem[] = [
+  { to: '/admin', label: 'Admin Dashboard' },
+  { to: '/admin/caseloads', label: 'Caseloads' },
+  { to: '/admin/process-recording', label: 'Process Recording' },
+  { to: '/admin/visits', label: 'Visits' },
+  { to: '/admin/reports', label: 'Reports' },
+]
+
+const publicGroup: NavItem[] = [
+  { to: '/impact', label: 'Impact' },
+  { to: '/privacy', label: 'Privacy' },
+  { to: '/about', label: 'About Us' },
+  { to: '/volunteer', label: 'Volunteer With Us' },
+]
+
 function Pipe() {
   return <span className="navPipe">|</span>
 }
-=======
-const primaryNav = [
-  { to: '/', label: 'Home' },
-  { to: '/donors', label: 'Donors & Contributions' },
-  { to: '/impact', label: 'Impact' },
-  { to: '/admin', label: 'Admin' },
-]
->>>>>>> 7dde4dd8470964e9f266560477a298d4c2101003
+
+function HeaderNavLink({ to, label }: NavItem) {
+  return (
+    <NavLink
+      to={to}
+      end
+      className={({ isActive }) => `navLink${isActive ? ' active' : ''}`}
+    >
+      {label}
+    </NavLink>
+  )
+}
 
 export function Header() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   return (
-<<<<<<< HEAD
-    <header className="header">
-      <div className="headerInner">
-        <Link to="/" className="brand">
-          Home
-        </Link>
-        <nav className="navLinks" aria-label="Primary navigation">
-          {user ? (
-            <>
-              <Link to="/donor" className="link">
-                Donor Dashboard
-              </Link>
-              <Link to="/admin/donors" className="link">
-                Donor Information
-              </Link>
-              <Pipe />
-              <Link to="/admin" className="link">
-                Admin Dashboard
-              </Link>
-              <Link to="/admin/caseload" className="link">
-                Caseloads
-              </Link>
-              <Link to="/admin/process-recording" className="link">
-                Process Recording
-              </Link>
-              <Link to="/admin/home-visitation" className="link">
-                Visits
-              </Link>
-              <Link to="/admin/reports" className="link">
-                Reports
-              </Link>
-              <Pipe />
-=======
     <header className="siteHeader">
       <div className="headerWrap">
         <NavLink to="/" className="brandMark" aria-label="North Star home">
@@ -63,68 +55,43 @@ export function Header() {
         </NavLink>
 
         <nav className="primaryNav" aria-label="Primary">
-          {primaryNav.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) => `navLink${isActive ? ' active' : ''}`}
-            >
-              {item.label}
-            </NavLink>
+          {user ? (
+            <>
+              {authGroup1.map((item) => (
+                <HeaderNavLink key={`a1-${item.label}`} {...item} />
+              ))}
+              <Pipe />
+              {authGroup2.map((item) => (
+                <HeaderNavLink key={`a2-${item.label}`} {...item} />
+              ))}
+              <Pipe />
+            </>
+          ) : null}
+
+          {publicGroup.map((item) => (
+            <HeaderNavLink key={`p-${item.to}`} {...item} />
           ))}
         </nav>
 
         <div className="headerActions">
           {user ? (
-            <>
-              <NavLink to="/welcome" className="actionLink">
-                {user.firstName}
-              </NavLink>
-              <button
-                className="button buttonGhost"
-                onClick={() => {
-                  logout()
-                  navigate('/')
-                }}
-              >
-                Log Out
-              </button>
->>>>>>> 7dde4dd8470964e9f266560477a298d4c2101003
-            </>
-          ) : null}
-          <Link to="/impact" className="link">
-            Impact
-          </Link>
-          <Link to="/privacy" className="link">
-            Privacy
-          </Link>
-          <Link to="/about" className="link">
-            About Us
-          </Link>
-        </nav>
-        <div className="navAuth">
-          {user ? (
             <button
-              className="button secondary"
+              className="button buttonGhost"
               onClick={() => {
                 logout()
                 navigate('/')
               }}
             >
-              Logout
+              Log Out
             </button>
           ) : (
-            <>
-              <NavLink to="/login" className="actionLink">
-                Staff Login
-              </NavLink>
-              <NavLink to="/impact" className="button">
-                See the work
-              </NavLink>
-            </>
+            <NavLink to="/login" className="actionLink">
+              Staff Login
+            </NavLink>
           )}
         </div>
       </div>
     </header>
   )
 }
+
