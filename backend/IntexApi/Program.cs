@@ -55,6 +55,7 @@ if (app.Environment.IsDevelopment())
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
+    app.UseHsts();
 }
 
 // Enforced Content-Security-Policy (CSP) header for IS414 grading.
