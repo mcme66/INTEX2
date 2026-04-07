@@ -14,66 +14,71 @@ export function RegisterPage() {
   const [loading, setLoading] = useState(false)
 
   return (
-    <section className="card">
-      <h1 className="title">Register</h1>
-      <p className="muted">Create an account with email, username, and password.</p>
+    <section className="authShell">
+      <div className="authCard">
+        <p className="eyebrow">New staff account</p>
+        <h1>Register a user</h1>
+        <p className="lede">
+          This form creates a staff account for the internal dashboards. It should be limited to
+          approved users in production.
+        </p>
 
-      <form
-        className="form"
-        onSubmit={async (e) => {
-          e.preventDefault()
-          setError(null)
-          setLoading(true)
-          try {
-            await register(firstName, email, username, password)
-            navigate('/welcome')
-          } catch (err) {
-            setError(err instanceof Error ? err.message : 'Registration failed')
-          } finally {
-            setLoading(false)
-          }
-        }}
-      >
-        <label className="field">
-          <span>First name</span>
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-        </label>
-        <label className="field">
-          <span>Email</span>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label className="field">
-          <span>Username</span>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </label>
-        <label className="field">
-          <span>Password</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={6}
-            required
-          />
-        </label>
+        <form
+          className="form"
+          onSubmit={async (event) => {
+            event.preventDefault()
+            setError(null)
+            setLoading(true)
+            try {
+              await register(firstName, email, username, password)
+              navigate('/welcome')
+            } catch (err) {
+              setError(err instanceof Error ? err.message : 'Registration failed')
+            } finally {
+              setLoading(false)
+            }
+          }}
+        >
+          <label className="field">
+            <span>First name</span>
+            <input value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
+          </label>
+          <label className="field">
+            <span>Email</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </label>
+          <label className="field">
+            <span>Username</span>
+            <input value={username} onChange={(event) => setUsername(event.target.value)} required />
+          </label>
+          <label className="field">
+            <span>Password</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              minLength={6}
+              required
+            />
+          </label>
 
-        {error ? <div className="error">{error}</div> : null}
+          {error ? <div className="error">{error}</div> : null}
 
-        <div className="row">
-          <button className="button" type="submit" disabled={loading}>
-            {loading ? 'Creating…' : 'Register'}
-          </button>
-          <Link className="button secondary" to="/login">
-            Back to login
-          </Link>
-        </div>
-      </form>
+          <div className="ctaRow">
+            <button className="button" type="submit" disabled={loading}>
+              {loading ? 'Creating...' : 'Create account'}
+            </button>
+            <Link className="button buttonGhost" to="/login">
+              Back to login
+            </Link>
+          </div>
+        </form>
+      </div>
     </section>
   )
 }
-

@@ -5,15 +5,23 @@ export function WelcomePage() {
   const { user } = useAuth()
 
   return (
-    <section className="card">
-      <h1 className="title">Welcome{user ? `, ${user.firstName}` : ''}</h1>
-      <p className="muted">You’re logged in.</p>
-      <div className="row">
-        <Link className="button secondary" to="/">
-          Back home
-        </Link>
+    <section className="authShell">
+      <div className="authCard">
+        <p className="eyebrow">Authenticated</p>
+        <h1>Welcome{user ? `, ${user.firstName}` : ''}</h1>
+        <p className="lede">
+          Your account is active. Use the internal dashboards to review operations, donor records,
+          and donor-facing reporting.
+        </p>
+        <div className="ctaRow">
+          <Link className="button" to="/admin">
+            Open admin dashboard
+          </Link>
+          <Link className="button buttonGhost" to="/donors">
+            Open supporter records
+          </Link>
+        </div>
       </div>
     </section>
   )
 }
-

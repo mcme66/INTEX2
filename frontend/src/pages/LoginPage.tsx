@@ -12,52 +12,57 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false)
 
   return (
-    <section className="card">
-      <h1 className="title">Login</h1>
-      <p className="muted">Enter your username and password.</p>
+    <section className="authShell">
+      <div className="authCard">
+        <p className="eyebrow">Staff access</p>
+        <h1>Sign in to North Star</h1>
+        <p className="lede">
+          Use your staff credentials to review donor records, operational metrics, and reporting
+          dashboards.
+        </p>
 
-      <form
-        className="form"
-        onSubmit={async (e) => {
-          e.preventDefault()
-          setError(null)
-          setLoading(true)
-          try {
-            await login(username, password)
-            navigate('/welcome')
-          } catch (err) {
-            setError(err instanceof Error ? err.message : 'Login failed')
-          } finally {
-            setLoading(false)
-          }
-        }}
-      >
-        <label className="field">
-          <span>Username</span>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </label>
-        <label className="field">
-          <span>Password</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+        <form
+          className="form"
+          onSubmit={async (event) => {
+            event.preventDefault()
+            setError(null)
+            setLoading(true)
+            try {
+              await login(username, password)
+              navigate('/welcome')
+            } catch (err) {
+              setError(err instanceof Error ? err.message : 'Login failed')
+            } finally {
+              setLoading(false)
+            }
+          }}
+        >
+          <label className="field">
+            <span>Username</span>
+            <input value={username} onChange={(event) => setUsername(event.target.value)} required />
+          </label>
+          <label className="field">
+            <span>Password</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </label>
 
-        {error ? <div className="error">{error}</div> : null}
+          {error ? <div className="error">{error}</div> : null}
 
-        <div className="row">
-          <button className="button" type="submit" disabled={loading}>
-            {loading ? 'Logging in…' : 'Login'}
-          </button>
-          <Link className="button secondary" to="/register">
-            Register here
-          </Link>
-        </div>
-      </form>
+          <div className="ctaRow">
+            <button className="button" type="submit" disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign in'}
+            </button>
+            <Link className="button buttonGhost" to="/register">
+              Create account
+            </Link>
+          </div>
+        </form>
+      </div>
     </section>
   )
 }
-
