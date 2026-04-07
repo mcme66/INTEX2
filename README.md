@@ -88,7 +88,7 @@ npm install
 npm run dev
 ```
 
-The Vite dev server is currently configured for `http://localhost:8080` in [frontend/vite.config.ts](/Users/phoenixfisher/Projects/INTEX2/frontend/vite.config.ts).
+The Vite dev server is currently configured for `http://localhost:5173` in [frontend/vite.config.ts](/Users/phoenixfisher/Projects/INTEX2/frontend/vite.config.ts).
 
 ### 3. API base URL
 

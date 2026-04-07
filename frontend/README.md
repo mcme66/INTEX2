@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-The Vite dev server is configured to run on `http://localhost:8080`.
+The Vite dev server is configured to run on `http://localhost:5173`.
 
 ## Required environment
 
