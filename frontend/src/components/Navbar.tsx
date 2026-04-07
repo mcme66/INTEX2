@@ -1,16 +1,21 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-
-const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/donors", label: "Donors & Contributions" },
-  { to: "/impact", label: "Impact Dashboard" },
-];
+import { useAuth } from "@/state/auth";
 
 const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, logout } = useAuth();
+
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/donors", label: user?.isAdmin ? "Donors & Contributions" : "Ways to Help" },
+    { to: "/impact", label: "Impact Dashboard" },
+    { to: "/volunteer", label: "Volunteer" },
+    ...(user?.isDonor ? [{ to: "/donor", label: "Donor Dashboard" }] : []),
+    ...(user?.isAdmin ? [{ to: "/admin", label: "Admin Dashboard" }] : []),
+  ];
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -37,12 +42,22 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/donors"
-            className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-          >
-            Donate
-          </Link>
+          {user ? (
+            <button
+              type="button"
+              onClick={logout}
+              className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
+            >
+              Sign out
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
+            >
+              Staff Login
+            </Link>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -72,13 +87,26 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/donors"
-            onClick={() => setMobileOpen(false)}
-            className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center mt-2"
-          >
-            Donate
-          </Link>
+          {user ? (
+            <button
+              type="button"
+              onClick={() => {
+                logout();
+                setMobileOpen(false);
+              }}
+              className="block w-full text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center mt-2"
+            >
+              Sign out
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setMobileOpen(false)}
+              className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center mt-2"
+            >
+              Staff Login
+            </Link>
+          )}
         </div>
       )}
     </header>
