@@ -14,12 +14,14 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
 
         modelBuilder.Entity<User>(b =>
         {
+            b.ToTable("users");
             b.HasIndex(x => x.Username).IsUnique();
             b.HasIndex(x => x.Email).IsUnique();
         });
 
         modelBuilder.Entity<AddCode>(b =>
         {
+            b.ToTable("add_codes");
             b.HasKey(x => x.Code);
         });
     }

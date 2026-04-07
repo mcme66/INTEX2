@@ -5,11 +5,11 @@ type NavItem = { to: string; label: string }
 
 const authGroup1: NavItem[] = [
   { to: '/donor', label: 'Donor Dashboard' },
-  { to: '/donors', label: 'Donor Information' },
 ]
 
 const authGroup2: NavItem[] = [
   { to: '/admin', label: 'Admin Dashboard' },
+  { to: '/donors', label: 'Donor Information' },
   { to: '/admin/caseloads', label: 'Caseloads' },
   { to: '/admin/process-recording', label: 'Process Recording' },
   { to: '/admin/visits', label: 'Visits' },
@@ -19,7 +19,6 @@ const authGroup2: NavItem[] = [
 const publicGroup: NavItem[] = [
   { to: '/impact', label: 'Impact' },
   { to: '/privacy', label: 'Privacy' },
-  { to: '/about', label: 'About Us' },
   { to: '/volunteer', label: 'Volunteer With Us' },
 ]
 

@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { CookieConsent } from './components/CookieConsent'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
-import { AboutUsPage } from './pages/AboutUsPage'
 import { AdminDashboardPage } from './pages/AdminDashboardPage'
 import { CaseloadInventoryPage } from './pages/CaseloadInventoryPage'
 import { DonorDashboardPage } from './pages/DonorDashboardPage'
@@ -37,10 +36,9 @@ function App() {
       <main className="siteMain">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/donors" element={<DonorsPage />} />
+          <Route path="/donors" element={requireRole('admin', <DonorsPage />)} />
           <Route path="/volunteer" element={<VolunteerPage />} />
-          <Route path="/impact" element={requireRole('donor', <ImpactPage />)} />
+          <Route path="/impact" element={<ImpactPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/donor" element={requireRole('donor', <DonorDashboardPage />)} />
           <Route path="/admin" element={requireRole('admin', <AdminDashboardPage />)} />
