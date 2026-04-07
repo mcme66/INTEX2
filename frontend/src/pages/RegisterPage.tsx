@@ -26,7 +26,7 @@ export function RegisterPage() {
           setLoading(true)
           try {
             await register(firstName, email, username, password)
-            navigate('/welcome')
+            navigate('/donor')
           } catch (err) {
             setError(err instanceof Error ? err.message : 'Registration failed')
           } finally {

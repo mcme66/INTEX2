@@ -24,7 +24,7 @@ export function LoginPage() {
           setLoading(true)
           try {
             await login(username, password)
-            navigate('/welcome')
+            navigate('/donor')
           } catch (err) {
             setError(err instanceof Error ? err.message : 'Login failed')
           } finally {

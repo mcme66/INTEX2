@@ -13,8 +13,8 @@ export function HomePage() {
 
       <div className="row">
         {user ? (
-          <Link className="button" to="/welcome">
-            Go to your welcome page
+          <Link className="button" to="/donor">
+            Go to your dashboard
           </Link>
         ) : (
           <>

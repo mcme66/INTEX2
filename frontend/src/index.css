@@ -43,12 +43,14 @@ body {
 }
 
 .headerInner {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 14px 16px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 14px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 16px;
 }
 
 .brand {
@@ -58,10 +60,13 @@ body {
   letter-spacing: 0.2px;
 }
 
-.nav {
+.navLinks {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  flex: 1;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .link {
@@ -71,6 +76,27 @@ body {
 }
 .link:hover {
   opacity: 1;
+}
+
+.navLinks .link {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+.navLinks .link:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.navPipe {
+  opacity: 0.45;
+  user-select: none;
+}
+
+.navAuth {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
 }
 
 .container {
