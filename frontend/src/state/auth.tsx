@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import { apiGetMe, apiLogin, apiRegister, type UserDto } from "@/utils/api";
 
 type AuthState = {
@@ -24,6 +25,7 @@ const LS_TOKEN = "intex.token";
 const LS_USER = "intex.user";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [token, setToken] = useState<string | null>(() => localStorage.getItem(LS_TOKEN));
   const [user, setUser] = useState<UserDto | null>(() => {
     const raw = localStorage.getItem(LS_USER);
@@ -77,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   function logout() {
     persist(null, null);
+    navigate("/", { replace: true });
   }
 
   async function refreshMe() {
