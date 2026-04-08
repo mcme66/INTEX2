@@ -1,10 +1,18 @@
 [
   {
+    "Acquisition Channel": "Website",
+    "N Volunteers": 9,
+    "Avg Value": "25.10",
+    "Median Value": "25.20",
+    "Top Quartile %": "11.1%",
+    "Donor Conversion %": "100.0%"
+  },
+  {
     "Acquisition Channel": "WordOfMouth",
     "N Volunteers": 9,
     "Avg Value": "21.25",
     "Median Value": "21.67",
-    "Top Quartile %": "11.1%",
+    "Top Quartile %": "22.2%",
     "Donor Conversion %": "88.9%"
   },
   {
@@ -13,14 +21,6 @@
     "Avg Value": "22.78",
     "Median Value": "18.46",
     "Top Quartile %": "25.0%",
-    "Donor Conversion %": "100.0%"
-  },
-  {
-    "Acquisition Channel": "Website",
-    "N Volunteers": 8,
-    "Avg Value": "25.11",
-    "Median Value": "25.31",
-    "Top Quartile %": "12.5%",
     "Donor Conversion %": "100.0%"
   },
   {

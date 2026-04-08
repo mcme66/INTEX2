@@ -6,7 +6,8 @@ public sealed record RegisterRequest(
     [param: Required, StringLength(64, MinimumLength = 2)] string FirstName,
     [param: Required, EmailAddress, StringLength(256)] string Email,
     [param: Required, StringLength(64, MinimumLength = 3)] string Username,
-    [param: Required, StringLength(128, MinimumLength = 6)] string Password,
+    // Password policy: min 14 chars, no complexity requirements (RequireDigit/Upper/Lower/NonAlpha all false)
+    [param: Required, StringLength(128, MinimumLength = 14)] string Password,
     bool IsDonor,
     bool IsAdmin,
     string? AdminCode
@@ -15,6 +16,15 @@ public sealed record RegisterRequest(
 public sealed record LoginRequest(
     [param: Required] string Username,
     [param: Required] string Password
+);
+
+public sealed record UpdateProfileRequest(
+    [param: Required, StringLength(64, MinimumLength = 2)] string FirstName,
+    [param: Required, EmailAddress, StringLength(256)] string Email,
+    [param: Required, StringLength(64, MinimumLength = 3)] string Username,
+    string? CurrentPassword,
+    // Same password policy applies when changing password
+    [param: StringLength(128, MinimumLength = 14)] string? NewPassword
 );
 
 public sealed record AuthResponse(string Token, UserDto User);

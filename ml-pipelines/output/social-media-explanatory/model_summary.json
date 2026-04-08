@@ -1,0 +1,16 @@
+{
+  "logistic": {
+    "pseudo_r2": 0.9224,
+    "aic": 240.1,
+    "bic": 611.4,
+    "sig_features": 0
+  },
+  "ols": {
+    "adj_r2": 0.7773,
+    "aic": 1250.5,
+    "bic": 1586.9,
+    "f_stat": 24.32,
+    "sig_features": 37
+  },
+  "timestamp": "2026-04-08T07:21:13.894661"
+}

@@ -4,64 +4,65 @@ Dep. Variable:          days_to_lapse   R-squared:                       1.000
 Model:                            OLS   Adj. R-squared:                    nan
 Method:                 Least Squares   F-statistic:                       nan
 Date:                Wed, 08 Apr 2026   Prob (F-statistic):                nan
-Time:                        07:05:20   Log-Likelihood:                 365.04
-No. Observations:                  13   AIC:                            -704.1
-Df Residuals:                       0   BIC:                            -696.7
-Df Model:                          12                                         
+Time:                        16:19:44   Log-Likelihood:                 354.73
+No. Observations:                  14   AIC:                            -681.5
+Df Residuals:                       0   BIC:                            -672.5
+Df Model:                          13                                         
 Covariance Type:            nonrobust                                         
 ===========================================================================================================================================
                                                                               coef    std err          t      P>|t|      [0.025      0.975]
 -------------------------------------------------------------------------------------------------------------------------------------------
-const                                                                       0.0017        inf          0        nan         nan         nan
-avg_donation_amount_recent_3                                              4.87e-06        inf          0        nan         nan         nan
-in_kind_item_count                                                         -0.0003        inf         -0        nan         nan         nan
-in_kind_stopped                                                            -0.0007        inf         -0        nan         nan         nan
-org_engagement_trend_before_lapse                                          -0.0001        inf         -0        nan         nan         nan
-days_since_last_donation                                                    1.0000        inf          0        nan         nan         nan
-donation_frequency_trend                                                -1.658e-05        inf         -0        nan         nan         nan
-amount_trend_ratio                                                         -0.0020        inf         -0        nan         nan         nan
-max_donation_vs_recent                                                  -4.641e-05        inf         -0        nan         nan         nan
-days_since_last_campaign_donation                                        2.646e-05        inf          0        nan         nan         nan
-in_kind_condition_trend                                                     0.0005        inf          0        nan         nan         nan
-supporter_type_PartnerOrganization                                      -3.629e-21        inf         -0        nan         nan         nan
-supporter_type_SkillsContributor                                            0.0012        inf          0        nan         nan         nan
-supporter_type_SocialMediaAdvocate                                          0.0016        inf          0        nan         nan         nan
-relationship_type_PartnerOrganization                                       0.0009        inf          0        nan         nan         nan
-region_Mindanao                                                             0.0019        inf          0        nan         nan         nan
-region_Visayas                                                             -0.0004        inf         -0        nan         nan         nan
+const                                                                      -0.4872        inf         -0        nan         nan         nan
+donation_count_last_365d                                                   24.5968        inf          0        nan         nan         nan
+avg_donation_amount_recent_3                                               -0.0464        inf         -0        nan         nan         nan
+avg_donation_amount_prior_3                                                 0.2433        inf          0        nan         nan         nan
+in_kind_item_count                                                        -24.8900        inf         -0        nan         nan         nan
+in_kind_stopped                                                           -32.5511        inf         -0        nan         nan         nan
+org_engagement_trend_before_lapse                                          -1.4389        inf         -0        nan         nan         nan
+donation_frequency_trend                                                   -0.6043        inf         -0        nan         nan         nan
+amount_trend_ratio                                                         -8.7227        inf         -0        nan         nan         nan
+max_donation_vs_recent                                                     -1.3844        inf         -0        nan         nan         nan
+days_since_last_campaign_donation                                           0.7743        inf          0        nan         nan         nan
+in_kind_condition_trend                                                     0.3632        inf          0        nan         nan         nan
+supporter_type_PartnerOrganization                                       1.937e-16        inf          0        nan         nan         nan
+supporter_type_SkillsContributor                                            8.0503        inf          0        nan         nan         nan
+supporter_type_SocialMediaAdvocate                                         11.9135        inf          0        nan         nan         nan
+relationship_type_Local                                                   -20.6152        inf         -0        nan         nan         nan
+region_Mindanao                                                             9.2915        inf          0        nan         nan         nan
+region_Visayas                                                            -25.6685        inf         -0        nan         nan         nan
 country_Singapore                                                                0        nan        nan        nan         nan         nan
-country_USA                                                                -0.0001        inf         -0        nan         nan         nan
-status_Inactive                                                             0.0009        inf          0        nan         nan         nan
-acquisition_channel_Event                                                   0.0005        inf          0        nan         nan         nan
-acquisition_channel_PartnerReferral                                         0.0004        inf          0        nan         nan         nan
-acquisition_channel_Website                                                 0.0005        inf          0        nan         nan         nan
-acquisition_channel_WordOfMouth                                             0.0018        inf          0        nan         nan         nan
-first_channel_source_Direct                                                -0.0010        inf         -0        nan         nan         nan
-first_channel_source_Event                                                  0.0009        inf          0        nan         nan         nan
-first_channel_source_PartnerReferral                                        0.0024        inf          0        nan         nan         nan
+country_USA                                                                11.4241        inf          0        nan         nan         nan
+status_Inactive                                                            49.0415        inf          0        nan         nan         nan
+acquisition_channel_Event                                                   4.3904        inf          0        nan         nan         nan
+acquisition_channel_PartnerReferral                                        -1.2030        inf         -0        nan         nan         nan
+acquisition_channel_Website                                               -13.4257        inf         -0        nan         nan         nan
+acquisition_channel_WordOfMouth                                            13.0734        inf          0        nan         nan         nan
+first_channel_source_Direct                                               -48.3400        inf         -0        nan         nan         nan
+first_channel_source_Event                                                 18.0211        inf          0        nan         nan         nan
+first_channel_source_PartnerReferral                                       33.8954        inf          0        nan         nan         nan
 first_channel_source_SocialMedia                                                 0        nan        nan        nan         nan         nan
-first_campaign_associated_Year-End Hope                                     0.0008        inf          0        nan         nan         nan
+first_campaign_associated_Year-End Hope                                     0.9338        inf          0        nan         nan         nan
 referral_post_type_Education                                                     0        nan        nan        nan         nan         nan
 referral_post_type_Gratitude                                                     0        nan        nan        nan         nan         nan
 ix_acquisition_channel_Event_x_supporter_type_PartnerOrganization                0        nan        nan        nan         nan         nan
 ix_acquisition_channel_Event_x_supporter_type_Volunteer                          0        nan        nan        nan         nan         nan
-ix_acquisition_channel_PartnerReferral_x_supporter_type_Volunteer           0.0014        inf          0        nan         nan         nan
-ix_acquisition_channel_SocialMedia_x_supporter_type_MonetaryDonor          -0.0020        inf         -0        nan         nan         nan
-ix_acquisition_channel_SocialMedia_x_supporter_type_SocialMediaAdvocate    -0.0017        inf         -0        nan         nan         nan
+ix_acquisition_channel_PartnerReferral_x_supporter_type_Volunteer          32.5606        inf          0        nan         nan         nan
+ix_acquisition_channel_SocialMedia_x_supporter_type_MonetaryDonor         -27.9028        inf         -0        nan         nan         nan
+ix_acquisition_channel_SocialMedia_x_supporter_type_SocialMediaAdvocate   -20.7389        inf         -0        nan         nan         nan
 ix_acquisition_channel_SocialMedia_x_supporter_type_Volunteer                    0        nan        nan        nan         nan         nan
-ix_acquisition_channel_Website_x_supporter_type_MonetaryDonor              -0.0003        inf         -0        nan         nan         nan
-ix_acquisition_channel_Website_x_supporter_type_SkillsContributor           0.0007        inf          0        nan         nan         nan
+ix_acquisition_channel_Website_x_supporter_type_MonetaryDonor             -20.7903        inf         -0        nan         nan         nan
+ix_acquisition_channel_Website_x_supporter_type_SkillsContributor           3.6599        inf          0        nan         nan         nan
 ix_acquisition_channel_WordOfMouth_x_supporter_type_MonetaryDonor                0        nan        nan        nan         nan         nan
-ix_acquisition_channel_WordOfMouth_x_supporter_type_SocialMediaAdvocate     0.0009        inf          0        nan         nan         nan
+ix_acquisition_channel_WordOfMouth_x_supporter_type_SocialMediaAdvocate    -1.2430        inf         -0        nan         nan         nan
 ==============================================================================
-Omnibus:                        0.052   Durbin-Watson:                   1.604
-Prob(Omnibus):                  0.975   Jarque-Bera (JB):                0.208
-Skew:                          -0.117   Prob(JB):                        0.901
-Kurtosis:                       2.426   Cond. No.                     3.09e+03
+Omnibus:                        0.270   Durbin-Watson:                   1.174
+Prob(Omnibus):                  0.874   Jarque-Bera (JB):                0.360
+Skew:                           0.262   Prob(JB):                        0.835
+Kurtosis:                       2.414   Cond. No.                     3.27e+03
 ==============================================================================
 
 Notes:
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 [2] The input rank is higher than the number of observations.
-[3] The condition number is large, 3.09e+03. This might indicate that there are
+[3] The condition number is large, 3.27e+03. This might indicate that there are
 strong multicollinearity or other numerical problems.

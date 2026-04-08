@@ -4,14 +4,14 @@ Dep. Variable:                      y   No. Observations:                   34
 Model:                        MNLogit   Df Residuals:                       24
 Method:                           MLE   Df Model:                            8
 Date:                Wed, 08 Apr 2026   Pseudo R-squ.:                  0.2431
-Time:                        07:16:44   Log-Likelihood:                -27.680
+Time:                        16:28:02   Log-Likelihood:                -27.680
 converged:                       True   LL-Null:                       -36.572
 Covariance Type:            nonrobust   LLR p-value:                   0.02291
 ===========================================================================================
                     y=1       coef    std err          z      P>|z|      [0.025      0.975]
 -------------------------------------------------------------------------------------------
 const                     -14.0197   2.98e+05  -4.71e-05      1.000   -5.84e+05    5.84e+05
-recent_psych_checkup       25.8067   2.98e+05   8.66e-05      1.000   -5.84e+05    5.84e+05
+recent_psych_checkup       25.8067   2.98e+05   8.67e-05      1.000   -5.84e+05    5.84e+05
 composite_health_trend    596.6252    723.892      0.824      0.410    -822.177    2015.427
 current_attendance_rate   -16.1675      7.230     -2.236      0.025     -30.337      -1.998
 attendance_slope_3m       371.5402    408.271      0.910      0.363    -428.656    1171.736

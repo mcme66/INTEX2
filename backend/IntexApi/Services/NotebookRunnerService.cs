@@ -93,7 +93,8 @@ public sealed class NotebookRunnerService(
         var nbDir = Path.GetFullPath(mlOptions.Value.NotebooksDir);
         var outputDir = Path.GetFullPath(Path.Combine(nbDir, "..", "output"));
         var allModelsExist = PredictionNotebooks.All(nb =>
-            File.Exists(Path.Combine(outputDir, nb, "model1.sav")));
+            File.Exists(Path.Combine(outputDir, nb, "model1.sav"))
+            || File.Exists(Path.Combine(outputDir, nb, "models", "model1.sav")));
 
         if (allModelsExist)
         {
@@ -159,7 +160,8 @@ public sealed class NotebookRunnerService(
             {
                 var outDir = Path.Combine(outputRoot, notebookKey);
                 var modelPath = Path.Combine(outDir, "model1.sav");
-                if (!File.Exists(modelPath))
+                var modelPathAlt = Path.Combine(outDir, "models", "model1.sav");
+                if (!File.Exists(modelPath) && !File.Exists(modelPathAlt))
                 {
                     logger.LogWarning("ML: score-only skip {notebook} — model1.sav not found at {path}", notebookKey, modelPath);
                     await SetStatusAsync(notebookKey, "error", "model1.sav not found — run full retrain first", null);

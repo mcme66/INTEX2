@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using IntexApi.Data;
 using IntexApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -25,24 +26,24 @@ public sealed record HomeVisitationDto(
 );
 
 public sealed record HomeVisitationUpsertRequest(
-    int ResidentId,
+    [param: Required] int ResidentId,
     DateOnly? VisitDate,
-    string? SocialWorker,
-    string? VisitType,
-    string? LocationVisited,
-    string? FamilyMembersPresent,
-    string? Purpose,
-    string? Observations,
-    string? FamilyCooperationLevel,
+    [param: StringLength(100)] string? SocialWorker,
+    [param: StringLength(50)] string? VisitType,
+    [param: StringLength(200)] string? LocationVisited,
+    [param: StringLength(500)] string? FamilyMembersPresent,
+    [param: StringLength(500)] string? Purpose,
+    [param: StringLength(2000)] string? Observations,
+    [param: StringLength(30)] string? FamilyCooperationLevel,
     bool SafetyConcernsNoted,
     bool FollowUpNeeded,
-    string? FollowUpNotes,
-    string? VisitOutcome
+    [param: StringLength(2000)] string? FollowUpNotes,
+    [param: StringLength(200)] string? VisitOutcome
 );
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "admin")]
 public sealed class HomeVisitationsController(AppDbContext db) : ControllerBase
 {
     [HttpGet]
@@ -192,5 +193,15 @@ public sealed class HomeVisitationsController(AppDbContext db) : ControllerBase
         v.FollowUpNotes = req.FollowUpNotes;
         v.VisitOutcome = req.VisitOutcome;
         return v;
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken ct)
+    {
+        var visit = await db.HomeVisitations.FindAsync([id], ct);
+        if (visit is null) return NotFound();
+        db.HomeVisitations.Remove(visit);
+        await db.SaveChangesAsync(ct);
+        return NoContent();
     }
 }

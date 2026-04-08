@@ -4,7 +4,7 @@ Dep. Variable:     is_reintegration_active   No. Observations:                  
 Model:                               Logit   Df Residuals:                       55
 Method:                                MLE   Df Model:                            4
 Date:                     Wed, 08 Apr 2026   Pseudo R-squ.:                 0.01929
-Time:                             07:16:44   Log-Likelihood:                -37.454
+Time:                             16:28:02   Log-Likelihood:                -37.454
 converged:                            True   LL-Null:                       -38.191
 Covariance Type:                   cluster   LLR p-value:                    0.8314
 ===========================================================================================

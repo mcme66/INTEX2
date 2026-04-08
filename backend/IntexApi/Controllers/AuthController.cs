@@ -88,5 +88,52 @@ public sealed class AuthController(AppDbContext db, IJwtTokenService jwt, DonorS
 
         return Ok(new UserDto(user.Id, user.FirstName, user.Email, user.Username, user.IsDonor, user.IsAdmin));
     }
+
+    [Authorize]
+    [HttpPut("profile")]
+    public async Task<ActionResult<AuthResponse>> UpdateProfile(UpdateProfileRequest req, CancellationToken ct)
+    {
+        var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                  ?? User.FindFirstValue("sub");
+
+        if (!Guid.TryParse(sub, out var userId)) return Unauthorized();
+
+        var user = await db.Users.FindAsync([userId], ct);
+        if (user is null) return Unauthorized();
+
+        var trimmedEmail = req.Email.Trim().ToLowerInvariant();
+        var trimmedUsername = req.Username.Trim();
+
+        if (trimmedUsername != user.Username &&
+            await db.Users.AnyAsync(u => u.Username == trimmedUsername && u.Id != userId, ct))
+            return Conflict(new { message = "Username already taken." });
+
+        if (trimmedEmail != user.Email &&
+            await db.Users.AnyAsync(u => u.Email == trimmedEmail && u.Id != userId, ct))
+            return Conflict(new { message = "Email already taken." });
+
+        if (!string.IsNullOrEmpty(req.NewPassword))
+        {
+            if (string.IsNullOrEmpty(req.CurrentPassword))
+                return BadRequest(new { message = "Current password is required to set a new password." });
+
+            if (!BCrypt.Net.BCrypt.Verify(req.CurrentPassword, user.PasswordHash))
+                return BadRequest(new { message = "Current password is incorrect." });
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
+        }
+
+        user.FirstName = req.FirstName.Trim();
+        user.Email = trimmedEmail;
+        user.Username = trimmedUsername;
+
+        await db.SaveChangesAsync(ct);
+
+        var token = jwt.CreateToken(user);
+        return Ok(new AuthResponse(
+            token,
+            new UserDto(user.Id, user.FirstName, user.Email, user.Username, user.IsDonor, user.IsAdmin)
+        ));
+    }
 }
 

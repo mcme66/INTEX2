@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
 
+const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+const scrollToMission = () => {
+  const el = document.getElementById("mission");
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+  else window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
 const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground">
@@ -22,11 +29,27 @@ const Footer = () => {
               Organization
             </h4>
             <ul className="space-y-2.5 text-sm">
-              <li><Link to="/" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Home</Link></li>
-              <li><a href="#mission" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Our Mission</a></li>
-              <li><a href="#about" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About Us</a></li>
-              <li><a href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Our Team</a></li>
-              <li><a href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Annual Reports</a></li>
+              <li>
+                <button
+                  onClick={scrollToTop}
+                  className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Home
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={scrollToMission}
+                  className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Our Mission
+                </button>
+              </li>
+              <li>
+                <Link to="/impact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  Our Impact
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -36,11 +59,21 @@ const Footer = () => {
               Get Involved
             </h4>
             <ul className="space-y-2.5 text-sm">
-              <li><Link to="/donors" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Donate</Link></li>
-              <li><Link to="/volunteer" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Volunteer</Link></li>
-              <li><a href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Partner With Us</a></li>
-              <li><a href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Fundraise</a></li>
-              <li><Link to="/impact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">See Our Impact</Link></li>
+              <li>
+                <Link to="/register" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  Donate
+                </Link>
+              </li>
+              <li>
+                <Link to="/volunteer" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  Volunteer
+                </Link>
+              </li>
+              <li>
+                <Link to="/impact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  Our Impact
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -50,7 +83,7 @@ const Footer = () => {
               Contact
             </h4>
             <ul className="space-y-2.5 text-sm text-primary-foreground/70">
-              <li>info@northstarrefuge.org</li>
+              <li>info@northstar.com</li>
               <li>Bogotá, Colombia</li>
               <li className="pt-2">
                 <a href="#" className="hover:text-primary-foreground transition-colors">Instagram</a>
@@ -67,8 +100,6 @@ const Footer = () => {
           <span>© {new Date().getFullYear()} North Star Refuge. All rights reserved.</span>
           <div className="flex gap-4">
             <Link to="/privacy" className="hover:text-primary-foreground/60 transition-colors">Privacy Policy</Link>
-            <a href="#" className="hover:text-primary-foreground/60 transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-primary-foreground/60 transition-colors">Financial Transparency</a>
           </div>
         </div>
       </div>

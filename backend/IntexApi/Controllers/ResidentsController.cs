@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using IntexApi.Data;
 using IntexApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -51,16 +52,16 @@ public sealed record ResidentListItem(
 );
 
 public sealed record ResidentUpsertRequest(
-    string? CaseControlNo,
-    string? InternalCode,
+    [param: StringLength(50)] string? CaseControlNo,
+    [param: StringLength(50)] string? InternalCode,
     int? SafehouseId,
-    string? CaseStatus,
-    string? Sex,
+    [param: StringLength(30)] string? CaseStatus,
+    [param: StringLength(10)] string? Sex,
     DateOnly? DateOfBirth,
-    string? BirthStatus,
-    string? PlaceOfBirth,
-    string? Religion,
-    string? CaseCategory,
+    [param: StringLength(30)] string? BirthStatus,
+    [param: StringLength(200)] string? PlaceOfBirth,
+    [param: StringLength(50)] string? Religion,
+    [param: StringLength(50)] string? CaseCategory,
     bool SubCatOrphaned,
     bool SubCatTrafficked,
     bool SubCatChildLabor,
@@ -72,37 +73,37 @@ public sealed record ResidentUpsertRequest(
     bool SubCatStreetChild,
     bool SubCatChildWithHiv,
     bool IsPwd,
-    string? PwdType,
+    [param: StringLength(100)] string? PwdType,
     bool HasSpecialNeeds,
-    string? SpecialNeedsDiagnosis,
+    [param: StringLength(500)] string? SpecialNeedsDiagnosis,
     bool FamilyIs4Ps,
     bool FamilySoloParent,
     bool FamilyIndigenous,
     bool FamilyParentPwd,
     bool FamilyInformalSettler,
     DateOnly? DateOfAdmission,
-    string? AgeUponAdmission,
-    string? PresentAge,
-    string? LengthOfStay,
-    string? ReferralSource,
-    string? ReferringAgencyPerson,
+    [param: StringLength(20)] string? AgeUponAdmission,
+    [param: StringLength(20)] string? PresentAge,
+    [param: StringLength(30)] string? LengthOfStay,
+    [param: StringLength(100)] string? ReferralSource,
+    [param: StringLength(200)] string? ReferringAgencyPerson,
     DateOnly? DateColbRegistered,
     DateOnly? DateColbObtained,
-    string? AssignedSocialWorker,
-    string? InitialCaseAssessment,
+    [param: StringLength(100)] string? AssignedSocialWorker,
+    [param: StringLength(2000)] string? InitialCaseAssessment,
     DateOnly? DateCaseStudyPrepared,
-    string? ReintegrationType,
-    string? ReintegrationStatus,
-    string? InitialRiskLevel,
-    string? CurrentRiskLevel,
+    [param: StringLength(50)] string? ReintegrationType,
+    [param: StringLength(30)] string? ReintegrationStatus,
+    [param: StringLength(20)] string? InitialRiskLevel,
+    [param: StringLength(20)] string? CurrentRiskLevel,
     DateOnly? DateEnrolled,
     DateOnly? DateClosed,
-    string? NotesRestricted
+    [param: StringLength(2000)] string? NotesRestricted
 );
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "admin")]
 public sealed class ResidentsController(AppDbContext db) : ControllerBase
 {
     [HttpGet]
@@ -279,5 +280,15 @@ public sealed class ResidentsController(AppDbContext db) : ControllerBase
         r.DateClosed = req.DateClosed;
         r.NotesRestricted = req.NotesRestricted;
         return r;
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken ct)
+    {
+        var resident = await db.Residents.FindAsync([id], ct);
+        if (resident is null) return NotFound();
+        db.Residents.Remove(resident);
+        await db.SaveChangesAsync(ct);
+        return NoContent();
     }
 }

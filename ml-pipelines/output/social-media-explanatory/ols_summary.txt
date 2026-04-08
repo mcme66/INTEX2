@@ -1,0 +1,104 @@
+                                   OLS Regression Results                                   
+============================================================================================
+Dep. Variable:     log_estimated_donation_value_php   R-squared:                       0.811
+Model:                                          OLS   Adj. R-squared:                  0.777
+Method:                               Least Squares   F-statistic:                     24.32
+Date:                              Wed, 08 Apr 2026   Prob (F-statistic):          1.73e-118
+Time:                                      07:21:13   Log-Likelihood:                -546.25
+No. Observations:                               522   AIC:                             1251.
+Df Residuals:                                   443   BIC:                             1587.
+Df Model:                                        78                                         
+Covariance Type:                          nonrobust                                         
+======================================================================================================
+                                         coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------------------------
+const                                 -0.6777      1.030     -0.658      0.511      -2.703       1.347
+hashtag_count                          0.0058      0.030      0.195      0.845      -0.053       0.065
+caption_length                        -0.0020      0.001     -1.316      0.189      -0.005       0.001
+is_weekend                             0.1804      0.127      1.423      0.155      -0.069       0.430
+features_resident_story                0.7259      0.147      4.940      0.000       0.437       1.015
+sentiment_tone_Emotional               0.4713      0.120      3.927      0.000       0.235       0.707
+sentiment_tone_Grateful               -0.5241      0.125     -4.185      0.000      -0.770      -0.278
+sentiment_tone_Hopeful                -0.3908      0.119     -3.278      0.001      -0.625      -0.157
+sentiment_tone_Informative            -0.7543      0.126     -5.965      0.000      -1.003      -0.506
+sentiment_tone_Urgent                  0.0772      0.126      0.613      0.540      -0.170       0.325
+media_type_Photo                      -0.0443      0.126     -0.351      0.725      -0.292       0.203
+media_type_Reel                       -0.0833      0.153     -0.543      0.587      -0.385       0.218
+media_type_Text                        0.1617      0.148      1.090      0.276      -0.130       0.453
+media_type_Video                      -0.1544      0.131     -1.177      0.240      -0.412       0.103
+call_to_action_type_DonateNow          0.2032      0.116      1.744      0.082      -0.026       0.432
+call_to_action_type_LearnMore          0.1768      0.119      1.490      0.137      -0.056       0.410
+call_to_action_type_ShareStory         0.3017      0.124      2.439      0.015       0.059       0.545
+call_to_action_type_SignUp             0.2432      0.119      2.050      0.041       0.010       0.476
+content_topic_CampaignLaunch          -0.1702      0.160     -1.066      0.287      -0.484       0.144
+content_topic_DonorImpact             -0.0164      0.151     -0.109      0.914      -0.313       0.280
+content_topic_Education               -0.0858      0.146     -0.586      0.558      -0.374       0.202
+content_topic_EventRecap               0.0596      0.204      0.292      0.770      -0.341       0.461
+content_topic_Gratitude               -0.3227      0.163     -1.975      0.049      -0.644      -0.002
+content_topic_Health                   0.0493      0.156      0.316      0.752      -0.258       0.356
+content_topic_Reintegration           -0.1623      0.162     -1.001      0.318      -0.481       0.157
+content_topic_SafehouseLife            0.0105      0.149      0.071      0.944      -0.281       0.302
+inter_Facebook_Campaign               -0.4145      0.226     -1.836      0.067      -0.858       0.029
+inter_Facebook_EducationalContent     -2.7215      0.275     -9.887      0.000      -3.262      -2.181
+inter_Facebook_EventPromotion         -2.6528      0.338     -7.838      0.000      -3.318      -1.988
+inter_Facebook_FundraisingAppeal      -0.4273      0.246     -1.739      0.083      -0.910       0.056
+inter_Facebook_ThankYou               -2.8465      0.290     -9.832      0.000      -3.416      -2.278
+inter_Instagram_Campaign              -0.6737      0.217     -3.100      0.002      -1.101      -0.247
+inter_Instagram_EducationalContent    -2.5958      0.312     -8.322      0.000      -3.209      -1.983
+inter_Instagram_EventPromotion        -2.3217      0.266     -8.717      0.000      -2.845      -1.798
+inter_Instagram_FundraisingAppeal     -0.5169      0.301     -1.718      0.087      -1.108       0.075
+inter_Instagram_ImpactStory           -0.2691      0.183     -1.473      0.141      -0.628       0.090
+inter_Instagram_ThankYou              -2.5010      0.346     -7.234      0.000      -3.180      -1.822
+inter_LinkedIn_Campaign                1.1288      0.314      3.596      0.000       0.512       1.746
+inter_LinkedIn_EducationalContent     -0.4092      0.802     -0.510      0.610      -1.985       1.166
+inter_LinkedIn_EventPromotion         -0.7512      0.585     -1.285      0.200      -1.900       0.398
+inter_LinkedIn_ImpactStory             0.9648      0.250      3.855      0.000       0.473       1.457
+inter_LinkedIn_ThankYou               -0.1088      0.385     -0.283      0.778      -0.866       0.648
+inter_TikTok_Campaign                 -0.6257      0.277     -2.261      0.024      -1.170      -0.082
+inter_TikTok_EducationalContent       -1.9535      0.487     -4.014      0.000      -2.910      -0.997
+inter_TikTok_EventPromotion           -2.5172      0.379     -6.650      0.000      -3.261      -1.773
+inter_TikTok_FundraisingAppeal        -0.3822      0.305     -1.252      0.211      -0.982       0.218
+inter_TikTok_ImpactStory              -0.6293      0.223     -2.818      0.005      -1.068      -0.190
+inter_TikTok_ThankYou                 -2.8820      0.349     -8.259      0.000      -3.568      -2.196
+inter_Twitter_Campaign                -0.9366      0.254     -3.692      0.000      -1.435      -0.438
+inter_Twitter_EducationalContent      -2.3452      0.481     -4.879      0.000      -3.290      -1.401
+inter_Twitter_EventPromotion          -2.1042      0.360     -5.847      0.000      -2.811      -1.397
+inter_Twitter_FundraisingAppeal        0.0118      0.266      0.044      0.965      -0.510       0.534
+inter_Twitter_ImpactStory             -0.0932      0.198     -0.471      0.638      -0.482       0.296
+inter_Twitter_ThankYou                -2.6282      0.430     -6.117      0.000      -3.473      -1.784
+inter_WhatsApp_Campaign                1.4170      0.302      4.691      0.000       0.823       2.011
+inter_WhatsApp_EducationalContent     -0.3743      0.483     -0.776      0.438      -1.323       0.574
+inter_WhatsApp_EventPromotion         -0.0389      0.576     -0.068      0.946      -1.171       1.093
+inter_WhatsApp_FundraisingAppeal       1.5223      0.398      3.821      0.000       0.739       2.305
+inter_WhatsApp_ImpactStory             1.5646      0.206      7.602      0.000       1.160       1.969
+inter_WhatsApp_ThankYou               -0.9507      0.404     -2.355      0.019      -1.744      -0.157
+inter_YouTube_Campaign                -0.4366      0.335     -1.303      0.193      -1.095       0.222
+inter_YouTube_EducationalContent      -2.1173      0.334     -6.341      0.000      -2.774      -1.461
+inter_YouTube_EventPromotion          -2.3157      0.347     -6.665      0.000      -2.999      -1.633
+inter_YouTube_FundraisingAppeal       -0.2010      0.319     -0.630      0.529      -0.828       0.426
+inter_YouTube_ImpactStory             -0.2653      0.230     -1.152      0.250      -0.718       0.187
+inter_YouTube_ThankYou                -2.4066      0.394     -6.106      0.000      -3.181      -1.632
+post_hour                              0.0218      0.007      3.225      0.001       0.009       0.035
+day_of_week_numeric                   -0.0070      0.029     -0.241      0.810      -0.064       0.050
+quarter                                0.0253      0.032      0.803      0.422      -0.037       0.087
+is_peak_hour                           0.4065      0.073      5.588      0.000       0.264       0.549
+days_since_first_post              -2.631e-05      0.000     -0.233      0.816      -0.000       0.000
+rolling_avg_ref_30d                    0.0125      0.015      0.845      0.399      -0.017       0.042
+rolling_avg_val_30d                -1.347e-06   3.83e-06     -0.351      0.725   -8.88e-06    6.19e-06
+rolling_post_count_30d                 0.0061      0.007      0.916      0.360      -0.007       0.019
+is_during_active                       0.2054      0.850      0.242      0.809      -1.465       1.876
+log_reach                              1.2744      0.059     21.559      0.000       1.158       1.391
+log_boost_budget                      -0.0560      0.015     -3.780      0.000      -0.085      -0.027
+donation_value_per_boost               0.0010      0.001      1.351      0.177      -0.000       0.002
+days_since_last_snap                  -0.0035      0.004     -0.838      0.402      -0.012       0.005
+==============================================================================
+Omnibus:                       10.126   Durbin-Watson:                   2.039
+Prob(Omnibus):                  0.006   Jarque-Bera (JB):                9.955
+Skew:                          -0.305   Prob(JB):                      0.00689
+Kurtosis:                       2.708   Cond. No.                     1.88e+06
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.88e+06. This might indicate that there are
+strong multicollinearity or other numerical problems.

@@ -2,8 +2,8 @@ namespace IntexApi.Services;
 
 /// <summary>
 /// Nightly cron: re-trains all ML models by running the full notebooks (explanatory + prediction).
-/// Fires once per day at midnight UTC.  On startup it also schedules the next run so the
-/// service is resilient to backend restarts.
+/// Fires once per day at 11:00 UTC (5:00 AM Mountain Daylight Time / MDT, UTC-6).
+/// On startup it also schedules the next run so the service is resilient to backend restarts.
 /// </summary>
 public sealed class MlRetrainCronService(
     NotebookRunnerService runner,
@@ -15,7 +15,7 @@ public sealed class MlRetrainCronService(
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            var delay = TimeUntilNextMidnightUtc();
+            var delay = TimeUntilNext11AmUtc();
             logger.LogInformation("ML cron: next full retrain in {delay:hh\\:mm\\:ss}", delay);
 
             try
@@ -37,10 +37,12 @@ public sealed class MlRetrainCronService(
         }
     }
 
-    private static TimeSpan TimeUntilNextMidnightUtc()
+    private static TimeSpan TimeUntilNext11AmUtc()
     {
+        // 11:00 UTC = 5:00 AM Mountain Daylight Time (MDT, UTC-6)
         var now = DateTime.UtcNow;
-        var nextMidnight = now.Date.AddDays(1);
-        return nextMidnight - now;
+        var todayTarget = now.Date.AddHours(11);
+        var next = now < todayTarget ? todayTarget : todayTarget.AddDays(1);
+        return next - now;
     }
 }

@@ -7,11 +7,12 @@ import {
   apiGetProcessRecordingFilters,
   apiCreateProcessRecording,
   apiUpdateProcessRecording,
+  apiDeleteProcessRecording,
   type ProcessRecordingDto,
   type ProcessRecordingFilterOptions,
   type ProcessRecordingUpsertRequest,
 } from "@/utils/api";
-import { Search, X, ChevronLeft, ChevronRight, Plus, Pencil, ArrowLeft, CheckCircle2, AlertCircle, UserCheck } from "lucide-react";
+import { Search, X, ChevronLeft, ChevronRight, Plus, Pencil, ArrowLeft, CheckCircle2, AlertCircle, UserCheck, Trash2, ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -84,15 +85,18 @@ type ModalProps = {
   defaultResidentId?: number;
   onClose: () => void;
   onSaved: () => void;
+  onDeleted: () => void;
 };
 
-function RecordingModal({ token, editing, filters, defaultResidentId, onClose, onSaved }: ModalProps) {
+function RecordingModal({ token, editing, filters, defaultResidentId, onClose, onSaved, onDeleted }: ModalProps) {
   const [form, setForm] = useState<ProcessRecordingUpsertRequest>(() => {
     if (editing) return recordingToForm(editing);
     return { ...BLANK, residentId: defaultResidentId ?? 0 };
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const set = (field: keyof ProcessRecordingUpsertRequest, value: unknown) =>
     setForm((f) => ({ ...f, [field]: value }));
@@ -116,10 +120,24 @@ function RecordingModal({ token, editing, filters, defaultResidentId, onClose, o
     }
   };
 
-  const inputCls = "w-full border border-border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
-  const labelCls = "block text-xs font-medium text-muted-foreground mb-1";
-  const sectionCls = "mb-6";
-  const sectionTitle = "text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3";
+  const handleDelete = async () => {
+    if (!editing) return;
+    setDeleting(true);
+    try {
+      await apiDeleteProcessRecording(token, editing.recordingId);
+      onDeleted();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed");
+      setConfirmDelete(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const inputCls = "w-full border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
+  const labelCls = "block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wide";
+  const sectionCls = "pt-6 pb-2";
+  const sectionTitle = "text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4 pb-2 border-b border-border";
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 overflow-y-auto py-8 px-4">
@@ -133,12 +151,12 @@ function RecordingModal({ token, editing, filters, defaultResidentId, onClose, o
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-6 py-6 space-y-0">
+        <form onSubmit={handleSubmit} className="px-6 py-2 divide-y divide-border">
 
           {/* Session Info */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Session Details</p>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-x-5 gap-y-4">
               <div className="col-span-2">
                 <label className={labelCls}>Resident</label>
                 <select
@@ -183,7 +201,7 @@ function RecordingModal({ token, editing, filters, defaultResidentId, onClose, o
           {/* Emotional State */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Emotional State</p>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-x-5 gap-y-4">
               <div>
                 <label className={labelCls}>At Start of Session</label>
                 <select className={inputCls} value={form.emotionalStateObserved ?? ""} onChange={e => set("emotionalStateObserved", e.target.value)}>
@@ -215,7 +233,7 @@ function RecordingModal({ token, editing, filters, defaultResidentId, onClose, o
           {/* Interventions & Follow-up */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Interventions &amp; Follow-up</p>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-y-4">
               <div>
                 <label className={labelCls}>Interventions Applied</label>
                 <input className={inputCls} value={form.interventionsApplied ?? ""} onChange={e => set("interventionsApplied", e.target.value)} list="int-list" placeholder="e.g. Cognitive Behavioral Therapy" />
@@ -245,20 +263,61 @@ function RecordingModal({ token, editing, filters, defaultResidentId, onClose, o
 
           {error && <p className="text-destructive text-sm mb-4">{error}</p>}
 
-          <div className="flex items-center justify-end gap-3 pt-2 border-t border-border">
-            <button type="button" onClick={onClose} className="text-sm text-muted-foreground hover:text-foreground">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="text-sm font-medium px-5 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors disabled:opacity-50"
-            >
-              {saving ? "Saving…" : editing ? "Save Changes" : "Create Record"}
-            </button>
+          <div className="flex items-center justify-between gap-3 pt-5 pb-2">
+            <div>
+              {editing && (
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(true)}
+                  className="flex items-center gap-1.5 text-sm text-red-500 hover:text-red-700 transition-colors"
+                >
+                  <Trash2 size={14} />
+                  Delete Record
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              <button type="button" onClick={onClose} className="text-sm text-muted-foreground hover:text-foreground">
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={saving}
+                className="text-sm font-medium px-5 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors disabled:opacity-50"
+              >
+                {saving ? "Saving…" : editing ? "Save Changes" : "Create Record"}
+              </button>
+            </div>
           </div>
         </form>
       </div>
+
+      {/* Delete confirmation */}
+      {confirmDelete && editing && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50">
+          <div className="bg-background border border-border p-6 w-full max-w-sm shadow-xl">
+            <h3 className="font-heading font-semibold text-foreground mb-2">Delete Record</h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              Deleting record <span className="font-medium text-foreground">{editing.sessionDate ?? `#${editing.recordingId}`}</span> for resident <span className="font-medium text-foreground">{editing.residentCode ?? `ID ${editing.residentId}`}</span>. This cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="text-sm px-4 py-2 border border-border hover:bg-secondary transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="text-sm font-medium px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {deleting ? "Deleting…" : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -283,6 +342,7 @@ const ProcessRecordingPage = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<ProcessRecordingDto | null>(null);
+  const [sort, setSort] = useState<{ key: keyof ProcessRecordingDto | null; dir: "asc" | "desc" | "none" }>({ key: null, dir: "none" });
 
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -336,6 +396,35 @@ const ProcessRecordingPage = () => {
   };
 
   const hasFilters = search || filterResident || filterSW || filterType;
+
+  const cycleSort = (key: keyof ProcessRecordingDto) => {
+    setSort(prev => {
+      if (prev.key !== key) return { key, dir: "asc" };
+      if (prev.dir === "asc") return { key, dir: "desc" };
+      if (prev.dir === "desc") return { key: null, dir: "none" };
+      return { key, dir: "asc" };
+    });
+  };
+
+  const sortedRecordings = sort.key && sort.dir !== "none"
+    ? [...recordings].sort((a, b) => {
+        const av = a[sort.key!] ?? "";
+        const bv = b[sort.key!] ?? "";
+        const n = typeof av === "number" && typeof bv === "number"
+          ? av - bv
+          : String(av).localeCompare(String(bv));
+        return sort.dir === "asc" ? n : -n;
+      })
+    : recordings;
+
+  const SortIcon = ({ col }: { col: keyof ProcessRecordingDto }) => {
+    if (sort.key !== col) return <ChevronsUpDown size={11} className="inline ml-1 opacity-40" />;
+    if (sort.dir === "asc") return <ChevronUp size={11} className="inline ml-1" />;
+    return <ChevronDown size={11} className="inline ml-1" />;
+  };
+
+  const thCls = "text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors";
+
   const selectCls = "border border-border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
 
   return (
@@ -354,10 +443,7 @@ const ProcessRecordingPage = () => {
         {/* Header */}
         <div className="mb-10 flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Admin · Case Management
-            </p>
-            <h1 className="mt-3 font-heading text-4xl font-semibold text-foreground">Process Recording</h1>
+            <h1 className="font-heading text-4xl font-semibold text-foreground">Process Recording</h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
               Counseling session notes documenting each resident's healing journey, recorded chronologically.
             </p>
@@ -433,13 +519,13 @@ const ProcessRecordingPage = () => {
             <table className="w-full text-sm table-fixed">
               <thead>
                 <tr className="border-b border-border bg-secondary/40">
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[10%]">Resident</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[9%]">Date</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[10%]">Social Worker</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[9%]">Type</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[8%]">Emotional State</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[28%]">Narrative</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[14%]">Interventions</th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("residentCode")}>Resident<SortIcon col="residentCode" /></th>
+                  <th className={`${thCls} w-[9%]`} onClick={() => cycleSort("sessionDate")}>Date<SortIcon col="sessionDate" /></th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("socialWorker")}>Social Worker<SortIcon col="socialWorker" /></th>
+                  <th className={`${thCls} w-[9%]`} onClick={() => cycleSort("sessionType")}>Type<SortIcon col="sessionType" /></th>
+                  <th className={`${thCls} w-[8%]`} onClick={() => cycleSort("emotionalStateObserved")}>Emotional State<SortIcon col="emotionalStateObserved" /></th>
+                  <th className={`${thCls} w-[28%]`} onClick={() => cycleSort("sessionNarrative")}>Narrative<SortIcon col="sessionNarrative" /></th>
+                  <th className={`${thCls} w-[14%]`} onClick={() => cycleSort("interventionsApplied")}>Interventions<SortIcon col="interventionsApplied" /></th>
                   <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[8%]">Flags</th>
                   <th className="w-[4%] px-3 py-2.5"></th>
                 </tr>
@@ -451,7 +537,7 @@ const ProcessRecordingPage = () => {
                 {!loading && recordings.length === 0 && (
                   <tr><td colSpan={9} className="text-center text-muted-foreground py-16">No recordings found</td></tr>
                 )}
-                {recordings.map((r) => (
+                {sortedRecordings.map((r) => (
                   <tr key={r.recordingId} className="border-b border-border hover:bg-secondary/20 transition-colors align-top">
                     <td className="px-3 py-2.5">
                       <div className="font-mono text-xs text-foreground">{r.residentCode ?? `ID ${r.residentId}`}</div>
@@ -533,6 +619,7 @@ const ProcessRecordingPage = () => {
           filters={filters}
           onClose={() => { setModalOpen(false); setEditing(null); }}
           onSaved={handleSaved}
+          onDeleted={() => { setModalOpen(false); setEditing(null); fetchRecordings(page); }}
         />
       )}
     </Layout>

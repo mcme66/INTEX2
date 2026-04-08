@@ -7,11 +7,12 @@ import {
   apiGetResidentFilters,
   apiCreateResident,
   apiUpdateResident,
+  apiDeleteResident,
   type ResidentListItem,
   type ResidentFilterOptions,
   type ResidentUpsertRequest,
 } from "@/utils/api";
-import { Search, X, ChevronLeft, ChevronRight, Plus, Pencil, ArrowLeft } from "lucide-react";
+import { Search, X, ChevronLeft, ChevronRight, Plus, Pencil, ArrowLeft, Trash2, ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -124,14 +125,17 @@ type ModalProps = {
   filters: ResidentFilterOptions | null;
   onClose: () => void;
   onSaved: () => void;
+  onDeleted: () => void;
 };
 
-function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps) {
+function ResidentModal({ token, editing, filters, onClose, onSaved, onDeleted }: ModalProps) {
   const [form, setForm] = useState<ResidentUpsertRequest>(
     editing ? residentToForm(editing) : { ...BLANK }
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const set = (field: keyof ResidentUpsertRequest, value: unknown) =>
     setForm((f) => ({ ...f, [field]: value }));
@@ -154,10 +158,24 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
     }
   };
 
-  const inputCls = "w-full border border-border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
-  const labelCls = "block text-xs font-medium text-muted-foreground mb-1";
-  const sectionCls = "mb-6";
-  const sectionTitle = "text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3";
+  const handleDelete = async () => {
+    if (!editing) return;
+    setDeleting(true);
+    try {
+      await apiDeleteResident(token, editing.residentId);
+      onDeleted();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed");
+      setConfirmDelete(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const inputCls = "w-full border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
+  const labelCls = "block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wide";
+  const sectionCls = "pt-6 pb-2";
+  const sectionTitle = "text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4 pb-2 border-b border-border";
 
   const SUB_CATS: [keyof ResidentUpsertRequest, string][] = [
     ["subCatOrphaned", "Orphaned"], ["subCatTrafficked", "Trafficked"],
@@ -185,12 +203,12 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-6 py-6 space-y-0">
+        <form onSubmit={handleSubmit} className="px-6 py-2 divide-y divide-border">
 
           {/* Identifiers */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Identifiers</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-4">
               <div><label className={labelCls}>Case Control No.</label>
                 <input className={inputCls + " bg-secondary text-muted-foreground cursor-not-allowed"} value={form.caseControlNo ?? ""} readOnly /></div>
               <div><label className={labelCls}>Internal Code</label>
@@ -210,7 +228,7 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           {/* Demographics */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Demographics</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-4">
               <div><label className={labelCls}>Sex</label>
                 <select className={inputCls} value={form.sex ?? ""} onChange={e => set("sex", e.target.value)}>
                   <option value="">— select —</option>
@@ -231,12 +249,12 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           {/* Case Category */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Case Category</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-4 mb-4">
               <div><label className={labelCls}>Primary Category</label>
                 <input className={inputCls} value={form.caseCategory ?? ""} onChange={e => set("caseCategory", e.target.value)} placeholder="e.g. Neglected, Trafficked" /></div>
             </div>
-            <p className="text-xs text-muted-foreground mb-2">Sub-categories (check all that apply)</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <p className="text-xs text-muted-foreground mb-3">Sub-categories (check all that apply)</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-3">
               {SUB_CATS.map(([field, label]) => (
                 <label key={field} className="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="checkbox" checked={!!form[field]} onChange={e => set(field, e.target.checked)} className="accent-accent" />
@@ -249,7 +267,7 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           {/* Disability */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Disability / Special Needs</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-4">
               <label className="flex items-center gap-2 text-sm cursor-pointer col-span-full md:col-span-1">
                 <input type="checkbox" checked={form.isPwd} onChange={e => set("isPwd", e.target.checked)} className="accent-accent" />
                 Person with Disability (PWD)
@@ -272,7 +290,7 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           {/* Family Profile */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Family Socio-Demographic Profile</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-3">
               {FAMILY_FLAGS.map(([field, label]) => (
                 <label key={field} className="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="checkbox" checked={!!form[field]} onChange={e => set(field, e.target.checked)} className="accent-accent" />
@@ -285,7 +303,7 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           {/* Admission */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Admission &amp; Referral</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-4">
               <div><label className={labelCls}>Date of Admission</label>
                 <input type="date" className={inputCls} value={form.dateOfAdmission ?? ""} onChange={e => set("dateOfAdmission", e.target.value || null)} /></div>
               <div><label className={labelCls}>Age Upon Admission</label>
@@ -304,7 +322,7 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           {/* Case Management */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Case Management</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-4">
               <div><label className={labelCls}>Assigned Social Worker</label>
                 <input className={inputCls} value={form.assignedSocialWorker ?? ""} onChange={e => set("assignedSocialWorker", e.target.value)} /></div>
               <div><label className={labelCls}>Initial Case Assessment</label>
@@ -327,7 +345,7 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
           {/* Reintegration */}
           <div className={sectionCls}>
             <p className={sectionTitle}>Reintegration</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-4">
               <div><label className={labelCls}>Reintegration Type</label>
                 <input className={inputCls} value={form.reintegrationType ?? ""} onChange={e => set("reintegrationType", e.target.value)} /></div>
               <div><label className={labelCls}>Reintegration Status</label>
@@ -343,20 +361,61 @@ function ResidentModal({ token, editing, filters, onClose, onSaved }: ModalProps
 
           {error && <p className="text-destructive text-sm mb-4">{error}</p>}
 
-          <div className="flex items-center justify-end gap-3 pt-2 border-t border-border">
-            <button type="button" onClick={onClose} className="text-sm text-muted-foreground hover:text-foreground">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="text-sm font-medium px-5 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors disabled:opacity-50"
-            >
-              {saving ? "Saving…" : editing ? "Save Changes" : "Create Record"}
-            </button>
+          <div className="flex items-center justify-between gap-3 pt-5 pb-2">
+            <div>
+              {editing && (
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(true)}
+                  className="flex items-center gap-1.5 text-sm text-red-500 hover:text-red-700 transition-colors"
+                >
+                  <Trash2 size={14} />
+                  Delete Record
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              <button type="button" onClick={onClose} className="text-sm text-muted-foreground hover:text-foreground">
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={saving}
+                className="text-sm font-medium px-5 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors disabled:opacity-50"
+              >
+                {saving ? "Saving…" : editing ? "Save Changes" : "Create Record"}
+              </button>
+            </div>
           </div>
         </form>
       </div>
+
+      {/* Delete confirmation */}
+      {confirmDelete && editing && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50">
+          <div className="bg-background border border-border p-6 w-full max-w-sm shadow-xl">
+            <h3 className="font-heading font-semibold text-foreground mb-2">Delete Record</h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              Deleting record <span className="font-medium text-foreground">{editing.caseControlNo ?? editing.internalCode ?? `#${editing.residentId}`}</span>. This cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="text-sm px-4 py-2 border border-border hover:bg-secondary transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="text-sm font-medium px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {deleting ? "Deleting…" : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -385,6 +444,7 @@ const Caseload = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<ResidentListItem | null>(null);
+  const [sort, setSort] = useState<{ key: keyof ResidentListItem | null; dir: "asc" | "desc" | "none" }>({ key: null, dir: "none" });
 
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -442,6 +502,34 @@ const Caseload = () => {
 
   const hasFilters = search || filterStatus || filterSafehouse || filterCategory || filterReintegration || filterSW;
 
+  const cycleSort = (key: keyof ResidentListItem) => {
+    setSort(prev => {
+      if (prev.key !== key) return { key, dir: "asc" };
+      if (prev.dir === "asc") return { key, dir: "desc" };
+      if (prev.dir === "desc") return { key: null, dir: "none" };
+      return { key, dir: "asc" };
+    });
+  };
+
+  const sortedResidents = sort.key && sort.dir !== "none"
+    ? [...residents].sort((a, b) => {
+        const av = a[sort.key!] ?? "";
+        const bv = b[sort.key!] ?? "";
+        const n = typeof av === "number" && typeof bv === "number"
+          ? av - bv
+          : String(av).localeCompare(String(bv));
+        return sort.dir === "asc" ? n : -n;
+      })
+    : residents;
+
+  const SortIcon = ({ col }: { col: keyof ResidentListItem }) => {
+    if (sort.key !== col) return <ChevronsUpDown size={11} className="inline ml-1 opacity-40" />;
+    if (sort.dir === "asc") return <ChevronUp size={11} className="inline ml-1" />;
+    return <ChevronDown size={11} className="inline ml-1" />;
+  };
+
+  const thCls = "text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors";
+
   const selectCls = "border border-border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
 
   return (
@@ -460,10 +548,7 @@ const Caseload = () => {
         {/* Header */}
         <div className="mb-10 flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Admin · Case Management
-            </p>
-            <h1 className="mt-3 font-heading text-4xl font-semibold text-foreground">Caseload Inventory</h1>
+            <h1 className="font-heading text-4xl font-semibold text-foreground">Caseload Inventory</h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
               Resident profiles following Philippine social welfare agency standards.
             </p>
@@ -555,14 +640,14 @@ const Caseload = () => {
             <table className="w-full text-sm table-fixed">
               <thead>
                 <tr className="border-b border-border bg-secondary/40">
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[10%]">Case No.</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[8%]">Status</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[7%]">SH</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[13%]">Category</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[10%]">Admitted</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[10%]">Social Worker</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[14%]">Reintegration</th>
-                  <th className="text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground w-[9%]">Risk</th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("caseControlNo")}>Case No.<SortIcon col="caseControlNo" /></th>
+                  <th className={`${thCls} w-[8%]`} onClick={() => cycleSort("caseStatus")}>Status<SortIcon col="caseStatus" /></th>
+                  <th className={`${thCls} w-[7%]`} onClick={() => cycleSort("safehouseId")}>SH<SortIcon col="safehouseId" /></th>
+                  <th className={`${thCls} w-[13%]`} onClick={() => cycleSort("caseCategory")}>Category<SortIcon col="caseCategory" /></th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("dateOfAdmission")}>Admitted<SortIcon col="dateOfAdmission" /></th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("assignedSocialWorker")}>Social Worker<SortIcon col="assignedSocialWorker" /></th>
+                  <th className={`${thCls} w-[14%]`} onClick={() => cycleSort("reintegrationStatus")}>Reintegration<SortIcon col="reintegrationStatus" /></th>
+                  <th className={`${thCls} w-[9%]`} onClick={() => cycleSort("currentRiskLevel")}>Risk<SortIcon col="currentRiskLevel" /></th>
                   <th className="w-[8%] px-3 py-2.5"></th>
                 </tr>
               </thead>
@@ -577,7 +662,7 @@ const Caseload = () => {
                     <td colSpan={9} className="text-center text-muted-foreground py-16">No records found</td>
                   </tr>
                 )}
-                {residents.map((r) => {
+                {sortedResidents.map((r) => {
                   const subs = subcatLabels(r);
                   return (
                     <tr key={r.residentId} className="border-b border-border hover:bg-secondary/20 transition-colors">
@@ -645,6 +730,7 @@ const Caseload = () => {
           filters={filters}
           onClose={() => { setModalOpen(false); setEditing(null); }}
           onSaved={handleSaved}
+          onDeleted={() => { setModalOpen(false); setEditing(null); fetchResidents(page); }}
         />
       )}
     </Layout>

@@ -2,17 +2,17 @@ INCIDENT ESCALATION PREDICTIVE MODEL — SUMMARY
 ==================================================
 
   model_name: Random Forest
-  n_features: 85
-  features: [prior_incident_count, prior_high_severity_count, incidents_last_30d, incidents_last_90d, incident_frequency_trend, ...] (85 total)
-  reduced_model: False
+  n_features: 15
+  features: [tenure_days, days_since_last_case_conference, latest_family_cooperation_level_Neutral, latest_energy_level_score, days_since_last_visit, ...] (15 total)
+  reduced_model: True
   classification_threshold: 0.3
   uncertainty_band_threshold: 0.3
-  test_roc_auc: 0.29249502982107356
-  test_avg_precision: 0.006372748099068465
+  test_roc_auc: 0.43091451292246524
+  test_avg_precision: 0.008193767672523673
   attention_tiers: {'Warrants Proactive Attention': 0.5, 'Monitor Closely': 0.3, 'Standard Care': 0.0}
   train_size: 910
   test_size: 507
   train_cutoff_boundary: 2025-10-01
   cv_folds: 5
-  cv_roc_auc_mean: 0.7560722804594816
-  cv_roc_auc_std: 0.08368943633513425
+  cv_roc_auc_mean: 0.7547342184001841
+  cv_roc_auc_std: 0.04720147878697749

@@ -1,110 +1,25 @@
 DONOR ACQUISITION PREDICTIVE MODEL — SUMMARY
 ==================================================
-Model:                Ensemble (GBM)
-Feature set:          Full (95 features)
-ROC AUC (CV):         0.8497 ± 0.096
-ROC AUC (test):       0.2500
-F1 (CV):              0.7278
+Model:                Logistic Regression
+Feature set:          Reduced (10 features)
+ROC AUC (CV):         0.7102 ± 0.055
+ROC AUC (test):       0.4444
+F1 (CV):              0.6676
 Recommended threshold:0.10
-Training size:        48
-Test size:            11
+Training size:        50
+Test size:            12
 
 Features used:
-  1. first_alloc_safehouse_count
-  2. partner_safehouse_count
-  3. partner_is_active
-  4. is_organization
-  5. conversion_lag_days
-  6. log_first_donation_amount
-  7. first_donation_is_campaign
-  8. supporter_type_MonetaryDonor
-  9. supporter_type_PartnerOrganization
-  10. supporter_type_SkillsContributor
-  11. supporter_type_SocialMediaAdvocate
-  12. supporter_type_Volunteer
-  13. relationship_type_Local
-  14. relationship_type_PartnerOrganization
-  15. region_Mindanao
-  16. region_Visayas
-  17. country_Philippines
-  18. country_Singapore
-  19. country_USA
-  20. acquisition_channel_Event
-  21. acquisition_channel_PartnerReferral
-  22. acquisition_channel_SocialMedia
-  23. acquisition_channel_Website
-  24. acquisition_channel_WordOfMouth
-  25. first_donation_type_Monetary
-  26. first_donation_type_Skills
-  27. first_donation_type_SocialMedia
-  28. first_donation_type_Time
-  29. first_campaign_name_GivingTuesday
-  30. first_campaign_name_Summer of Safety
-  31. first_campaign_name_Unknown
-  32. first_campaign_name_Year-End Hope
-  33. first_channel_source_Direct
-  34. first_channel_source_Event
-  35. first_channel_source_PartnerReferral
-  36. first_channel_source_SocialMedia
-  37. first_alloc_program_area_Maintenance
-  38. first_alloc_program_area_Operations
-  39. first_alloc_program_area_Outreach
-  40. first_alloc_program_area_Transport
-  41. first_alloc_program_area_Wellbeing
-  42. partner_type_Organization
-  43. partner_role_type_Evaluation
-  44. partner_role_type_Maintenance
-  45. partner_role_type_SafehouseOps
-  46. partner_region_Mindanao
-  47. partner_region_Visayas
-  48. partner_program_areas_Maintenance
-  49. partner_program_areas_Operations
-  50. partner_program_areas_Wellbeing
-  51. ix__acquisition_channel_Event_x_relationship_type_Local
-  52. ix__acquisition_channel_Event_x_relationship_type_PartnerOrganization
-  53. ix__acquisition_channel_PartnerReferral_x_relationship_type_Local
-  54. ix__acquisition_channel_PartnerReferral_x_relationship_type_PartnerOrganization
-  55. ix__acquisition_channel_SocialMedia_x_relationship_type_Local
-  56. ix__acquisition_channel_SocialMedia_x_relationship_type_PartnerOrganization
-  57. ix__acquisition_channel_Website_x_relationship_type_Local
-  58. ix__acquisition_channel_Website_x_relationship_type_PartnerOrganization
-  59. ix__acquisition_channel_WordOfMouth_x_relationship_type_Local
-  60. ix__acquisition_channel_WordOfMouth_x_relationship_type_PartnerOrganization
-  61. ix__acquisition_channel_Event_x_supporter_type_MonetaryDonor
-  62. ix__acquisition_channel_Event_x_supporter_type_PartnerOrganization
-  63. ix__acquisition_channel_Event_x_supporter_type_SkillsContributor
-  64. ix__acquisition_channel_Event_x_supporter_type_SocialMediaAdvocate
-  65. ix__acquisition_channel_Event_x_supporter_type_Volunteer
-  66. ix__acquisition_channel_PartnerReferral_x_supporter_type_MonetaryDonor
-  67. ix__acquisition_channel_PartnerReferral_x_supporter_type_PartnerOrganization
-  68. ix__acquisition_channel_PartnerReferral_x_supporter_type_SkillsContributor
-  69. ix__acquisition_channel_PartnerReferral_x_supporter_type_SocialMediaAdvocate
-  70. ix__acquisition_channel_PartnerReferral_x_supporter_type_Volunteer
-  71. ix__acquisition_channel_SocialMedia_x_supporter_type_MonetaryDonor
-  72. ix__acquisition_channel_SocialMedia_x_supporter_type_PartnerOrganization
-  73. ix__acquisition_channel_SocialMedia_x_supporter_type_SkillsContributor
-  74. ix__acquisition_channel_SocialMedia_x_supporter_type_SocialMediaAdvocate
-  75. ix__acquisition_channel_SocialMedia_x_supporter_type_Volunteer
-  76. ix__acquisition_channel_Website_x_supporter_type_MonetaryDonor
-  77. ix__acquisition_channel_Website_x_supporter_type_PartnerOrganization
-  78. ix__acquisition_channel_Website_x_supporter_type_SkillsContributor
-  79. ix__acquisition_channel_Website_x_supporter_type_SocialMediaAdvocate
-  80. ix__acquisition_channel_Website_x_supporter_type_Volunteer
-  81. ix__acquisition_channel_WordOfMouth_x_supporter_type_MonetaryDonor
-  82. ix__acquisition_channel_WordOfMouth_x_supporter_type_PartnerOrganization
-  83. ix__acquisition_channel_WordOfMouth_x_supporter_type_SkillsContributor
-  84. ix__acquisition_channel_WordOfMouth_x_supporter_type_SocialMediaAdvocate
-  85. ix__acquisition_channel_WordOfMouth_x_supporter_type_Volunteer
-  86. ix__relationship_type_Local_x_supporter_type_MonetaryDonor
-  87. ix__relationship_type_Local_x_supporter_type_PartnerOrganization
-  88. ix__relationship_type_Local_x_supporter_type_SkillsContributor
-  89. ix__relationship_type_Local_x_supporter_type_SocialMediaAdvocate
-  90. ix__relationship_type_Local_x_supporter_type_Volunteer
-  91. ix__relationship_type_PartnerOrganization_x_supporter_type_MonetaryDonor
-  92. ix__relationship_type_PartnerOrganization_x_supporter_type_PartnerOrganization
-  93. ix__relationship_type_PartnerOrganization_x_supporter_type_SkillsContributor
-  94. ix__relationship_type_PartnerOrganization_x_supporter_type_SocialMediaAdvocate
-  95. ix__relationship_type_PartnerOrganization_x_supporter_type_Volunteer
+  1. first_donation_type_Monetary
+  2. region_Mindanao
+  3. ix__acquisition_channel_Event_x_supporter_type_SkillsContributor
+  4. ix__relationship_type_Local_x_supporter_type_SocialMediaAdvocate
+  5. first_alloc_program_area_Maintenance
+  6. first_donation_is_campaign
+  7. first_campaign_name_Unknown
+  8. partner_program_areas_Operations
+  9. partner_role_type_SafehouseOps
+  10. first_channel_source_Direct
 
 Probability tiers:
   High   (>0.70): personal phone call within 48h

@@ -37,7 +37,9 @@ public sealed class DonorDonationsController(
                 d.DonationId,
                 d.DonationDate,
                 d.DonationType,
-                d.Amount,
+                d.Amount ?? d.EstimatedValue,
+                d.EstimatedValue,
+                d.ImpactUnit,
                 d.CurrencyCode,
                 d.Notes,
                 d.ChannelSource))
@@ -46,20 +48,47 @@ public sealed class DonorDonationsController(
         return Ok(rows);
     }
 
+    private static readonly HashSet<string> ValidTypes = new(StringComparer.OrdinalIgnoreCase)
+        { "Monetary", "Time", "InKind", "Skills", "SocialMedia" };
+
     [HttpPost]
     public async Task<ActionResult<DonationDto>> Create([FromBody] CreateDonationRequest req, CancellationToken ct)
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        var donationType = req.DonationType?.Trim() ?? "Monetary";
+        if (!ValidTypes.TryGetValue(donationType, out var canonicalType))
+            return BadRequest(new { message = $"Invalid donation type: {donationType}" });
+
+        var isMonetary = canonicalType == "Monetary";
+
+        if (isMonetary && (req.Amount is null or <= 0))
+            return BadRequest(new { message = "Amount is required for monetary donations." });
+
+        if (!isMonetary && (req.EstimatedValue is null or <= 0))
+            return BadRequest(new { message = "A value (hours, items, or campaigns) is required." });
 
         var (user, authError) = await RequireDonorAsync(ct);
         if (authError is not null) return authError;
 
         var supporter = await supporterLinker.EnsureSupporterForDonorAsync(user!, ct);
 
-        var currency = string.IsNullOrWhiteSpace(req.CurrencyCode) ? "PHP" : req.CurrencyCode.Trim().ToUpperInvariant();
-        var impactUnit = currency.Equals("PHP", StringComparison.OrdinalIgnoreCase) ? "pesos" : currency.ToLowerInvariant();
         var now = DateTime.UtcNow;
-        var amount = decimal.Round(req.Amount, 2, MidpointRounding.AwayFromZero);
+
+        decimal? amount = isMonetary ? decimal.Round(req.Amount!.Value, 2, MidpointRounding.AwayFromZero) : null;
+        var estimatedValue = isMonetary ? amount!.Value : decimal.Round(req.EstimatedValue!.Value, 2, MidpointRounding.AwayFromZero);
+        var currency = isMonetary
+            ? (string.IsNullOrWhiteSpace(req.CurrencyCode) ? "USD" : req.CurrencyCode.Trim().ToUpperInvariant())
+            : null;
+
+        var impactUnit = canonicalType switch
+        {
+            "Monetary" => currency!.Equals("COP", StringComparison.OrdinalIgnoreCase) ? "pesos" : "dollars",
+            "Time" or "Skills" => "hours",
+            "InKind" => "items",
+            "SocialMedia" => "campaigns",
+            _ => null,
+        };
 
         var nextDonationId = await db.Donations.AnyAsync(ct)
             ? await db.Donations.MaxAsync(d => d.DonationId, ct) + 1
@@ -69,14 +98,14 @@ public sealed class DonorDonationsController(
         {
             DonationId = nextDonationId,
             SupporterId = supporter.SupporterId,
-            DonationType = "Monetary",
+            DonationType = canonicalType,
             DonationDate = now,
             IsRecurring = false,
             CampaignName = null,
             ChannelSource = "Simulated",
             CurrencyCode = currency,
             Amount = amount,
-            EstimatedValue = amount,
+            EstimatedValue = estimatedValue,
             ImpactUnit = impactUnit,
             Notes = string.IsNullOrWhiteSpace(req.Notes) ? null : req.Notes.Trim(),
             ReferralPostId = null,
@@ -84,20 +113,23 @@ public sealed class DonorDonationsController(
 
         db.Donations.Add(donation);
 
-        var nextAllocId = await db.DonationAllocations.AnyAsync(ct)
-            ? await db.DonationAllocations.MaxAsync(a => a.AllocationId, ct) + 1
-            : 1;
-
-        db.DonationAllocations.Add(new DonationAllocation
+        if (isMonetary)
         {
-            AllocationId = nextAllocId,
-            DonationId = nextDonationId,
-            SafehouseId = DefaultSafehouseId,
-            ProgramArea = "Operations",
-            AmountAllocated = amount,
-            AllocationDate = now,
-            AllocationNotes = "Simulated online gift (no payment processor)",
-        });
+            var nextAllocId = await db.DonationAllocations.AnyAsync(ct)
+                ? await db.DonationAllocations.MaxAsync(a => a.AllocationId, ct) + 1
+                : 1;
+
+            db.DonationAllocations.Add(new DonationAllocation
+            {
+                AllocationId = nextAllocId,
+                DonationId = nextDonationId,
+                SafehouseId = DefaultSafehouseId,
+                ProgramArea = "Operations",
+                AmountAllocated = amount!.Value,
+                AllocationDate = now,
+                AllocationNotes = "Simulated online gift (no payment processor)",
+            });
+        }
 
         if (supporter.FirstDonationDate is null)
         {
@@ -111,12 +143,108 @@ public sealed class DonorDonationsController(
             donation.DonationId,
             donation.DonationDate,
             donation.DonationType,
-            donation.Amount,
+            donation.Amount ?? donation.EstimatedValue,
+            donation.EstimatedValue,
+            donation.ImpactUnit,
             donation.CurrencyCode,
             donation.Notes,
             donation.ChannelSource);
 
         return CreatedAtAction(nameof(List), dto);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<DonationDto>> Update(int id, [FromBody] UpdateDonationRequest req, CancellationToken ct)
+    {
+        if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+        var donationType = req.DonationType?.Trim() ?? "Monetary";
+        if (!ValidTypes.TryGetValue(donationType, out var canonicalType))
+            return BadRequest(new { message = $"Invalid donation type: {donationType}" });
+
+        var isMonetary = canonicalType == "Monetary";
+
+        if (isMonetary && (req.Amount is null or <= 0))
+            return BadRequest(new { message = "Amount is required for monetary donations." });
+
+        if (!isMonetary && canonicalType != "Skills" && (req.EstimatedValue is null or <= 0))
+            return BadRequest(new { message = "A value (hours, items, or campaigns) is required." });
+
+        var (user, authError) = await RequireDonorAsync(ct);
+        if (authError is not null) return authError;
+
+        var supporter = await supporterLinker.EnsureSupporterForDonorAsync(user!, ct);
+
+        var donation = await db.Donations.FirstOrDefaultAsync(
+            d => d.DonationId == id && d.SupporterId == supporter.SupporterId, ct);
+        if (donation is null) return NotFound(new { message = "Donation not found." });
+
+        decimal? amount = isMonetary ? decimal.Round(req.Amount!.Value, 2, MidpointRounding.AwayFromZero) : null;
+        var estimatedValue = isMonetary ? amount!.Value
+            : canonicalType == "Skills" ? (req.EstimatedValue ?? 1m)
+            : decimal.Round(req.EstimatedValue!.Value, 2, MidpointRounding.AwayFromZero);
+        var currency = isMonetary
+            ? (string.IsNullOrWhiteSpace(req.CurrencyCode) ? "USD" : req.CurrencyCode.Trim().ToUpperInvariant())
+            : null;
+
+        donation.DonationType = canonicalType;
+        donation.Amount = amount;
+        donation.EstimatedValue = estimatedValue;
+        donation.CurrencyCode = currency;
+        donation.ImpactUnit = canonicalType switch
+        {
+            "Monetary" => currency!.Equals("COP", StringComparison.OrdinalIgnoreCase) ? "pesos" : "dollars",
+            "Time" or "Skills" => "hours",
+            "InKind" => "items",
+            "SocialMedia" => "campaigns",
+            _ => null,
+        };
+        donation.Notes = string.IsNullOrWhiteSpace(req.Notes) ? null : req.Notes.Trim();
+
+        if (isMonetary)
+        {
+            var alloc = await db.DonationAllocations
+                .FirstOrDefaultAsync(a => a.DonationId == id, ct);
+            if (alloc is not null)
+            {
+                alloc.AmountAllocated = amount!.Value;
+            }
+        }
+
+        await db.SaveChangesAsync(ct);
+
+        return Ok(new DonationDto(
+            donation.DonationId,
+            donation.DonationDate,
+            donation.DonationType,
+            donation.Amount ?? donation.EstimatedValue,
+            donation.EstimatedValue,
+            donation.ImpactUnit,
+            donation.CurrencyCode,
+            donation.Notes,
+            donation.ChannelSource));
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken ct)
+    {
+        var (user, authError) = await RequireDonorAsync(ct);
+        if (authError is not null) return authError;
+
+        var supporter = await supporterLinker.EnsureSupporterForDonorAsync(user!, ct);
+
+        var donation = await db.Donations.FirstOrDefaultAsync(
+            d => d.DonationId == id && d.SupporterId == supporter.SupporterId, ct);
+        if (donation is null) return NotFound(new { message = "Donation not found." });
+
+        var allocations = await db.DonationAllocations
+            .Where(a => a.DonationId == id)
+            .ToListAsync(ct);
+        db.DonationAllocations.RemoveRange(allocations);
+        db.Donations.Remove(donation);
+        await db.SaveChangesAsync(ct);
+
+        return NoContent();
     }
 
     private async Task<(User? user, ActionResult? error)> RequireDonorAsync(CancellationToken ct)

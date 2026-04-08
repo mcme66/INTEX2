@@ -13,6 +13,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Resident> Residents => Set<Resident>();
     public DbSet<ProcessRecording> ProcessRecordings => Set<ProcessRecording>();
     public DbSet<HomeVisitation> HomeVisitations => Set<HomeVisitation>();
+    public DbSet<InterventionPlan> InterventionPlans => Set<InterventionPlan>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -87,6 +88,14 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
             b.ToTable("home_visitations");
             b.HasKey(x => x.VisitationId);
             b.Property(x => x.VisitationId).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<InterventionPlan>(b =>
+        {
+            b.ToTable("intervention_plans");
+            b.HasKey(x => x.PlanId);
+            b.Property(x => x.PlanId).ValueGeneratedNever();
+            b.Property(x => x.TargetValue).HasPrecision(18, 2);
         });
     }
 }

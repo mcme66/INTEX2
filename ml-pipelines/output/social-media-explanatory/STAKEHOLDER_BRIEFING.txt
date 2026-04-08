@@ -1,0 +1,33 @@
+
+============================================================
+  SOCIAL MEDIA ROI & CONTENT STRATEGY ANALYSIS
+  Stakeholder Briefing
+============================================================
+
+1. EXECUTIVE SUMMARY
+   -  Analyzed 812 social media posts across
+      7 platforms.
+   -  Overall conversion rate (posts generating any donation):
+      64.3%
+   -  Converting posts: 522
+
+2. MODEL PERFORMANCE
+   -  Logistic (conversion):  Pseudo R² = 0.922
+   -  OLS (donation value):   Adj R²    = 0.777
+
+3. KEY FINDINGS
+   -  Highest-converting post type: ImpactStory
+   -  Highest-converting platform:  YouTube
+   -  Highest avg donation value:   WhatsApp
+
+4. RECOMMENDATIONS
+   -  Focus donation-targeted content on YouTube + ImpactStory
+   -  Use model coefficients to guide tone, CTA, and timing decisions
+   -  Design A/B tests based on these associational findings
+
+5. CAVEATS
+   -  All findings are associational — not causal
+   -  Boost selection bias exists
+   -  Engagement still matters for long-term audience building
+
+Generated: 2026-04-08 07:21:21

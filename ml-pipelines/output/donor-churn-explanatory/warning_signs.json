@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "rank": 1,
+    "feature": "org_engagement_trend_before_lapse",
+    "ols_coefficient": -1.439,
+    "ols_p_value": NaN,
+    "ols_days_impact": -1.4,
+    "logit_odds_ratio": 0.0,
+    "logit_p_value": 0.0238,
+    "description": "Org Engagement Trend Before Lapse",
+    "intervention": "Review donor record and schedule a personal outreach"
+  },
+  {
+    "rank": 2,
+    "feature": "donation_count_last_365d",
+    "ols_coefficient": 24.597,
+    "ols_p_value": NaN,
+    "ols_days_impact": 24.6,
+    "logit_odds_ratio": 0.515,
+    "logit_p_value": 0.0859,
+    "description": "Donation Count Last 365D",
+    "intervention": "Review donor record and schedule a personal outreach"
+  },
+  {
+    "rank": 3,
+    "feature": "days_since_last_campaign_donation",
+    "ols_coefficient": 0.774,
+    "ols_p_value": NaN,
+    "ols_days_impact": 0.8,
+    "logit_odds_ratio": 1.004,
+    "logit_p_value": 0.0339,
+    "description": "Days Since Last Campaign Donation",
+    "intervention": "Schedule a personal check-in call or handwritten thank-you note"
+  }
+]

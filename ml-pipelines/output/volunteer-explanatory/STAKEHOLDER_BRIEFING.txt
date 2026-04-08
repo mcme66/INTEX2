@@ -9,7 +9,7 @@ RE:      Volunteer Profile Analysis & Actionable Recommendations
 EXECUTIVE SUMMARY
 --------------------------------------------------------------------------------
 
-We analyzed 40 volunteers with 65 contribution records.
+We analyzed 41 volunteers with 66 contribution records.
 The analysis identifies which volunteer characteristics are ASSOCIATED WITH 
 higher total contribution value and top-quartile engagement.
 
@@ -23,11 +23,10 @@ KEY FINDINGS
 1. WHAT CHARACTERIZES HIGH-VALUE VOLUNTEERS (Top Quartile)
 --------------------------------------------------------------------------------
 
-Top quartile threshold: 32.94 estimated value units
-10 volunteers (25%) are in top quartile
+Top quartile threshold: 32.93 estimated value units
+11 volunteers (27%) are in top quartile
 
 Strongest drivers (OLS Model, p<0.05):
-  • is_one_time_contributor             DECREASES high value
   • consistency_score                   INCREASES high value
   • avg_estimated_value_per_contribution INCREASES high value
   • avg_skills_contribution_value       INCREASES high value
@@ -37,34 +36,34 @@ Strongest drivers (OLS Model, p<0.05):
 --------------------------------------------------------------------------------
 
 
-HIGHLY ENGAGED (5 volunteers, 12.5%)
-  - Average contribution value: 57.73 units
-  - Average frequency: 2.80 contributions
+HIGHLY ENGAGED (6 volunteers, 14.6%)
+  - Average contribution value: 53.60 units
+  - Average frequency: 2.67 contributions
   - Top quartile rate: 100.0%
   - Recommendation: RETAIN & RECOGNIZE: Nurture with exclusive opportunities, leadership roles, thank-you events
 
-STEADY CONTRIBUTORS (9 volunteers, 22.5%)
-  - Average contribution value: 31.45 units
-  - Average frequency: 1.56 contributions
-  - Top quartile rate: 22.2%
+STEADY CONTRIBUTORS (10 volunteers, 24.4%)
+  - Average contribution value: 30.80 units
+  - Average frequency: 1.50 contributions
+  - Top quartile rate: 20.0%
   - Recommendation: SUSTAIN: Regular communication, flexible opportunities, peer mentorship
 
-SKILLS SPECIALISTS (1 volunteers, 2.5%)
+SKILLS SPECIALISTS (1 volunteers, 2.4%)
   - Average contribution value: 48.44 units
   - Average frequency: 5.00 contributions
   - Top quartile rate: 100.0%
   - Recommendation: LEVERAGE: Project-based opportunities, advisory roles, professional development
 
-INACTIVE/AT-RISK (20 volunteers, 50.0%)
+INACTIVE/AT-RISK (20 volunteers, 48.8%)
   - Average contribution value: 15.90 units
   - Average frequency: 1.05 contributions
   - Top quartile rate: 5.0%
   - Recommendation: RE-ENGAGE: Personal outreach, removal barriers, return-focused campaigns
 
-OTHER (5 volunteers, 12.5%)
-  - Average contribution value: 34.51 units
-  - Average frequency: 2.20 contributions
-  - Top quartile rate: 20.0%
+OTHER (4 volunteers, 9.8%)
+  - Average contribution value: 34.91 units
+  - Average frequency: 2.25 contributions
+  - Top quartile rate: 25.0%
   - Recommendation: Monitor and categorize further
 
 
@@ -74,9 +73,9 @@ OTHER (5 volunteers, 12.5%)
 Which channels deliver the most valuable volunteers?
 
 
-  1. WordOfMouth          - 9 volunteers, Avg value: 21.67, Top quartile: 11.1%
-  2. SocialMedia          - 8 volunteers, Avg value: 18.46, Top quartile: 25.0%
-  3. Website              - 8 volunteers, Avg value: 25.31, Top quartile: 12.5%
+  1. Website              - 9 volunteers, Avg value: 25.20, Top quartile: 11.1%
+  2. WordOfMouth          - 9 volunteers, Avg value: 21.67, Top quartile: 22.2%
+  3. SocialMedia          - 8 volunteers, Avg value: 18.46, Top quartile: 25.0%
   4. Event                - 7 volunteers, Avg value: 25.93, Top quartile: 28.6%
   5. PartnerReferral      - 5 volunteers, Avg value: 20.42, Top quartile: 40.0%
 
@@ -93,10 +92,10 @@ This high conversion rate means ALMOST ALL volunteers are also donors.
 5. DATA QUALITY OBSERVATIONS
 --------------------------------------------------------------------------------
 
-• Campaign association: Only 24/65 (37%) 
+• Campaign association: Only 24/66 (36%) 
   of donations linked to campaigns → Many volunteer efforts are independent
 
-• Partner affiliation: 9/40 (22%) 
+• Partner affiliation: 9/41 (22%) 
   are partner-organization-affiliated
 
 • Time consistency: High variation in contribution patterns suggests 
@@ -137,9 +136,9 @@ ACTIONABLE RECOMMENDATIONS
 
 TECHNICAL NOTES
 
-• Sample size: 40 volunteers (adequate for exploratory analysis)
+• Sample size: 41 volunteers (adequate for exploratory analysis)
 • Model type: OLS regression (log-transformed value) with HC3 robust errors
-• Features: 21 predictors after multicollinearity reduction
+• Features: 22 predictors after multicollinearity reduction
 • Quality: R² = 0.980 (moderate explanatory power)
 
 Assumptions tested: Linearity, independence, normality, homoscedasticity.

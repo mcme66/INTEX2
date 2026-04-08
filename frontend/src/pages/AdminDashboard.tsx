@@ -25,12 +25,12 @@ const ADMIN_LINKS = [
   },
   {
     to: "/admin/visits",
-    label: "Home Visitation",
-    description: "Log home visits, observations, safety concerns, and follow-up actions.",
+    label: "Visits & Conferences",
+    description: "Log home visits, case conference history, safety concerns, and follow-up actions.",
     icon: Home,
   },
   {
-    to: "/admin/donor",
+    to: "/admin/donors",
     label: "Donor Management",
     description: "View and manage donor records and contribution history.",
     icon: Heart,
@@ -78,14 +78,11 @@ const AdminDashboard = () => {
 
           {/* Header */}
           <div className="mb-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Operations
-            </p>
-            <h1 className="mt-3 font-heading text-4xl font-semibold text-foreground">
+            <h1 className="font-heading text-4xl font-semibold text-foreground">
               Admin Dashboard
             </h1>
             <p className="mt-2 text-muted-foreground">
-              Command center for staff managing daily operations.
+              Command center for staff managing North Star.
             </p>
           </div>
 
@@ -167,12 +164,12 @@ const AdminDashboard = () => {
             </div>
 
             {/* Right: Admin nav links */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
               {ADMIN_LINKS.map(({ to, label, description, icon: Icon }) => (
                 <Link
                   key={to}
                   to={to}
-                  className="border border-border p-5 hover:bg-secondary/40 transition-colors group flex items-start gap-4"
+                  className="flex-1 border border-border border-b-0 last:border-b p-5 hover:bg-secondary/40 transition-colors group flex items-start gap-4"
                 >
                   <Icon size={16} className="text-muted-foreground group-hover:text-foreground transition-colors mt-0.5 shrink-0" />
                   <div>

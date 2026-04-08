@@ -1,94 +1,93 @@
 ========================================================================
 Incident Explanatory Pipeline — LOGISTIC Model Summary
-Generated: 2026-04-08 07:07:04
+Generated: 2026-04-08 16:21:49
 ========================================================================
 
                            Logit Regression Results                           
 ==============================================================================
 Dep. Variable:       is_high_severity   No. Observations:                  100
-Model:                          Logit   Df Residuals:                       31
-Method:                           MLE   Df Model:                           68
+Model:                          Logit   Df Residuals:                       32
+Method:                           MLE   Df Model:                           67
 Date:                Wed, 08 Apr 2026   Pseudo R-squ.:                   1.000
-Time:                        07:07:04   Log-Likelihood:            -4.0453e-06
+Time:                        16:21:49   Log-Likelihood:            -4.4680e-06
 converged:                       True   LL-Null:                       -55.108
-Covariance Type:              cluster   LLR p-value:                 0.0009141
+Covariance Type:              cluster   LLR p-value:                 0.0006963
 ===============================================================================================================
                                                   coef    std err          z      P>|z|      [0.025      0.975]
 ---------------------------------------------------------------------------------------------------------------
-resolved                                      -25.8327        nan        nan        nan         nan         nan
-follow_up_required                            337.9536        nan        nan        nan         nan         nan
-is_pwd                                          9.6720        nan        nan        nan         nan         nan
-has_special_needs                              23.9352        nan        nan        nan         nan         nan
-family_is_4ps                                  -5.3773        nan        nan        nan         nan         nan
-family_solo_parent                             25.3692        nan        nan        nan         nan         nan
-family_indigenous                              15.6756        nan        nan        nan         nan         nan
-family_informal_settler                       -31.9638        nan        nan        nan         nan         nan
-trauma_complexity_index                       -33.2677        nan        nan        nan         nan         nan
-capacity_girls                                 -8.3424        nan        nan        nan         nan         nan
-capacity_staff                                -34.3513        nan        nan        nan         nan         nan
-current_occupancy                               0.5745        nan        nan        nan         nan         nan
-active_residents                               30.5712        nan        nan        nan         nan         nan
-avg_health_score                              -49.4424        nan        nan        nan         nan         nan
-process_recording_count                        -8.7979        nan        nan        nan         nan         nan
-home_visitation_count                           5.6105        nan        nan        nan         nan         nan
-incident_count                                 42.9258        nan        nan        nan         nan         nan
-days_since_last_session                        12.1617        nan        nan        nan         nan         nan
-session_count_last_14d                         78.8359        nan        nan        nan         nan         nan
-session_count_last_30d                         -2.4689        nan        nan        nan         nan         nan
-any_concerns_flagged_last_30d                  14.6421        nan        nan        nan         nan         nan
-any_referral_made_last_30d                     -5.8338        nan        nan        nan         nan         nan
-active_plan_count                             -25.2187        nan        nan        nan         nan         nan
-any_safety_plan                               -10.0918        nan        nan        nan         nan         nan
-stalled_plan_count                            -32.3832        nan        nan        nan         nan         nan
-latest_health_score                           -34.3053        nan        nan        nan         nan         nan
-latest_sleep_quality_score                    -37.8428        nan        nan        nan         nan         nan
-health_trend                                    0.9352        nan        nan        nan         nan         nan
-latest_attendance_rate                        -11.8483        nan        nan        nan         nan         nan
-is_enrolled                                    -5.8249        nan        nan        nan         nan         nan
-education_progress_trend                        5.3054        nan        nan        nan         nan         nan
-initial_risk_level_numeric                    113.3315        nan        nan        nan         nan         nan
-current_risk_level_numeric                    -76.3480        nan        nan        nan         nan         nan
-last_emotional_state_numeric                   27.0283        nan        nan        nan         nan         nan
-age_upon_admission_months                      -1.5612        nan        nan        nan         nan         nan
-length_of_stay_months                          -5.2138        nan        nan        nan         nan         nan
-is_pwd_or_special_needs                        33.6072        nan        nan        nan         nan         nan
-family_vulnerability_index                     -0.2307        nan        nan        nan         nan         nan
-session_gap_concerning                        -19.0758        nan        nan        nan         nan         nan
-stalled_safety_plan                             2.2616        nan        nan        nan         nan         nan
-intervention_intensity                        -25.2187        nan        nan        nan         nan         nan
-emotional_state_score                          27.0283        nan        nan        nan         nan         nan
-health_declining                               24.1319        nan        nan        nan         nan         nan
-multi_domain_decline                           -7.2127        nan        nan        nan         nan         nan
-sleep_quality_low                              29.6421        nan        nan        nan         nan         nan
-safehouse_high_incident_month                   4.3662        nan        nan        nan         nan         nan
-risk_x_occupancy                              -56.6490        nan        nan        nan         nan         nan
-concerns_x_session_gap                        -10.6361        nan        nan        nan         nan         nan
-reintegration_in_progress                     -38.7071        nan        nan        nan         nan         nan
-emotional_declining                           -33.9508        nan        nan        nan         nan         nan
-reintegration_x_emotional                      -6.3704        nan        nan        nan         nan         nan
-decline_x_trauma                              -14.4253  2.69e+111 -5.35e-111      1.000  -5.28e+111   5.28e+111
-incident_type_ConflictWithPeer                 34.4403   1.19e+24   2.89e-23      1.000   -2.33e+24    2.33e+24
-incident_type_Medical                         -36.3772   6.42e+52  -5.67e-52      1.000   -1.26e+53    1.26e+53
-incident_type_PropertyDamage                  -10.6957        nan        nan        nan         nan         nan
-incident_type_RunawayAttempt                   40.8358   5.86e+22   6.97e-22      1.000   -1.15e+23    1.15e+23
-incident_type_Security                        -53.6652   8.33e+22  -6.44e-22      1.000   -1.63e+23    1.63e+23
-incident_type_SelfHarm                         65.1524   2.58e+20   2.52e-19      1.000   -5.06e+20    5.06e+20
-case_category_Foundling                       120.2656   1.26e+22   9.55e-21      1.000   -2.47e+22    2.47e+22
-case_category_Neglected                        -0.8619   8.78e+41  -9.82e-43      1.000   -1.72e+42    1.72e+42
-case_category_Surrendered                     -44.6665   2.51e+20  -1.78e-19      1.000   -4.92e+20    4.92e+20
-reintegration_type_Adoption (Inter-Country)    -0.3113    6.2e+22  -5.02e-24      1.000   -1.21e+23    1.21e+23
-reintegration_type_Family Reunification       -32.8810   4.87e+22  -6.75e-22      1.000   -9.55e+22    9.55e+22
-reintegration_type_Foster Care                108.8291   1.14e+42   9.53e-41      1.000   -2.24e+42    2.24e+42
-reintegration_type_Independent Living         -64.4006   4.38e+23  -1.47e-22      1.000   -8.59e+23    8.59e+23
-reintegration_type_None                       -11.0602   2.58e+20  -4.29e-20      1.000   -5.06e+20    5.06e+20
-reintegration_status_In Progress              -38.7071   3.78e+35  -1.02e-34      1.000   -7.41e+35    7.41e+35
-reintegration_status_Not Started               15.5735   8.78e+41   1.77e-41      1.000   -1.72e+42    1.72e+42
-reintegration_status_On Hold                   15.0782   6.09e+38   2.47e-38      1.000   -1.19e+39    1.19e+39
-referral_source_Court Order                    -2.9218   6.09e+38  -4.79e-39      1.000   -1.19e+39    1.19e+39
-referral_source_Government Agency              52.1093   1.52e+23   3.43e-22      1.000   -2.98e+23    2.98e+23
-referral_source_NGO                           -15.2542   8.02e+41   -1.9e-41      1.000   -1.57e+42    1.57e+42
-referral_source_Police                        -32.9758   1.19e+61  -2.76e-60      1.000   -2.34e+61    2.34e+61
-referral_source_Self-Referral                 -11.5533   9.19e+07  -1.26e-07      1.000    -1.8e+08     1.8e+08
+resolved                                      -29.0590   7.72e+16  -3.76e-16      1.000   -1.51e+17    1.51e+17
+follow_up_required                            311.4128   4.49e+17   6.93e-16      1.000    -8.8e+17     8.8e+17
+is_pwd                                          6.9313   8.57e+24   8.09e-25      1.000   -1.68e+25    1.68e+25
+has_special_needs                              25.8228   6.33e+47   4.08e-47      1.000   -1.24e+48    1.24e+48
+family_is_4ps                                  -6.5721   4.56e+24  -1.44e-24      1.000   -8.93e+24    8.93e+24
+family_solo_parent                             22.1991   4.56e+24   4.87e-24      1.000   -8.93e+24    8.93e+24
+family_indigenous                              16.1061   6.22e+17   2.59e-17      1.000   -1.22e+18    1.22e+18
+family_informal_settler                       -29.2408   7.43e+21  -3.94e-21      1.000   -1.46e+22    1.46e+22
+trauma_complexity_index                       -24.2001   5.67e+15  -4.27e-15      1.000   -1.11e+16    1.11e+16
+capacity_girls                                 -6.4171   1.03e+15  -6.26e-15      1.000   -2.01e+15    2.01e+15
+capacity_staff                                -31.2135   1.45e+15  -2.16e-14      1.000   -2.83e+15    2.83e+15
+current_occupancy                              -4.8432   6.56e+14  -7.38e-15      1.000   -1.29e+15    1.29e+15
+active_residents                               30.0942   3.32e+15   9.07e-15      1.000   -6.51e+15    6.51e+15
+avg_health_score                              -46.5360   1.76e+15  -2.64e-14      1.000   -3.45e+15    3.45e+15
+process_recording_count                        -7.4492   4.76e+14  -1.56e-14      1.000   -9.33e+14    9.33e+14
+home_visitation_count                           3.8245    5.1e+14    7.5e-15      1.000      -1e+15       1e+15
+incident_count                                 48.8877   5.35e+15   9.13e-15      1.000   -1.05e+16    1.05e+16
+days_since_last_session                        11.4996      0.088    129.998      0.000      11.326      11.673
+session_count_last_14d                         72.7755   5.69e+15   1.28e-14      1.000   -1.12e+16    1.12e+16
+session_count_last_30d                          5.0692   1.71e+15   2.97e-15      1.000   -3.35e+15    3.35e+15
+any_concerns_flagged_last_30d                  15.5037   3.46e+16   4.48e-16      1.000   -6.78e+16    6.78e+16
+any_referral_made_last_30d                      0.0210   7.23e+21    2.9e-24      1.000   -1.42e+22    1.42e+22
+active_plan_count                             -20.0409   6.82e+15  -2.94e-15      1.000   -1.34e+16    1.34e+16
+any_safety_plan                                -4.7541   4.37e+15  -1.09e-15      1.000   -8.56e+15    8.56e+15
+stalled_plan_count                            -40.8779   3.28e+16  -1.25e-15      1.000   -6.43e+16    6.43e+16
+latest_health_score                           -33.5374   4.94e+14  -6.79e-14      1.000   -9.68e+14    9.68e+14
+latest_sleep_quality_score                    -35.5403   1.18e+15  -3.01e-14      1.000   -2.32e+15    2.32e+15
+health_trend                                    0.7191   4.54e+16   1.59e-17      1.000   -8.89e+16    8.89e+16
+latest_attendance_rate                        -10.8937      1e+16  -1.09e-15      1.000   -1.96e+16    1.96e+16
+is_enrolled                                    -6.0695   1.79e+17   -3.4e-17      1.000    -3.5e+17     3.5e+17
+education_progress_trend                        3.6436   5.35e+14   6.81e-15      1.000   -1.05e+15    1.05e+15
+initial_risk_level_numeric                    103.9132   1.95e+15   5.33e-14      1.000   -3.82e+15    3.82e+15
+current_risk_level_numeric                    -79.7516    1.9e+15   -4.2e-14      1.000   -3.72e+15    3.72e+15
+last_emotional_state_numeric                   22.9159    1.2e+15   1.91e-14      1.000   -2.35e+15    2.35e+15
+age_upon_admission_months                      -1.2794   1.68e+13  -7.63e-14      1.000   -3.29e+13    3.29e+13
+length_of_stay_months                          -4.3561   1.54e+14  -2.83e-14      1.000   -3.01e+14    3.01e+14
+is_pwd_or_special_needs                        32.7541   3.78e+24   8.66e-24      1.000   -7.41e+24    7.41e+24
+family_vulnerability_index                      1.2931   1.32e+15    9.8e-16      1.000   -2.59e+15    2.59e+15
+session_gap_concerning                        -17.5872   7.44e+54  -2.36e-54      1.000   -1.46e+55    1.46e+55
+stalled_safety_plan                            -3.6533   6.39e+15  -5.71e-16      1.000   -1.25e+16    1.25e+16
+intervention_intensity                        -20.0409   4.18e+15  -4.79e-15      1.000    -8.2e+15     8.2e+15
+emotional_state_score                          22.9159    8.4e+14   2.73e-14      1.000   -1.65e+15    1.65e+15
+health_declining                               21.0816   6.59e+16    3.2e-16      1.000   -1.29e+17    1.29e+17
+multi_domain_decline                           -7.0941  6.39e+100 -1.11e-100      1.000  -1.25e+101   1.25e+101
+sleep_quality_low                              23.3274   9.03e+30   2.58e-30      1.000   -1.77e+31    1.77e+31
+risk_x_occupancy                              -59.1204   3.38e+14  -1.75e-13      1.000   -6.62e+14    6.62e+14
+concerns_x_session_gap                         -9.1709   5.28e+14  -1.74e-14      1.000   -1.03e+15    1.03e+15
+reintegration_in_progress                     -34.0299   4.49e+30  -7.59e-30      1.000   -8.79e+30    8.79e+30
+emotional_declining                           -31.7201  1.24e+117 -2.55e-116      1.000  -2.44e+117   2.44e+117
+reintegration_x_emotional                      -6.1548        nan        nan        nan         nan         nan
+decline_x_trauma                              -14.1882  3.19e+100 -4.44e-100      1.000  -6.26e+100   6.26e+100
+incident_type_ConflictWithPeer                 31.4723   1.36e+30   2.31e-29      1.000   -2.67e+30    2.67e+30
+incident_type_Medical                         -33.8509   2.81e+44  -1.21e-43      1.000    -5.5e+44     5.5e+44
+incident_type_PropertyDamage                  -10.2024        inf         -0      1.000        -inf         inf
+incident_type_RunawayAttempt                   41.1804   9.05e+14   4.55e-14      1.000   -1.77e+15    1.77e+15
+incident_type_Security                        -53.1212   9.03e+30  -5.89e-30      1.000   -1.77e+31    1.77e+31
+incident_type_SelfHarm                         63.0906    1.3e+15   4.84e-14      1.000   -2.56e+15    2.56e+15
+case_category_Foundling                       108.5367   1.86e+14   5.85e-13      1.000   -3.64e+14    3.64e+14
+case_category_Neglected                         0.9567   1.36e+30   7.01e-31      1.000   -2.67e+30    2.67e+30
+case_category_Surrendered                     -41.4763   3.87e+22  -1.07e-21      1.000   -7.59e+22    7.59e+22
+reintegration_type_Adoption (Inter-Country)    -2.9411   2.46e+16   -1.2e-16      1.000   -4.81e+16    4.81e+16
+reintegration_type_Family Reunification       -33.2100   3.65e+14  -9.09e-14      1.000   -7.16e+14    7.16e+14
+reintegration_type_Foster Care                107.3743   1.01e+21   1.07e-19      1.000   -1.97e+21    1.97e+21
+reintegration_type_Independent Living         -59.8530   1.36e+30  -4.39e-29      1.000   -2.67e+30    2.67e+30
+reintegration_type_None                        -9.3954   4.23e+31  -2.22e-31      1.000   -8.29e+31    8.29e+31
+reintegration_status_In Progress              -34.0299   5.82e+30  -5.85e-30      1.000   -1.14e+31    1.14e+31
+reintegration_status_Not Started               13.7380   3.18e+20   4.32e-20      1.000   -6.24e+20    6.24e+20
+reintegration_status_On Hold                   13.3566        nan        nan        nan         nan         nan
+referral_source_Court Order                    -1.0352   1.02e+21  -1.02e-21      1.000      -2e+21       2e+21
+referral_source_Government Agency              47.6995        nan        nan        nan         nan         nan
+referral_source_NGO                           -15.6867   4.79e+26  -3.28e-26      1.000   -9.38e+26    9.38e+26
+referral_source_Police                        -32.2307   1.45e+15  -2.22e-14      1.000   -2.85e+15    2.85e+15
+referral_source_Self-Referral                 -10.6631   5.92e+15   -1.8e-15      1.000   -1.16e+16    1.16e+16
 ===============================================================================================================
 
 Complete Separation: The results show that there iscomplete separation or perfect prediction.

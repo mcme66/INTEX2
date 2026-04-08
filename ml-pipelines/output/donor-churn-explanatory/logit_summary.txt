@@ -1,23 +1,19 @@
                            Logit Regression Results                           
 ==============================================================================
-Dep. Variable:             is_churned   No. Observations:                   58
-Model:                          Logit   Df Residuals:                       52
+Dep. Variable:             is_churned   No. Observations:                   59
+Model:                          Logit   Df Residuals:                       53
 Method:                           MLE   Df Model:                            5
-Date:                Wed, 08 Apr 2026   Pseudo R-squ.:                  0.6393
-Time:                        07:05:20   Log-Likelihood:                -11.131
-converged:                       True   LL-Null:                       -30.862
-Covariance Type:            nonrobust   LLR p-value:                 1.919e-07
-=====================================================================================================
-                                        coef    std err          z      P>|z|      [0.025      0.975]
------------------------------------------------------------------------------------------------------
-const                                -5.6410        nan        nan        nan         nan         nan
-days_since_last_donation              0.0170        nan        nan        nan         nan         nan
-days_since_last_campaign_donation     0.0006        nan        nan        nan         nan         nan
-first_channel_source_SocialMedia   -351.0151        nan        nan        nan         nan         nan
-org_engagement_trend_before_lapse   -78.5485        nan        nan        nan         nan         nan
-in_kind_stopped                       0.0313        nan        nan        nan         nan         nan
-=====================================================================================================
-
-Possibly complete quasi-separation: A fraction 0.17 of observations can be
-perfectly predicted. This might indicate that there is complete
-quasi-separation. In this case some parameters will not be identified.
+Date:                Wed, 08 Apr 2026   Pseudo R-squ.:                  0.3589
+Time:                        16:19:44   Log-Likelihood:                -20.726
+converged:                       True   LL-Null:                       -32.328
+Covariance Type:            nonrobust   LLR p-value:                 0.0003086
+===========================================================================================================================================
+                                                                              coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------------------------------------------------------------
+const                                                                      -2.5586      1.207     -2.119      0.034      -4.925      -0.192
+donation_count_last_365d                                                   -0.6639      0.387     -1.717      0.086      -1.422       0.094
+ix_acquisition_channel_WordOfMouth_x_supporter_type_SocialMediaAdvocate     2.4523      1.970      1.245      0.213      -1.408       6.313
+days_since_last_campaign_donation                                           0.0036      0.002      2.122      0.034       0.000       0.007
+org_engagement_trend_before_lapse                                         -83.6780     37.014     -2.261      0.024    -156.223     -11.133
+supporter_type_SocialMediaAdvocate                                          0.5277      1.151      0.459      0.647      -1.728       2.784
+===========================================================================================================================================

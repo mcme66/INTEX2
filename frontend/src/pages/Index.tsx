@@ -1,10 +1,36 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Heart, Users, Shield } from "lucide-react";
+import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import heroImage from "@/assets/hero-colombia.jpg";
+import { apiGetImpactStats, type ImpactStats } from "@/utils/api";
 
 const Index = () => {
+  const [stats, setStats] = useState<ImpactStats | null>(null);
+
+  useEffect(() => {
+    apiGetImpactStats().then(setStats).catch(() => {});
+  }, []);
+
+  const reintegrationRate = stats && stats.totalResidents > 0
+    ? Math.round((stats.reintegrationProgressCount / stats.totalResidents) * 100)
+    : null;
+
+  const metrics = stats
+    ? [
+        { value: stats.activeResidents.toString(), label: "Children in our care" },
+        { value: stats.safehouseOccupancy.length.toString(), label: "Safe houses across Colombia" },
+        { value: reintegrationRate != null ? `${reintegrationRate}%` : "—", label: "Successful reintegration rate" },
+        { value: `$${Math.round(stats.totalContributionsValue / 1000)}k+`, label: "Raised for children in need" },
+      ]
+    : [
+        { value: "—", label: "Children in our care" },
+        { value: "—", label: "Safe houses across Colombia" },
+        { value: "—", label: "Successful reintegration rate" },
+        { value: "—", label: "Raised for children in need" },
+      ];
+
   return (
     <Layout>
       {/* Hero */}
@@ -30,10 +56,10 @@ const Index = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                to="/donors"
+                to="/volunteer"
                 className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 text-sm font-semibold hover:bg-gold-dark transition-colors"
               >
-                Support Our Work <ArrowRight size={16} />
+                Ways to Help <ArrowRight size={16} />
               </Link>
               <a
                 href="#mission"
@@ -103,16 +129,11 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Numbers */}
+      {/* Numbers — live from database */}
       <section className="bg-primary text-primary-foreground py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: "127", label: "Children in our care" },
-              { value: "4", label: "Safe houses across Colombia" },
-              { value: "89%", label: "Successful reintegration rate" },
-              { value: "12", label: "Years of operation" },
-            ].map((stat) => (
+            {metrics.map((stat) => (
               <div key={stat.label}>
                 <div className="font-heading text-3xl md:text-4xl font-bold text-gold mb-2">{stat.value}</div>
                 <div className="text-sm text-primary-foreground/60">{stat.label}</div>
@@ -123,7 +144,7 @@ const Index = () => {
       </section>
 
       {/* Ways to Help */}
-      <section id="about" className="py-24 px-6">
+      <section id="get-involved" className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Get Involved
@@ -137,19 +158,19 @@ const Index = () => {
                 title: "Give Monthly",
                 desc: "Consistent funding allows us to plan long-term care. $50/month covers a child's food and schooling for 30 days.",
                 cta: "Start Giving",
-                to: "/donors",
+                to: "/register",
               },
               {
                 title: "Volunteer Your Skills",
                 desc: "We need therapists, teachers, translators, grant writers, and tech professionals. Remote and on-site roles available.",
                 cta: "See Opportunities",
-                to: "/donors",
+                to: "/volunteer",
               },
               {
                 title: "Corporate Partnership",
                 desc: "Align your organization with our mission. We offer sponsorship tiers, impact reports, and co-branded campaigns.",
                 cta: "Partner With Us",
-                to: "/donors",
+                to: "/register",
               },
             ].map((card) => (
               <div key={card.title} className="border border-border p-8 flex flex-col">
@@ -177,7 +198,7 @@ const Index = () => {
             Every contribution—whether financial, professional, or personal—directly changes a child's life. Join us.
           </p>
           <Link
-            to="/donors"
+            to="/register"
             className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-8 py-3 text-sm font-semibold hover:bg-gold-dark transition-colors"
           >
             Get Involved <ArrowRight size={16} />

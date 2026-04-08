@@ -69,7 +69,7 @@
     "v_supporter_type_volunteer"
   ],
   "test_roc_auc": 0.7727272727272727,
-  "test_avg_precision": 0.6523671497584541,
+  "test_avg_precision": 0.6434782608695653,
   "cv_roc_auc_mean": 0.8836842105263157,
   "train_size": 118,
   "test_size": 27,

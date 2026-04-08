@@ -2,12 +2,12 @@
   "pipeline": "SocialMediaExplanatory",
   "model_type": "Logistic Regression (statsmodels, hurdle Part A)",
   "target_variable": "has_any_donations",
-  "pseudo_r_squared": 0.9224246339133575,
-  "log_likelihood": -41.054926116686296,
+  "pseudo_r_squared": 0.9210867760551062,
+  "log_likelihood": -41.76295571803922,
   "n_obs": 812,
   "n_features": 99,
-  "aic": 240.10985223337258,
-  "bic": 611.3703791061452,
+  "aic": 241.52591143607845,
+  "bic": 612.786438308851,
   "features": [
     "hashtag_count",
     "has_cta",
@@ -111,8 +111,8 @@
   ],
   "saved_model": "model3.sav",
   "secondary_model": "ols_result (log_estimated_donation_value_php, hurdle Part B)",
-  "secondary_adj_r2": 0.777333321540342,
-  "secondary_aic": 1250.5029009214322,
+  "secondary_adj_r2": 0.7769755588670402,
+  "secondary_aic": 1251.34093492016,
   "secondary_target": "log_estimated_donation_value_php",
   "ethical_note": "Explanatory only \u2014 associations, not predictions. Do NOT use for individual post scoring."
 }

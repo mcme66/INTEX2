@@ -64,7 +64,7 @@ Pathway Relevance:
   - Independent Living: High
 
 Statistical Evidence:
-  - composite_health_trend: OR=2.8929760643099195e+152, p=0.2228
+  - composite_health_trend: OR=2.8929760648208553e+152, p=0.2228
 
 ------------------------------------------------------------
 DOMAIN: EDUCATIONAL

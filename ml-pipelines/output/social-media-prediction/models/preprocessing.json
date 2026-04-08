@@ -11,69 +11,69 @@
   },
   "known_categories": {
     "platform": [
-      "Linkedin",
-      "Youtube",
-      "Tiktok",
-      "Twitter",
       "Whatsapp",
       "Facebook",
-      "Instagram"
+      "Twitter",
+      "Linkedin",
+      "Instagram",
+      "Tiktok",
+      "Youtube"
     ],
     "post_type": [
-      "Campaign",
       "Impactstory",
-      "Fundraisingappeal",
-      "Educationalcontent",
       "Thankyou",
+      "Fundraisingappeal",
+      "Campaign",
+      "Educationalcontent",
       "Eventpromotion"
     ],
     "media_type": [
-      "Photo",
       "Video",
-      "Reel",
+      "Photo",
       "Carousel",
+      "Reel",
       "Text"
     ],
     "sentiment_tone": [
-      "Urgent",
-      "Celebratory",
-      "Emotional",
-      "Hopeful",
+      "Grateful",
       "Informative",
-      "Grateful"
+      "Celebratory",
+      "Urgent",
+      "Emotional",
+      "Hopeful"
     ],
     "content_topic": [
-      "Safehouselife",
-      "Awarenessraising",
-      "Gratitude",
-      "Education",
-      "Campaignlaunch",
-      "Donorimpact",
       "Eventrecap",
+      "Campaignlaunch",
+      "Health",
+      "Safehouselife",
+      "Donorimpact",
+      "Education",
+      "Awarenessraising",
       "Reintegration",
-      "Health"
+      "Gratitude"
     ],
     "call_to_action_type": [
-      "Signup",
       "None",
       "Donatenow",
-      "Learnmore",
-      "Sharestory"
+      "Sharestory",
+      "Signup",
+      "Learnmore"
     ],
     "campaign_name": [
-      "Back To School",
-      "Givingtuesday",
-      "Nocampaign",
       "Year-End Hope",
-      "Summer Of Safety"
+      "Givingtuesday",
+      "Back To School",
+      "Summer Of Safety",
+      "Nocampaign"
     ],
     "day_of_week": [
-      "Friday",
-      "Saturday",
       "Monday",
-      "Sunday",
       "Thursday",
       "Tuesday",
+      "Friday",
+      "Sunday",
+      "Saturday",
       "Wednesday"
     ]
   }

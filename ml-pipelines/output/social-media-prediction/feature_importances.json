@@ -2,552 +2,552 @@
   "stage1": [
     {
       "feature": "is_evening",
-      "importance": 3.240536870133399,
+      "importance": 3.2019558055085304,
       "rank": 1
     },
     {
       "feature": "post_type_Eventpromotion",
-      "importance": 2.1404531604296073,
+      "importance": 2.1768099887977077,
       "rank": 2
     },
     {
       "feature": "sentiment_tone_Informative",
-      "importance": 1.6519603113830335,
+      "importance": 1.6277378100395243,
       "rank": 3
     },
     {
-      "feature": "post_hour_cos",
-      "importance": 1.4074205001246205,
+      "feature": "post_type_Impactstory",
+      "importance": 1.4855073586654608,
       "rank": 4
     },
     {
-      "feature": "post_type_Impactstory",
-      "importance": 1.3697016299456863,
+      "feature": "post_hour_cos",
+      "importance": 1.3628568562166832,
       "rank": 5
     },
     {
       "feature": "campaign_name_Year-End Hope",
-      "importance": 1.2022496360721773,
+      "importance": 1.2053622376021658,
       "rank": 6
     },
     {
-      "feature": "content_topic_Eventrecap",
-      "importance": 1.114657919804872,
+      "feature": "is_business_hours",
+      "importance": 1.1368865396774226,
       "rank": 7
     },
     {
-      "feature": "features_resident_story",
-      "importance": 1.1113165542201642,
+      "feature": "content_topic_Eventrecap",
+      "importance": 1.0962798192807472,
       "rank": 8
     },
     {
-      "feature": "is_business_hours",
-      "importance": 1.0780497870598134,
+      "feature": "features_resident_story",
+      "importance": 1.0837747709681043,
       "rank": 9
     },
     {
       "feature": "platform_Instagram_x_post_type_Impactstory",
-      "importance": 1.076684226328268,
+      "importance": 1.0776392992342183,
       "rank": 10
     },
     {
-      "feature": "post_type_Thankyou",
-      "importance": 1.0674429626347945,
+      "feature": "platform_Linkedin_x_post_type_Educationalcontent",
+      "importance": 1.0352541125613797,
       "rank": 11
     },
     {
-      "feature": "post_type_Educationalcontent",
-      "importance": 1.022450547976401,
+      "feature": "platform_Linkedin_x_post_type_Eventpromotion",
+      "importance": 1.0341204242963553,
       "rank": 12
     },
     {
       "feature": "media_type_Reel",
-      "importance": 0.9921061769591742,
+      "importance": 1.018289549531121,
       "rank": 13
     },
     {
-      "feature": "platform_Linkedin_x_post_type_Educationalcontent",
-      "importance": 0.9611612329409895,
+      "feature": "post_type_Thankyou",
+      "importance": 0.9998175111832395,
       "rank": 14
     },
     {
-      "feature": "platform_Instagram_x_post_type_Eventpromotion",
-      "importance": 0.900149586751316,
+      "feature": "post_type_Educationalcontent",
+      "importance": 0.9928401800621001,
       "rank": 15
     },
     {
-      "feature": "platform_Linkedin_x_post_type_Eventpromotion",
-      "importance": 0.8498657571011552,
+      "feature": "platform_Instagram_x_post_type_Eventpromotion",
+      "importance": 0.9497211146683053,
       "rank": 16
     },
     {
-      "feature": "media_type_Text",
-      "importance": 0.8174420673418207,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Impactstory",
+      "importance": 0.8155559950799113,
       "rank": 17
     },
     {
       "feature": "platform_Youtube_x_post_type_Thankyou",
-      "importance": 0.8148913251261648,
+      "importance": 0.8076388209290875,
       "rank": 18
     },
     {
-      "feature": "sentiment_tone_Grateful",
-      "importance": 0.808421185213629,
+      "feature": "had_snapshot_last_30d",
+      "importance": 0.8061395007957388,
       "rank": 19
     },
     {
-      "feature": "media_type_Photo",
-      "importance": 0.801985518803622,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Thankyou",
+      "importance": 0.804190501402124,
       "rank": 20
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Thankyou",
-      "importance": 0.7417852395103318,
+      "feature": "sentiment_tone_Grateful",
+      "importance": 0.7763141885364769,
       "rank": 21
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Impactstory",
-      "importance": 0.7368729241680282,
+      "feature": "platform_Whatsapp_x_post_type_Educationalcontent",
+      "importance": 0.7555876351024519,
       "rank": 22
     },
     {
-      "feature": "platform_Twitter_x_post_type_Educationalcontent",
-      "importance": 0.7331339855624449,
+      "feature": "media_type_Photo",
+      "importance": 0.7411512700788572,
       "rank": 23
     },
     {
-      "feature": "post_type_Fundraisingappeal",
-      "importance": 0.7292313457600808,
+      "feature": "content_topic_Campaignlaunch",
+      "importance": 0.7324407218795567,
       "rank": 24
     },
     {
-      "feature": "sentiment_tone_Hopeful",
-      "importance": 0.6796448187036757,
+      "feature": "media_type_Text",
+      "importance": 0.6890411298644928,
       "rank": 25
     },
     {
-      "feature": "content_topic_Campaignlaunch",
-      "importance": 0.6673330854538982,
+      "feature": "platform_Linkedin",
+      "importance": 0.6888000191935574,
       "rank": 26
     },
     {
-      "feature": "platform_Whatsapp_x_post_type_Educationalcontent",
-      "importance": 0.621300261041977,
+      "feature": "platform_Twitter_x_post_type_Educationalcontent",
+      "importance": 0.671973671003491,
       "rank": 27
     },
     {
-      "feature": "platform_Twitter_x_post_type_Thankyou",
-      "importance": 0.6168953611498379,
+      "feature": "platform_donation_rate_last_30d",
+      "importance": 0.6572052833996265,
       "rank": 28
     },
     {
-      "feature": "call_to_action_type_None",
-      "importance": 0.6088356523234385,
+      "feature": "platform_donation_rate_last_30d",
+      "importance": 0.6572052833996265,
       "rank": 29
     },
     {
-      "feature": "platform_Linkedin",
-      "importance": 0.6044729255915573,
+      "feature": "sentiment_tone_Hopeful",
+      "importance": 0.6215003394577867,
       "rank": 30
     },
     {
-      "feature": "platform_donation_rate_last_30d",
-      "importance": 0.5870529928795697,
+      "feature": "post_type_Fundraisingappeal",
+      "importance": 0.6205692903306621,
       "rank": 31
     },
     {
-      "feature": "platform_donation_rate_last_30d",
-      "importance": 0.5870529928795697,
+      "feature": "platform_Twitter_x_post_type_Thankyou",
+      "importance": 0.6165630592519589,
       "rank": 32
     },
     {
-      "feature": "content_topic_Education",
-      "importance": 0.5821032021052728,
+      "feature": "call_to_action_type_None",
+      "importance": 0.6123099232123661,
       "rank": 33
     },
     {
       "feature": "has_call_to_action",
-      "importance": 0.5772605040619977,
+      "importance": 0.6085919787076904,
       "rank": 34
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Fundraisingappeal",
-      "importance": 0.5451715498254603,
+      "feature": "platform_Linkedin_x_post_type_Impactstory",
+      "importance": 0.5704735101087924,
       "rank": 35
     },
     {
-      "feature": "platform_Twitter_x_post_type_Impactstory",
-      "importance": 0.531379807842233,
+      "feature": "content_topic_Education",
+      "importance": 0.5629477152742269,
       "rank": 36
     },
     {
-      "feature": "platform_Whatsapp_x_post_type_Eventpromotion",
-      "importance": 0.48791388840701005,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Fundraisingappeal",
+      "importance": 0.5066734337985314,
       "rank": 37
     },
     {
-      "feature": "platform_Twitter",
-      "importance": 0.47383467156823017,
+      "feature": "platform_Whatsapp_x_post_type_Eventpromotion",
+      "importance": 0.4876659162556778,
       "rank": 38
     },
     {
-      "feature": "platform_Linkedin_x_post_type_Thankyou",
-      "importance": 0.4722645981703963,
+      "feature": "platform_Instagram_x_post_type_Educationalcontent",
+      "importance": 0.4711326224749625,
       "rank": 39
     },
     {
-      "feature": "platform_Linkedin_x_post_type_Impactstory",
-      "importance": 0.4647109573493676,
+      "feature": "platform_Twitter_x_post_type_Impactstory",
+      "importance": 0.4495687610790849,
       "rank": 40
     },
     {
-      "feature": "platform_Instagram_x_post_type_Educationalcontent",
-      "importance": 0.45487347002919254,
+      "feature": "sentiment_tone_Emotional",
+      "importance": 0.440010070608866,
       "rank": 41
     },
     {
-      "feature": "post_hour_sin",
-      "importance": 0.45049383423567635,
+      "feature": "platform_Linkedin_x_post_type_Thankyou",
+      "importance": 0.4354663432855045,
       "rank": 42
     },
     {
       "feature": "platform_Tiktok_x_post_type_Impactstory",
-      "importance": 0.4213343286652561,
+      "importance": 0.42724116393288425,
       "rank": 43
     },
     {
-      "feature": "platform_Tiktok_x_post_type_Eventpromotion",
-      "importance": 0.41225954425463907,
+      "feature": "post_hour_sin",
+      "importance": 0.4222463430104018,
       "rank": 44
     },
     {
-      "feature": "campaign_x_boosted",
-      "importance": 0.39869929251623587,
+      "feature": "content_topic_Donorimpact",
+      "importance": 0.4130554245203567,
       "rank": 45
     },
     {
-      "feature": "platform_Tiktok_x_post_type_Thankyou",
-      "importance": 0.3963485284450823,
+      "feature": "platform_Twitter",
+      "importance": 0.4011184252656829,
       "rank": 46
     },
     {
-      "feature": "content_topic_Donorimpact",
-      "importance": 0.3594285143349862,
+      "feature": "platform_Instagram",
+      "importance": 0.3731512221136307,
       "rank": 47
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Educationalcontent",
-      "importance": 0.3538257330450047,
+      "feature": "platform_Whatsapp_x_post_type_Fundraisingappeal",
+      "importance": 0.3705337570746289,
       "rank": 48
     },
     {
-      "feature": "content_topic_Gratitude",
-      "importance": 0.3395102350888833,
+      "feature": "platform_Tiktok_x_post_type_Eventpromotion",
+      "importance": 0.36611103243648385,
       "rank": 49
     },
     {
-      "feature": "sentiment_tone_Emotional",
-      "importance": 0.3342283251285346,
+      "feature": "platform_post_count_last_30d_x_post_type_Educationalcontent",
+      "importance": 0.348662216973674,
       "rank": 50
     },
     {
-      "feature": "had_snapshot_last_30d",
-      "importance": 0.33276020126050043,
+      "feature": "platform_Tiktok_x_post_type_Thankyou",
+      "importance": 0.34744645372424743,
       "rank": 51
     },
     {
-      "feature": "day_of_week_num_cos",
-      "importance": 0.3262858711305597,
+      "feature": "campaign_x_boosted",
+      "importance": 0.344282808161894,
       "rank": 52
     },
     {
       "feature": "platform_Youtube_x_post_type_Impactstory",
-      "importance": 0.3242737166171255,
+      "importance": 0.33347624829955524,
       "rank": 53
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Eventpromotion",
-      "importance": 0.32069607131593225,
+      "feature": "content_topic_Gratitude",
+      "importance": 0.3054870010895303,
       "rank": 54
     },
     {
-      "feature": "platform_Instagram_x_post_type_Fundraisingappeal",
-      "importance": 0.32017378759407616,
+      "feature": "platform_Youtube",
+      "importance": 0.30394115774332825,
       "rank": 55
     },
     {
-      "feature": "sentiment_tone_Urgent",
-      "importance": 0.30211803744996135,
+      "feature": "day_of_week_num_cos",
+      "importance": 0.2948089733533899,
       "rank": 56
     },
     {
-      "feature": "cta_x_story",
-      "importance": 0.2999616979613767,
+      "feature": "log1p_org_total_donation_value_last_30d",
+      "importance": 0.27663961527416336,
       "rank": 57
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Impactstory",
-      "importance": 0.288753901712377,
+      "feature": "cta_x_story",
+      "importance": 0.2676289878268634,
       "rank": 58
     },
     {
-      "feature": "call_to_action_type_Signup",
-      "importance": 0.2871450545174067,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Eventpromotion",
+      "importance": 0.2534701026002337,
       "rank": 59
     },
     {
-      "feature": "platform_Youtube",
-      "importance": 0.2730634004143145,
+      "feature": "platform_Instagram_x_post_type_Thankyou",
+      "importance": 0.2518912072898881,
       "rank": 60
     },
     {
-      "feature": "log1p_org_total_donation_value_last_30d",
-      "importance": 0.2677540772748283,
+      "feature": "platform_post_count_last_30d_x_post_type_Thankyou",
+      "importance": 0.24413615159512858,
       "rank": 61
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Educationalcontent",
-      "importance": 0.26593772612621575,
+      "feature": "call_to_action_type_Signup",
+      "importance": 0.23630808502078135,
       "rank": 62
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Thankyou",
-      "importance": 0.26015939971567675,
+      "feature": "is_weekend",
+      "importance": 0.215931998043053,
       "rank": 63
     },
     {
-      "feature": "platform_Whatsapp_x_post_type_Fundraisingappeal",
-      "importance": 0.25156235624952955,
+      "feature": "is_boosted",
+      "importance": 0.21041194390245033,
       "rank": 64
     },
     {
-      "feature": "platform_Whatsapp_x_post_type_Impactstory",
-      "importance": 0.24705246814807338,
+      "feature": "platform_Tiktok",
+      "importance": 0.2072485075159419,
       "rank": 65
     },
     {
-      "feature": "is_boosted",
-      "importance": 0.2397194352401846,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Educationalcontent",
+      "importance": 0.2038753485322875,
       "rank": 66
     },
     {
-      "feature": "platform_Twitter_x_post_type_Fundraisingappeal",
-      "importance": 0.2381817277420656,
+      "feature": "sentiment_tone_Urgent",
+      "importance": 0.19820305053617612,
       "rank": 67
     },
     {
-      "feature": "is_weekend",
-      "importance": 0.2224185703516722,
+      "feature": "platform_post_count_last_30d_x_post_type_Eventpromotion",
+      "importance": 0.19576682764691267,
       "rank": 68
     },
     {
-      "feature": "platform_Instagram",
-      "importance": 0.22193961740967108,
+      "feature": "call_to_action_type_Sharestory",
+      "importance": 0.19533201845720033,
       "rank": 69
     },
     {
-      "feature": "log1p_campaign_hist_avg_donation",
-      "importance": 0.1838120113614302,
+      "feature": "platform_post_count_last_30d_x_post_type_Impactstory",
+      "importance": 0.1927414268086145,
       "rank": 70
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Eventpromotion",
-      "importance": 0.1810414611139211,
+      "feature": "platform_Whatsapp_x_post_type_Thankyou",
+      "importance": 0.18855245391328393,
       "rank": 71
     },
     {
-      "feature": "platform_Instagram_x_post_type_Thankyou",
-      "importance": 0.17790328541168424,
+      "feature": "platform_Youtube_x_post_type_Fundraisingappeal",
+      "importance": 0.181707733115301,
       "rank": 72
     },
     {
-      "feature": "platform_Youtube_x_post_type_Fundraisingappeal",
-      "importance": 0.1723796299589938,
+      "feature": "log1p_campaign_hist_avg_donation",
+      "importance": 0.17763652215966258,
       "rank": 73
     },
     {
-      "feature": "day_of_week_num_sin",
-      "importance": 0.16979013159020195,
+      "feature": "platform_Whatsapp_x_post_type_Impactstory",
+      "importance": 0.1661429282193163,
       "rank": 74
     },
     {
-      "feature": "log1p_mentions_count",
-      "importance": 0.1687813348234913,
+      "feature": "log1p_platform_avg_donation_last_30d",
+      "importance": 0.1515733701036024,
       "rank": 75
     },
     {
-      "feature": "campaign_name_Summer Of Safety",
-      "importance": 0.16833343004427415,
+      "feature": "platform_Instagram_x_post_type_Fundraisingappeal",
+      "importance": 0.1482639398286227,
       "rank": 76
     },
     {
-      "feature": "call_to_action_type_Sharestory",
-      "importance": 0.1573470052733643,
+      "feature": "call_to_action_type_Learnmore",
+      "importance": 0.14682286495547275,
       "rank": 77
     },
     {
-      "feature": "platform_Tiktok",
-      "importance": 0.15546716466944152,
+      "feature": "campaign_name_Summer Of Safety",
+      "importance": 0.14298234846481797,
       "rank": 78
     },
     {
-      "feature": "content_topic_Health",
-      "importance": 0.152082213823108,
+      "feature": "campaign_name_Nocampaign",
+      "importance": 0.14036531710009922,
       "rank": 79
     },
     {
-      "feature": "log1p_platform_avg_donation_last_30d",
-      "importance": 0.1508481398646408,
+      "feature": "platform_post_count_last_30d_x_post_type_Fundraisingappeal",
+      "importance": 0.13900465723212285,
       "rank": 80
     },
     {
-      "feature": "platform_Twitter_x_post_type_Eventpromotion",
-      "importance": 0.14898651040826924,
+      "feature": "log1p_mentions_count",
+      "importance": 0.13873673544120155,
       "rank": 81
     },
     {
-      "feature": "campaign_name_Nocampaign",
-      "importance": 0.1432522342761077,
+      "feature": "is_campaign_post",
+      "importance": 0.13664737258923268,
       "rank": 82
     },
     {
-      "feature": "call_to_action_type_Learnmore",
-      "importance": 0.14296561199862734,
+      "feature": "log1p_boost_budget_php",
+      "importance": 0.13664663362417293,
       "rank": 83
     },
     {
-      "feature": "platform_Youtube_x_post_type_Educationalcontent",
-      "importance": 0.14144655081822877,
+      "feature": "boosted_x_budget",
+      "importance": 0.13664663362417293,
       "rank": 84
     },
     {
       "feature": "log1p_org_avg_donation_value_last_90d",
-      "importance": 0.13883834071951315,
+      "importance": 0.13121765469142352,
       "rank": 85
     },
     {
-      "feature": "log1p_active_supporters_count",
-      "importance": 0.13644603718564685,
+      "feature": "platform_Twitter_x_post_type_Fundraisingappeal",
+      "importance": 0.12642342011917432,
       "rank": 86
     },
     {
-      "feature": "boosted_x_budget",
-      "importance": 0.13190145948996837,
+      "feature": "content_topic_Reintegration",
+      "importance": 0.12294312669043653,
       "rank": 87
     },
     {
-      "feature": "log1p_boost_budget_php",
-      "importance": 0.13190145948996837,
+      "feature": "platform_Linkedin_x_post_type_Fundraisingappeal",
+      "importance": 0.11875458883509385,
       "rank": 88
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Fundraisingappeal",
-      "importance": 0.12810228200008894,
+      "feature": "had_snapshot_last_7d",
+      "importance": 0.11193226397835601,
       "rank": 89
     },
     {
-      "feature": "platform_Linkedin_x_post_type_Fundraisingappeal",
-      "importance": 0.1270348599627354,
+      "feature": "day_of_week_num_sin",
+      "importance": 0.1105294488091585,
       "rank": 90
     },
     {
-      "feature": "is_campaign_post",
-      "importance": 0.1116770860150285,
+      "feature": "platform_Youtube_x_post_type_Educationalcontent",
+      "importance": 0.10411479492080356,
       "rank": 91
     },
     {
-      "feature": "campaign_name_Givingtuesday",
-      "importance": 0.10968733811462289,
+      "feature": "platform_post_count_last_30d",
+      "importance": 0.09780180479043306,
       "rank": 92
     },
     {
-      "feature": "month_cos",
-      "importance": 0.10174172814732389,
+      "feature": "platform_post_count_last_30d",
+      "importance": 0.09780180479043306,
       "rank": 93
     },
     {
-      "feature": "platform_post_count_last_30d",
-      "importance": 0.09883345810714082,
+      "feature": "content_topic_Health",
+      "importance": 0.09711575816108764,
       "rank": 94
     },
     {
-      "feature": "platform_post_count_last_30d",
-      "importance": 0.09883345810714082,
+      "feature": "quarter",
+      "importance": 0.09060495874076814,
       "rank": 95
     },
     {
-      "feature": "platform_Whatsapp_x_post_type_Thankyou",
-      "importance": 0.08957997736458712,
+      "feature": "month_cos",
+      "importance": 0.08656597527868083,
       "rank": 96
     },
     {
-      "feature": "content_topic_Reintegration",
-      "importance": 0.08433591281906137,
+      "feature": "platform_Tiktok_x_post_type_Fundraisingappeal",
+      "importance": 0.08299086672082949,
       "rank": 97
     },
     {
-      "feature": "month_sin",
-      "importance": 0.0826882298678649,
+      "feature": "log1p_active_supporters_count",
+      "importance": 0.07910440618057578,
       "rank": 98
     },
     {
-      "feature": "platform_Tiktok_x_post_type_Fundraisingappeal",
-      "importance": 0.06513485186750924,
+      "feature": "platform_Twitter_x_post_type_Eventpromotion",
+      "importance": 0.07729890672902744,
       "rank": 99
     },
     {
       "feature": "media_type_Video",
-      "importance": 0.05223402003015989,
+      "importance": 0.07437522305311946,
       "rank": 100
     },
     {
-      "feature": "platform_Whatsapp",
-      "importance": 0.04570814220442304,
+      "feature": "campaign_name_Givingtuesday",
+      "importance": 0.061666212055159736,
       "rank": 101
     },
     {
-      "feature": "num_hashtags",
-      "importance": 0.03349340614998143,
+      "feature": "platform_Youtube_x_post_type_Eventpromotion",
+      "importance": 0.05137314949245103,
       "rank": 102
     },
     {
-      "feature": "had_snapshot_last_7d",
-      "importance": 0.03235812245009365,
+      "feature": "platform_Whatsapp",
+      "importance": 0.04729716148719457,
       "rank": 103
     },
     {
-      "feature": "content_topic_Safehouselife",
-      "importance": 0.03043104625401019,
+      "feature": "month_sin",
+      "importance": 0.03393194791225063,
       "rank": 104
     },
     {
-      "feature": "platform_Youtube_x_post_type_Eventpromotion",
-      "importance": 0.026009770948906316,
+      "feature": "content_topic_Safehouselife",
+      "importance": 0.021452945724992394,
       "rank": 105
     },
     {
-      "feature": "platform_Tiktok_x_post_type_Educationalcontent",
-      "importance": 0.01380901429618203,
+      "feature": "days_since_last_snapshot",
+      "importance": 0.011212406675453373,
       "rank": 106
     },
     {
       "feature": "caption_length",
-      "importance": 0.00443072077922459,
+      "importance": 0.004914511265715599,
       "rank": 107
     },
     {
-      "feature": "days_since_last_snapshot",
-      "importance": 0.003674019974216288,
+      "feature": "platform_Tiktok_x_post_type_Educationalcontent",
+      "importance": 0.0030577974060422898,
       "rank": 108
     },
     {
-      "feature": "quarter",
-      "importance": 0.0012896043548910776,
+      "feature": "num_hashtags",
+      "importance": 0.0022981034334849265,
       "rank": 109
     },
     {
       "feature": "avg_recent_donation_amount",
-      "importance": 0.000293619736132775,
+      "importance": 0.00035082403776745373,
       "rank": 110
     },
     {
@@ -559,466 +559,466 @@
   "stage2": [
     {
       "feature": "features_resident_story",
-      "importance": 0.13074468940418785,
+      "importance": 0.12927284706129558,
       "rank": 1
     },
     {
       "feature": "caption_length",
-      "importance": 0.07402903037715935,
+      "importance": 0.07442241935493663,
       "rank": 2
     },
     {
-      "feature": "log1p_campaign_hist_avg_donation",
-      "importance": 0.055650636033051,
+      "feature": "platform_post_count_last_30d_x_post_type_Impactstory",
+      "importance": 0.05360971389359214,
       "rank": 3
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Impactstory",
-      "importance": 0.05307768080296221,
+      "feature": "log1p_campaign_hist_avg_donation",
+      "importance": 0.0503534338935735,
       "rank": 4
     },
     {
-      "feature": "avg_recent_donation_amount",
-      "importance": 0.044587746406424884,
+      "feature": "log1p_platform_avg_donation_last_30d",
+      "importance": 0.04149357651415462,
       "rank": 5
     },
     {
-      "feature": "post_hour_cos",
-      "importance": 0.03946404337887275,
+      "feature": "days_since_last_snapshot",
+      "importance": 0.04107453828776419,
       "rank": 6
     },
     {
-      "feature": "log1p_platform_avg_donation_last_30d",
-      "importance": 0.03866915027631881,
+      "feature": "post_hour_cos",
+      "importance": 0.04066674387911906,
       "rank": 7
     },
     {
-      "feature": "days_since_last_snapshot",
-      "importance": 0.03864594960343238,
+      "feature": "avg_recent_donation_amount",
+      "importance": 0.037175222828812096,
       "rank": 8
     },
     {
       "feature": "post_hour_sin",
-      "importance": 0.03115838114136288,
+      "importance": 0.033470953141660965,
       "rank": 9
     },
     {
       "feature": "log1p_org_total_donation_value_last_30d",
-      "importance": 0.029487629437402414,
+      "importance": 0.029363634289024887,
       "rank": 10
     },
     {
-      "feature": "log1p_boost_budget_php",
-      "importance": 0.02876832494295168,
+      "feature": "log1p_org_avg_donation_value_last_90d",
+      "importance": 0.025892174455849497,
       "rank": 11
     },
     {
-      "feature": "log1p_org_avg_donation_value_last_90d",
-      "importance": 0.02532128556697952,
+      "feature": "log1p_boost_budget_php",
+      "importance": 0.02191192786460156,
       "rank": 12
     },
     {
-      "feature": "post_type_Educationalcontent",
-      "importance": 0.02081439924927076,
+      "feature": "post_type_Impactstory",
+      "importance": 0.01667537632623129,
       "rank": 13
     },
     {
-      "feature": "day_of_week_num_cos",
-      "importance": 0.017137451116164805,
+      "feature": "post_type_Educationalcontent",
+      "importance": 0.016539822846021242,
       "rank": 14
     },
     {
-      "feature": "post_type_Impactstory",
-      "importance": 0.0160668130524608,
+      "feature": "day_of_week_num_cos",
+      "importance": 0.01647998945082941,
       "rank": 15
     },
     {
       "feature": "num_hashtags",
-      "importance": 0.015573623951616482,
+      "importance": 0.014360995124125116,
       "rank": 16
     },
     {
-      "feature": "month_sin",
-      "importance": 0.014080311676813579,
+      "feature": "platform_Tiktok_x_post_type_Fundraisingappeal",
+      "importance": 0.013801036973065289,
       "rank": 17
     },
     {
-      "feature": "platform_Tiktok_x_post_type_Fundraisingappeal",
-      "importance": 0.013957402346540549,
+      "feature": "day_of_week_num_sin",
+      "importance": 0.013311848144856349,
       "rank": 18
     },
     {
-      "feature": "day_of_week_num_sin",
-      "importance": 0.013511113468999029,
+      "feature": "sentiment_tone_Emotional",
+      "importance": 0.012789010923145787,
       "rank": 19
     },
     {
-      "feature": "sentiment_tone_Emotional",
-      "importance": 0.013144390519627342,
+      "feature": "platform_Twitter",
+      "importance": 0.01274111770958554,
       "rank": 20
     },
     {
       "feature": "platform_post_count_last_30d_x_post_type_Eventpromotion",
-      "importance": 0.013004656585408291,
+      "importance": 0.011559668125906175,
       "rank": 21
     },
     {
-      "feature": "platform_Twitter",
-      "importance": 0.011799413594606192,
+      "feature": "is_boosted",
+      "importance": 0.011450474505487291,
       "rank": 22
     },
     {
-      "feature": "campaign_name_Givingtuesday",
-      "importance": 0.01146911699108617,
+      "feature": "platform_post_count_last_30d",
+      "importance": 0.01118942280178864,
       "rank": 23
     },
     {
       "feature": "is_evening",
-      "importance": 0.011274131500347128,
+      "importance": 0.011121689932388927,
       "rank": 24
     },
     {
-      "feature": "boosted_x_budget",
-      "importance": 0.009320589096232318,
+      "feature": "campaign_name_Givingtuesday",
+      "importance": 0.010631375649575711,
       "rank": 25
     },
     {
-      "feature": "post_type_Eventpromotion",
-      "importance": 0.008974977263949932,
+      "feature": "boosted_x_budget",
+      "importance": 0.010491081011035306,
       "rank": 26
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Impactstory",
-      "importance": 0.008746296973861293,
+      "feature": "month_sin",
+      "importance": 0.01007666384609531,
       "rank": 27
     },
     {
-      "feature": "sentiment_tone_Grateful",
-      "importance": 0.008457750608426276,
+      "feature": "content_topic_Health",
+      "importance": 0.00949626964457663,
       "rank": 28
     },
     {
-      "feature": "sentiment_tone_Informative",
-      "importance": 0.007929369428910524,
+      "feature": "month_cos",
+      "importance": 0.00947119633363907,
       "rank": 29
     },
     {
-      "feature": "log1p_active_supporters_count",
-      "importance": 0.0075591908596529854,
+      "feature": "post_type_Eventpromotion",
+      "importance": 0.009219147401615549,
       "rank": 30
     },
     {
-      "feature": "month_cos",
-      "importance": 0.007447340659409311,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Impactstory",
+      "importance": 0.008959677338384705,
       "rank": 31
     },
     {
-      "feature": "platform_post_count_last_30d",
-      "importance": 0.007403335620659359,
+      "feature": "sentiment_tone_Grateful",
+      "importance": 0.008819387779278336,
       "rank": 32
     },
     {
-      "feature": "platform_Twitter_x_post_type_Impactstory",
-      "importance": 0.00723344987966341,
+      "feature": "log1p_active_supporters_count",
+      "importance": 0.008658204936559201,
       "rank": 33
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Thankyou",
-      "importance": 0.007085588087575551,
+      "feature": "platform_post_count_last_30d",
+      "importance": 0.008554288439620222,
       "rank": 34
     },
     {
-      "feature": "log1p_mentions_count",
-      "importance": 0.006915455675754976,
+      "feature": "sentiment_tone_Informative",
+      "importance": 0.008419233999851788,
       "rank": 35
     },
     {
-      "feature": "content_topic_Health",
-      "importance": 0.00686012390754023,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Thankyou",
+      "importance": 0.008353541611995838,
       "rank": 36
     },
     {
-      "feature": "platform_Linkedin",
-      "importance": 0.00640731477334389,
+      "feature": "platform_Twitter_x_post_type_Impactstory",
+      "importance": 0.008073156739258626,
       "rank": 37
     },
     {
-      "feature": "has_call_to_action",
-      "importance": 0.0061548794943164465,
+      "feature": "call_to_action_type_None",
+      "importance": 0.007902816068221546,
       "rank": 38
     },
     {
-      "feature": "platform_post_count_last_30d",
-      "importance": 0.006101934375473721,
+      "feature": "platform_donation_rate_last_30d",
+      "importance": 0.0067351730557956525,
       "rank": 39
     },
     {
-      "feature": "platform_Whatsapp_x_post_type_Impactstory",
-      "importance": 0.006016933794480782,
+      "feature": "log1p_mentions_count",
+      "importance": 0.006373382104041124,
       "rank": 40
     },
     {
-      "feature": "platform_Instagram",
-      "importance": 0.005854854406236493,
+      "feature": "platform_Whatsapp",
+      "importance": 0.006325870462429854,
       "rank": 41
     },
     {
-      "feature": "call_to_action_type_Sharestory",
-      "importance": 0.0057104877429900915,
+      "feature": "quarter",
+      "importance": 0.006257045329480638,
       "rank": 42
     },
     {
-      "feature": "quarter",
-      "importance": 0.005536164736523245,
+      "feature": "call_to_action_type_Sharestory",
+      "importance": 0.006206996651156612,
       "rank": 43
     },
     {
-      "feature": "platform_donation_rate_last_30d",
-      "importance": 0.0052300436856186116,
+      "feature": "sentiment_tone_Hopeful",
+      "importance": 0.006105598758644613,
       "rank": 44
     },
     {
-      "feature": "call_to_action_type_Signup",
-      "importance": 0.0051425744683392715,
+      "feature": "platform_Linkedin",
+      "importance": 0.005329348679598935,
       "rank": 45
     },
     {
-      "feature": "platform_Whatsapp",
-      "importance": 0.0051410683637986,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Fundraisingappeal",
+      "importance": 0.005005481296532237,
       "rank": 46
     },
     {
-      "feature": "platform_donation_rate_last_30d",
-      "importance": 0.005050276577053576,
+      "feature": "call_to_action_type_Signup",
+      "importance": 0.004983275370553662,
       "rank": 47
     },
     {
-      "feature": "sentiment_tone_Hopeful",
-      "importance": 0.005007110911246979,
+      "feature": "has_call_to_action",
+      "importance": 0.004874973274075411,
       "rank": 48
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Thankyou",
-      "importance": 0.004443200114145483,
+      "feature": "platform_Whatsapp_x_post_type_Impactstory",
+      "importance": 0.004839883489340026,
       "rank": 49
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Educationalcontent",
-      "importance": 0.004360311862720735,
+      "feature": "platform_Instagram",
+      "importance": 0.0045265095490702074,
       "rank": 50
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Fundraisingappeal",
-      "importance": 0.004290921663588841,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Educationalcontent",
+      "importance": 0.004132898601171659,
       "rank": 51
     },
     {
-      "feature": "content_topic_Campaignlaunch",
-      "importance": 0.004096681228930754,
+      "feature": "platform_post_count_last_30d_x_post_type_Fundraisingappeal",
+      "importance": 0.003811318800744481,
       "rank": 52
     },
     {
-      "feature": "call_to_action_type_None",
-      "importance": 0.004078959593144162,
+      "feature": "platform_post_count_last_30d_x_post_type_Educationalcontent",
+      "importance": 0.003757399127208032,
       "rank": 53
     },
     {
-      "feature": "is_boosted",
-      "importance": 0.003968195666686931,
+      "feature": "media_type_Video",
+      "importance": 0.003390131077560691,
       "rank": 54
     },
     {
-      "feature": "platform_Youtube",
-      "importance": 0.003307612429755001,
+      "feature": "content_topic_Campaignlaunch",
+      "importance": 0.003181998858459627,
       "rank": 55
     },
     {
-      "feature": "media_type_Photo",
-      "importance": 0.0032449422787273804,
+      "feature": "platform_donation_rate_last_30d",
+      "importance": 0.0031658988874260895,
       "rank": 56
     },
     {
-      "feature": "sentiment_tone_Urgent",
-      "importance": 0.0032389634574387133,
+      "feature": "media_type_Photo",
+      "importance": 0.0028869736506735564,
       "rank": 57
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Fundraisingappeal",
-      "importance": 0.0029259888570158372,
+      "feature": "platform_post_count_last_30d_x_post_type_Thankyou",
+      "importance": 0.0027630294490722427,
       "rank": 58
     },
     {
-      "feature": "is_business_hours",
-      "importance": 0.002816702121945377,
+      "feature": "content_topic_Safehouselife",
+      "importance": 0.0024773542629380504,
       "rank": 59
     },
     {
-      "feature": "media_type_Reel",
-      "importance": 0.0025402175033844322,
+      "feature": "call_to_action_type_Learnmore",
+      "importance": 0.002459524373733754,
       "rank": 60
     },
     {
-      "feature": "post_type_Thankyou",
-      "importance": 0.002490770737181765,
+      "feature": "platform_Youtube",
+      "importance": 0.00244623165193742,
       "rank": 61
     },
     {
-      "feature": "post_type_Fundraisingappeal",
-      "importance": 0.0023922405771566175,
+      "feature": "platform_Tiktok",
+      "importance": 0.00241990906488321,
       "rank": 62
     },
     {
-      "feature": "campaign_name_Nocampaign",
-      "importance": 0.002373951439344726,
+      "feature": "content_topic_Reintegration",
+      "importance": 0.0023197580627060664,
       "rank": 63
     },
     {
-      "feature": "is_campaign_post",
-      "importance": 0.0023632050450232128,
+      "feature": "sentiment_tone_Urgent",
+      "importance": 0.0022940163036423333,
       "rank": 64
     },
     {
-      "feature": "media_type_Video",
-      "importance": 0.002176423529566613,
+      "feature": "is_business_hours",
+      "importance": 0.0022206996459754624,
       "rank": 65
     },
     {
-      "feature": "media_type_Text",
-      "importance": 0.0020949282145555836,
+      "feature": "post_type_Fundraisingappeal",
+      "importance": 0.0020711038685098907,
       "rank": 66
     },
     {
-      "feature": "call_to_action_type_Learnmore",
-      "importance": 0.0020287715964149924,
+      "feature": "campaign_x_boosted",
+      "importance": 0.001947241179208152,
       "rank": 67
     },
     {
-      "feature": "campaign_x_boosted",
-      "importance": 0.00195477112409116,
+      "feature": "platform_Youtube_x_post_type_Impactstory",
+      "importance": 0.0018528302835055428,
       "rank": 68
     },
     {
-      "feature": "content_topic_Safehouselife",
-      "importance": 0.0019339117135296808,
+      "feature": "platform_Instagram_x_post_type_Fundraisingappeal",
+      "importance": 0.0017724722715322621,
       "rank": 69
     },
     {
-      "feature": "platform_Tiktok",
-      "importance": 0.00181029642041568,
+      "feature": "media_type_Reel",
+      "importance": 0.0017701055634149754,
       "rank": 70
     },
     {
-      "feature": "platform_Youtube_x_post_type_Impactstory",
-      "importance": 0.0017720758819743038,
+      "feature": "is_campaign_post",
+      "importance": 0.0016461218808116527,
       "rank": 71
     },
     {
-      "feature": "content_topic_Reintegration",
-      "importance": 0.0017354432087566742,
+      "feature": "content_topic_Education",
+      "importance": 0.0016317495286415123,
       "rank": 72
     },
     {
-      "feature": "platform_Instagram_x_post_type_Fundraisingappeal",
-      "importance": 0.0015479056782255025,
+      "feature": "content_topic_Donorimpact",
+      "importance": 0.0015680868737689094,
       "rank": 73
     },
     {
-      "feature": "content_topic_Education",
-      "importance": 0.001480062793427648,
+      "feature": "post_type_Thankyou",
+      "importance": 0.0013932534569549716,
       "rank": 74
     },
     {
-      "feature": "is_weekend",
-      "importance": 0.0014271777649282169,
+      "feature": "media_type_Text",
+      "importance": 0.001292514282911471,
       "rank": 75
     },
     {
-      "feature": "content_topic_Donorimpact",
-      "importance": 0.0013406306547602373,
+      "feature": "is_weekend",
+      "importance": 0.000992160759067959,
       "rank": 76
     },
     {
-      "feature": "platform_post_count_last_30d_x_post_type_Educationalcontent",
-      "importance": 0.0009648050862101339,
+      "feature": "campaign_name_Nocampaign",
+      "importance": 0.0009652607818942816,
       "rank": 77
     },
     {
-      "feature": "had_snapshot_last_7d",
-      "importance": 0.0005702082494716838,
+      "feature": "cta_x_story",
+      "importance": 0.0005357372637288651,
       "rank": 78
     },
     {
       "feature": "content_topic_Gratitude",
-      "importance": 0.00029511910223535754,
+      "importance": 0.0004709356265502685,
       "rank": 79
     },
     {
       "feature": "campaign_name_Summer Of Safety",
-      "importance": 0.00023425217465227274,
+      "importance": 0.0003678051531742081,
       "rank": 80
     },
     {
-      "feature": "platform_Whatsapp_x_post_type_Fundraisingappeal",
-      "importance": 0.00020462523548587323,
+      "feature": "campaign_name_Year-End Hope",
+      "importance": 0.00015346729127825573,
       "rank": 81
     },
     {
-      "feature": "cta_x_story",
-      "importance": 0.00015932627205737963,
+      "feature": "had_snapshot_last_7d",
+      "importance": 0.0001431733057166525,
       "rank": 82
     },
     {
-      "feature": "platform_Instagram_x_post_type_Impactstory",
-      "importance": 0.0001379081097333989,
+      "feature": "platform_Linkedin_x_post_type_Impactstory",
+      "importance": 0.00010272100117417829,
       "rank": 83
     },
     {
-      "feature": "platform_Instagram_x_post_type_Educationalcontent",
-      "importance": 0.00011513632651057924,
+      "feature": "content_topic_Eventrecap",
+      "importance": 7.916392953171656e-05,
       "rank": 84
     },
     {
-      "feature": "platform_donation_rate_last_30d_x_post_type_Eventpromotion",
-      "importance": 8.285323442695074e-05,
+      "feature": "platform_Whatsapp_x_post_type_Fundraisingappeal",
+      "importance": 4.4069892025743155e-05,
       "rank": 85
     },
     {
       "feature": "platform_Tiktok_x_post_type_Impactstory",
-      "importance": 6.828896820545142e-05,
+      "importance": 2.2487900284233725e-05,
       "rank": 86
     },
     {
-      "feature": "campaign_name_Year-End Hope",
-      "importance": 6.492752386395739e-05,
+      "feature": "platform_Youtube_x_post_type_Educationalcontent",
+      "importance": 2.1258268027246324e-05,
       "rank": 87
     },
     {
-      "feature": "platform_Linkedin_x_post_type_Impactstory",
-      "importance": 5.653747896712364e-05,
+      "feature": "platform_donation_rate_last_30d_x_post_type_Eventpromotion",
+      "importance": 1.1920671911872521e-05,
       "rank": 88
-    },
-    {
-      "feature": "content_topic_Eventrecap",
-      "importance": 4.742222017553368e-05,
-      "rank": 89
-    },
-    {
-      "feature": "platform_Youtube_x_post_type_Educationalcontent",
-      "importance": 3.884404606337341e-05,
-      "rank": 90
     },
     {
       "feature": "had_snapshot_last_30d",
       "importance": 0.0,
-      "rank": 91
+      "rank": 89
     },
     {
       "feature": "new_supporters_last_30d",
       "importance": 0.0,
-      "rank": 92
+      "rank": 90
+    },
+    {
+      "feature": "platform_Instagram_x_post_type_Impactstory",
+      "importance": 0.0,
+      "rank": 91
     },
     {
       "feature": "platform_Linkedin_x_post_type_Educationalcontent",
+      "importance": 0.0,
+      "rank": 92
+    },
+    {
+      "feature": "platform_Instagram_x_post_type_Thankyou",
       "importance": 0.0,
       "rank": 93
     },
@@ -1028,7 +1028,7 @@
       "rank": 94
     },
     {
-      "feature": "platform_Instagram_x_post_type_Thankyou",
+      "feature": "platform_Instagram_x_post_type_Educationalcontent",
       "importance": 0.0,
       "rank": 95
     },

@@ -24,6 +24,7 @@
   "tp_has_overdue_plan",
   "tp_days_since_last_case_conference",
   "tp_plan_category_count",
+  "tp_days_since_last_plan_update",
   "bs_total_incidents",
   "bs_incidents_last_30d",
   "bs_incidents_last_90d",

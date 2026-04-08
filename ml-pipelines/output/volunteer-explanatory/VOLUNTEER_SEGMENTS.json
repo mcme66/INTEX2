@@ -1,13 +1,13 @@
 {
   "Highly Engaged": {
-    "size": 5,
-    "pct_of_total": "12.5%",
-    "avg_total_value": "57.73",
-    "avg_frequency": "2.80",
-    "avg_recency_days": "126",
+    "size": 6,
+    "pct_of_total": "14.6%",
+    "avg_total_value": "53.60",
+    "avg_frequency": "2.67",
+    "avg_recency_days": "128",
     "pct_top_quartile": "100.0%",
     "pct_became_donor": "100.0%",
-    "avg_tenure_days": "1420",
+    "avg_tenure_days": "1423",
     "characteristics": [
       "Recent activity (within past few months)",
       "High contribution value",
@@ -17,14 +17,14 @@
     "recommendation": "RETAIN & RECOGNIZE: Nurture with exclusive opportunities, leadership roles, thank-you events"
   },
   "Steady Contributors": {
-    "size": 9,
-    "pct_of_total": "22.5%",
-    "avg_total_value": "31.45",
-    "avg_frequency": "1.56",
-    "avg_recency_days": "390",
-    "pct_top_quartile": "22.2%",
+    "size": 10,
+    "pct_of_total": "24.4%",
+    "avg_total_value": "30.80",
+    "avg_frequency": "1.50",
+    "avg_recency_days": "351",
+    "pct_top_quartile": "20.0%",
     "pct_became_donor": "100.0%",
-    "avg_tenure_days": "1421",
+    "avg_tenure_days": "1280",
     "characteristics": [
       "Consistent, reliable engagement",
       "Moderate contribution value",
@@ -35,13 +35,13 @@
   },
   "Skills Specialists": {
     "size": 1,
-    "pct_of_total": "2.5%",
+    "pct_of_total": "2.4%",
     "avg_total_value": "48.44",
     "avg_frequency": "5.00",
     "avg_recency_days": "295",
     "pct_top_quartile": "100.0%",
     "pct_became_donor": "100.0%",
-    "avg_tenure_days": "1290",
+    "avg_tenure_days": "1291",
     "characteristics": [
       "Professional/specialized skills focus",
       "Targeted, high-value contributions",
@@ -51,13 +51,13 @@
   },
   "Inactive/At-Risk": {
     "size": 20,
-    "pct_of_total": "50.0%",
+    "pct_of_total": "48.8%",
     "avg_total_value": "15.90",
     "avg_frequency": "1.05",
     "avg_recency_days": "758",
     "pct_top_quartile": "5.0%",
     "pct_became_donor": "95.0%",
-    "avg_tenure_days": "1414",
+    "avg_tenure_days": "1415",
     "characteristics": [
       "No recent activity (6+ months)",
       "Disengaging pattern",
@@ -66,14 +66,14 @@
     "recommendation": "RE-ENGAGE: Personal outreach, removal barriers, return-focused campaigns"
   },
   "Other": {
-    "size": 5,
-    "pct_of_total": "12.5%",
-    "avg_total_value": "34.51",
-    "avg_frequency": "2.20",
-    "avg_recency_days": "279",
-    "pct_top_quartile": "20.0%",
+    "size": 4,
+    "pct_of_total": "9.8%",
+    "avg_total_value": "34.91",
+    "avg_frequency": "2.25",
+    "avg_recency_days": "315",
+    "pct_top_quartile": "25.0%",
     "pct_became_donor": "100.0%",
-    "avg_tenure_days": "1444",
+    "avg_tenure_days": "1448",
     "characteristics": [
       "Miscellaneous profile"
     ],

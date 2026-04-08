@@ -38,6 +38,9 @@ public sealed class JwtTokenService(IOptions<JwtOptions> options) : IJwtTokenSer
             new("isAdmin", user.IsAdmin ? "true" : "false"),
         };
 
+        if (user.IsAdmin) claims.Add(new(ClaimTypes.Role, "admin"));
+        if (user.IsDonor) claims.Add(new(ClaimTypes.Role, "donor"));
+
         var token = new JwtSecurityToken(
             issuer: _options.Issuer,
             audience: _options.Audience,

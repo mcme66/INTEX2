@@ -1,0 +1,96 @@
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:      has_any_donations   No. Observations:                  812
+Model:                          Logit   Df Residuals:                      733
+Method:                           MLE   Df Model:                           78
+Date:                Wed, 08 Apr 2026   Pseudo R-squ.:                  0.9224
+Time:                        07:21:13   Log-Likelihood:                -41.055
+converged:                       True   LL-Null:                       -529.23
+Covariance Type:            nonrobust   LLR p-value:                2.966e-155
+======================================================================================================
+                                         coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------------------
+const                               -214.5934        nan        nan        nan         nan         nan
+hashtag_count                         -1.0433        nan        nan        nan         nan         nan
+caption_length                         0.0104        nan        nan        nan         nan         nan
+is_weekend                             2.5321        nan        nan        nan         nan         nan
+features_resident_story                9.8859        nan        nan        nan         nan         nan
+sentiment_tone_Emotional               4.8696        nan        nan        nan         nan         nan
+sentiment_tone_Grateful              -10.4034        nan        nan        nan         nan         nan
+sentiment_tone_Hopeful                -4.0741        nan        nan        nan         nan         nan
+sentiment_tone_Informative           -15.8698        nan        nan        nan         nan         nan
+sentiment_tone_Urgent                 -0.3879        nan        nan        nan         nan         nan
+media_type_Photo                       2.9238        nan        nan        nan         nan         nan
+media_type_Reel                       -0.5873        nan        nan        nan         nan         nan
+media_type_Text                        4.7307        nan        nan        nan         nan         nan
+media_type_Video                       5.4089        nan        nan        nan         nan         nan
+call_to_action_type_DonateNow          7.4470        nan        nan        nan         nan         nan
+call_to_action_type_LearnMore          7.5647        nan        nan        nan         nan         nan
+call_to_action_type_ShareStory         7.0296        nan        nan        nan         nan         nan
+call_to_action_type_SignUp             5.7889        nan        nan        nan         nan         nan
+content_topic_CampaignLaunch           6.1252        nan        nan        nan         nan         nan
+content_topic_DonorImpact              5.6656        nan        nan        nan         nan         nan
+content_topic_Education                6.3048        nan        nan        nan         nan         nan
+content_topic_EventRecap              -5.2732        nan        nan        nan         nan         nan
+content_topic_Gratitude                0.3250        nan        nan        nan         nan         nan
+content_topic_Health                  -1.1258        nan        nan        nan         nan         nan
+content_topic_Reintegration            0.6059        nan        nan        nan         nan         nan
+content_topic_SafehouseLife            1.7131        nan        nan        nan         nan         nan
+inter_Facebook_Campaign                4.5598        nan        nan        nan         nan         nan
+inter_Facebook_EducationalContent    -34.7260        nan        nan        nan         nan         nan
+inter_Facebook_EventPromotion        -30.3605        nan        nan        nan         nan         nan
+inter_Facebook_FundraisingAppeal       7.7457        nan        nan        nan         nan         nan
+inter_Facebook_ThankYou              -28.0287        nan        nan        nan         nan         nan
+inter_Instagram_Campaign              -5.9629        nan        nan        nan         nan         nan
+inter_Instagram_EducationalContent   -28.6861        nan        nan        nan         nan         nan
+inter_Instagram_EventPromotion       -26.6560        nan        nan        nan         nan         nan
+inter_Instagram_FundraisingAppeal     -2.1448        nan        nan        nan         nan         nan
+inter_Instagram_ImpactStory            7.3337        nan        nan        nan         nan         nan
+inter_Instagram_ThankYou             -32.4275        nan        nan        nan         nan         nan
+inter_LinkedIn_Campaign               -2.8208        nan        nan        nan         nan         nan
+inter_LinkedIn_EducationalContent    -94.6283        nan        nan        nan         nan         nan
+inter_LinkedIn_EventPromotion       -122.4889        nan        nan        nan         nan         nan
+inter_LinkedIn_ImpactStory             1.2281        nan        nan        nan         nan         nan
+inter_LinkedIn_ThankYou              -25.7782        nan        nan        nan         nan         nan
+inter_TikTok_Campaign                  6.1760        nan        nan        nan         nan         nan
+inter_TikTok_EducationalContent      -28.5480        nan        nan        nan         nan         nan
+inter_TikTok_EventPromotion          -30.8141        nan        nan        nan         nan         nan
+inter_TikTok_FundraisingAppeal        -0.9214        nan        nan        nan         nan         nan
+inter_TikTok_ImpactStory              23.6822        nan        nan        nan         nan         nan
+inter_TikTok_ThankYou                -33.3239        nan        nan        nan         nan         nan
+inter_Twitter_Campaign                -5.7351        nan        nan        nan         nan         nan
+inter_Twitter_EducationalContent     -44.1461        nan        nan        nan         nan         nan
+inter_Twitter_EventPromotion         -28.0602        nan        nan        nan         nan         nan
+inter_Twitter_FundraisingAppeal       15.2391        nan        nan        nan         nan         nan
+inter_Twitter_ImpactStory              3.2314        nan        nan        nan         nan         nan
+inter_Twitter_ThankYou               -23.2243        nan        nan        nan         nan         nan
+inter_WhatsApp_Campaign               14.8762        nan        nan        nan         nan         nan
+inter_WhatsApp_EducationalContent     -3.6436        nan        nan        nan         nan         nan
+inter_WhatsApp_EventPromotion         -3.4932        nan        nan        nan         nan         nan
+inter_WhatsApp_FundraisingAppeal       6.5123        nan        nan        nan         nan         nan
+inter_WhatsApp_ImpactStory            18.2797        nan        nan        nan         nan         nan
+inter_WhatsApp_ThankYou              -12.5749        nan        nan        nan         nan         nan
+inter_YouTube_Campaign               -14.3052        nan        nan        nan         nan         nan
+inter_YouTube_EducationalContent     -35.1906        nan        nan        nan         nan         nan
+inter_YouTube_EventPromotion         -35.8074        nan        nan        nan         nan         nan
+inter_YouTube_FundraisingAppeal       79.0881        nan        nan        nan         nan         nan
+inter_YouTube_ImpactStory             18.3654        nan        nan        nan         nan         nan
+inter_YouTube_ThankYou               -35.4185        nan        nan        nan         nan         nan
+post_hour                              0.7433        nan        nan        nan         nan         nan
+day_of_week_numeric                   -0.1995        nan        nan        nan         nan         nan
+quarter                                2.4742        nan        nan        nan         nan         nan
+is_peak_hour                           7.1142        nan        nan        nan         nan         nan
+days_since_first_post                 -0.0003        nan        nan        nan         nan         nan
+rolling_avg_ref_30d                   -0.4481        nan        nan        nan         nan         nan
+rolling_avg_val_30d                    0.0001        nan        nan        nan         nan         nan
+rolling_post_count_30d                 0.3674        nan        nan        nan         nan         nan
+is_during_active                    -214.7775        nan        nan        nan         nan         nan
+log_reach                             22.5213        nan        nan        nan         nan         nan
+log_boost_budget                      28.3946        nan        nan        nan         nan         nan
+donation_value_per_boost              38.4708        nan        nan        nan         nan         nan
+days_since_last_snap                   0.1089        nan        nan        nan         nan         nan
+======================================================================================================
+
+Possibly complete quasi-separation: A fraction 0.81 of observations can be
+perfectly predicted. This might indicate that there is complete
+quasi-separation. In this case some parameters will not be identified.

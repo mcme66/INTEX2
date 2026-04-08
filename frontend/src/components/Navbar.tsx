@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, type ReactNode } from "react";
-import { Menu, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { Menu, X, UserCircle, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/state/auth";
 
 type NavItem = { to: string; label: string };
@@ -8,7 +8,111 @@ type NavItem = { to: string; label: string };
 const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, updateProfile } = useAuth();
+
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileSuccess, setProfileSuccess] = useState(false);
+
+  const desktopPanelRef = useRef<HTMLDivElement>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
+
+  const resetForm = useCallback(() => {
+    if (user) {
+      setFirstName(user.firstName);
+      setEmail(user.email);
+      setUsername(user.username);
+    }
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setShowCurrent(false);
+    setShowNew(false);
+    setShowConfirm(false);
+    setProfileError("");
+    setProfileSuccess(false);
+  }, [user]);
+
+  useEffect(() => {
+    if (profileOpen) resetForm();
+  }, [profileOpen, resetForm]);
+
+  useEffect(() => {
+    if (!profileOpen) return;
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        desktopPanelRef.current?.contains(target) ||
+        mobilePanelRef.current?.contains(target)
+      )
+        return;
+      setProfileOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [profileOpen]);
+
+  const handleProfileSave = async () => {
+    setProfileError("");
+    setProfileSuccess(false);
+
+    if (firstName.trim().length < 2) {
+      setProfileError("Name must be at least 2 characters.");
+      return;
+    }
+    if (username.trim().length < 3) {
+      setProfileError("Username must be at least 3 characters.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setProfileError("Enter a valid email address.");
+      return;
+    }
+
+    const changingPassword = currentPassword || newPassword || confirmPassword;
+    if (changingPassword) {
+      if (!currentPassword) {
+        setProfileError("Enter your current password.");
+        return;
+      }
+      if (newPassword.length < 6) {
+        setProfileError("New password must be at least 6 characters.");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        setProfileError("New passwords do not match.");
+        return;
+      }
+    }
+
+    setProfileSaving(true);
+    try {
+      await updateProfile({
+        firstName: firstName.trim(),
+        email: email.trim(),
+        username: username.trim(),
+        ...(changingPassword
+          ? { currentPassword, newPassword }
+          : {}),
+      });
+      setProfileSuccess(true);
+      setTimeout(() => setProfileOpen(false), 800);
+    } catch (err: unknown) {
+      setProfileError(err instanceof Error ? err.message : "Update failed.");
+    } finally {
+      setProfileSaving(false);
+    }
+  };
 
   const donorLinks: NavItem[] = user?.isDonor
     ? [{ to: "/donor", label: "Donor Dashboard" }]
@@ -19,9 +123,9 @@ const Navbar = () => {
     : [];
 
   const publicLinks: NavItem[] = [
-    { to: "/donors", label: "Ways to Help" },
+    { to: "/", label: "Home" },
     { to: "/impact", label: "Our Impact" },
-    { to: "/volunteer", label: "Volunteer" },
+    { to: "/volunteer", label: "Ways to Help" },
   ];
 
   const linkClass = (to: string) =>
@@ -50,17 +154,17 @@ const Navbar = () => {
     const hasPublic = publicLinks.length > 0;
     const sections: ReactNode[] = [];
 
-    if (hasDonor) {
-      sections.push(
-        <div key="donor" className="flex items-center gap-6">
-          <NavLinkList items={donorLinks} />
-        </div>,
-      );
-    }
     if (hasAdmin) {
       sections.push(
         <div key="admin" className="flex items-center gap-6">
           <NavLinkList items={adminLinks} />
+        </div>,
+      );
+    }
+    if (hasDonor) {
+      sections.push(
+        <div key="donor" className="flex items-center gap-6">
+          <NavLinkList items={donorLinks} />
         </div>,
       );
     }
@@ -84,6 +188,138 @@ const Navbar = () => {
     );
   };
 
+  const inputClass =
+    "w-full px-3 py-2 text-sm border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent";
+
+  const profileFormContent = (
+    <>
+      <h3 className="text-sm font-semibold text-foreground mb-4">Edit Profile</h3>
+
+      <div className="space-y-3">
+        <div>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Name</label>
+          <input
+            type="text"
+            className={inputClass}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Email</label>
+          <input
+            type="email"
+            className={inputClass}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Username</label>
+          <input
+            type="text"
+            className={inputClass}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="border-t border-border mt-4 pt-4">
+        <p className="text-xs font-semibold text-foreground mb-3">Change Password</p>
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">
+              Current Password
+            </label>
+            <div className="relative">
+              <input
+                type={showCurrent ? "text" : "password"}
+                className={inputClass + " pr-9"}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Required to change password"
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                onClick={() => setShowCurrent((v) => !v)}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">
+              New Password
+            </label>
+            <div className="relative">
+              <input
+                type={showNew ? "text" : "password"}
+                className={inputClass + " pr-9"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Min 6 characters"
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                onClick={() => setShowNew((v) => !v)}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">
+              Confirm New Password
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirm ? "text" : "password"}
+                className={inputClass + " pr-9"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter new password"
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                onClick={() => setShowConfirm((v) => !v)}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {profileError && <p className="text-xs text-red-500 mt-3">{profileError}</p>}
+      {profileSuccess && <p className="text-xs text-green-600 mt-3">Profile updated!</p>}
+
+      <div className="flex gap-2 mt-4">
+        <button
+          type="button"
+          onClick={() => setProfileOpen(false)}
+          className="flex-1 text-sm font-medium px-3 py-2 border border-border rounded-md hover:bg-secondary transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          onClick={handleProfileSave}
+          disabled={profileSaving}
+          className="flex-1 text-sm font-medium px-3 py-2 bg-accent text-accent-foreground rounded-md hover:bg-gold-dark transition-colors disabled:opacity-50"
+        >
+          {profileSaving ? "Saving..." : "Save"}
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <nav className="w-full px-4 sm:px-6 h-16 flex items-center">
@@ -96,22 +332,55 @@ const Navbar = () => {
 
         {renderDesktopNav()}
 
-        <div className="hidden md:flex items-center shrink-0 ml-auto">
+        <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto">
           {user ? (
-            <button
-              type="button"
-              onClick={logout}
-              className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-            >
-              Sign out
-            </button>
+            <>
+              <span className="text-sm font-medium text-foreground">
+                {user.firstName}
+              </span>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setProfileOpen((v) => !v)}
+                  className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-secondary transition-colors"
+                  aria-label="Profile"
+                >
+                  <UserCircle size={22} className="text-foreground" />
+                </button>
+
+                {profileOpen && (
+                  <div
+                    ref={desktopPanelRef}
+                    className="absolute right-0 top-12 w-80 max-h-[80vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5 z-50"
+                  >
+                    {profileFormContent}
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={logout}
+                className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
+              >
+                Sign out
+              </button>
+            </>
           ) : (
-            <Link
-              to="/login"
-              className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-            >
-              Staff Login
-            </Link>
+            <>
+              <Link
+                to="/register"
+                className="text-sm font-medium px-4 py-2 border border-border hover:bg-secondary transition-colors"
+              >
+                Register
+              </Link>
+              <Link
+                to="/login"
+                className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
+              >
+                Login
+              </Link>
+            </>
           )}
         </div>
 
@@ -126,29 +395,6 @@ const Navbar = () => {
 
       {mobileOpen && (
         <div className="md:hidden border-t border-border bg-background px-4 sm:px-6 py-4 space-y-4">
-          {donorLinks.length > 0 && (
-            <div className="space-y-2">
-              {donorLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          )}
-          {donorLinks.length > 0 &&
-            (adminLinks.length > 0 || publicLinks.length > 0) && (
-              <div
-                className="text-center text-muted-foreground/40 select-none py-0.5"
-                aria-hidden
-              >
-                |
-              </div>
-            )}
           {adminLinks.length > 0 && (
             <div className="space-y-2">
               {adminLinks.map((link) => (
@@ -163,11 +409,28 @@ const Navbar = () => {
               ))}
             </div>
           )}
-          {adminLinks.length > 0 && publicLinks.length > 0 && (
-            <div
-              className="text-center text-muted-foreground/40 select-none py-0.5"
-              aria-hidden
-            >
+          {adminLinks.length > 0 &&
+            (donorLinks.length > 0 || publicLinks.length > 0) && (
+              <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>
+                |
+              </div>
+            )}
+          {donorLinks.length > 0 && (
+            <div className="space-y-2">
+              {donorLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
+          {donorLinks.length > 0 && publicLinks.length > 0 && (
+            <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>
               |
             </div>
           )}
@@ -186,25 +449,57 @@ const Navbar = () => {
             </div>
           )}
           {user ? (
-            <button
-              type="button"
-              onClick={() => {
-                logout();
-                setMobileOpen(false);
-              }}
-              className="block w-full text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center mt-2"
-            >
-              Sign out
-            </button>
+            <div className="space-y-2 mt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  setProfileOpen(true);
+                }}
+                className="block w-full text-sm font-medium px-4 py-2 border border-border text-center"
+              >
+                Edit Profile
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  setMobileOpen(false);
+                }}
+                className="block w-full text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
+              >
+                Sign out
+              </button>
+            </div>
           ) : (
-            <Link
-              to="/login"
-              onClick={() => setMobileOpen(false)}
-              className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center mt-2"
-            >
-              Staff Login
-            </Link>
+            <div className="flex flex-col gap-2 mt-2">
+              <Link
+                to="/register"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm font-medium px-4 py-2 border border-border text-center"
+              >
+                Register
+              </Link>
+              <Link
+                to="/login"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
+              >
+                Login
+              </Link>
+            </div>
           )}
+        </div>
+      )}
+
+      {profileOpen && (
+        <div className="md:hidden fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-20 px-4">
+          <div
+            ref={mobilePanelRef}
+            className="w-full max-w-sm max-h-[75vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5"
+          >
+            {profileFormContent}
+          </div>
         </div>
       )}
     </header>

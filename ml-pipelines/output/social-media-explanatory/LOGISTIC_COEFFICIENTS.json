@@ -1,0 +1,704 @@
+[
+  {
+    "feature": "hashtag_count",
+    "coefficient": -1.0433,
+    "std_error": NaN,
+    "odds_ratio": 0.3523,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "caption_length",
+    "coefficient": 0.0104,
+    "std_error": NaN,
+    "odds_ratio": 1.0105,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "is_weekend",
+    "coefficient": 2.5321,
+    "std_error": NaN,
+    "odds_ratio": 12.5799,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "features_resident_story",
+    "coefficient": 9.8859,
+    "std_error": NaN,
+    "odds_ratio": 19650.7976,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "sentiment_tone_Emotional",
+    "coefficient": 4.8696,
+    "std_error": NaN,
+    "odds_ratio": 130.2692,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "sentiment_tone_Grateful",
+    "coefficient": -10.4034,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "sentiment_tone_Hopeful",
+    "coefficient": -4.0741,
+    "std_error": NaN,
+    "odds_ratio": 0.017,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "sentiment_tone_Informative",
+    "coefficient": -15.8698,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "sentiment_tone_Urgent",
+    "coefficient": -0.3879,
+    "std_error": NaN,
+    "odds_ratio": 0.6785,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "media_type_Photo",
+    "coefficient": 2.9238,
+    "std_error": NaN,
+    "odds_ratio": 18.6127,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "media_type_Reel",
+    "coefficient": -0.5873,
+    "std_error": NaN,
+    "odds_ratio": 0.5558,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "media_type_Text",
+    "coefficient": 4.7307,
+    "std_error": NaN,
+    "odds_ratio": 113.3762,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "media_type_Video",
+    "coefficient": 5.4089,
+    "std_error": NaN,
+    "odds_ratio": 223.3823,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "call_to_action_type_DonateNow",
+    "coefficient": 7.447,
+    "std_error": NaN,
+    "odds_ratio": 1714.794,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "call_to_action_type_LearnMore",
+    "coefficient": 7.5647,
+    "std_error": NaN,
+    "odds_ratio": 1928.881,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "call_to_action_type_ShareStory",
+    "coefficient": 7.0296,
+    "std_error": NaN,
+    "odds_ratio": 1129.5589,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "call_to_action_type_SignUp",
+    "coefficient": 5.7889,
+    "std_error": NaN,
+    "odds_ratio": 326.6619,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_CampaignLaunch",
+    "coefficient": 6.1252,
+    "std_error": NaN,
+    "odds_ratio": 457.245,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_DonorImpact",
+    "coefficient": 5.6656,
+    "std_error": NaN,
+    "odds_ratio": 288.7555,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_Education",
+    "coefficient": 6.3048,
+    "std_error": NaN,
+    "odds_ratio": 547.1935,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_EventRecap",
+    "coefficient": -5.2732,
+    "std_error": NaN,
+    "odds_ratio": 0.0051,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_Gratitude",
+    "coefficient": 0.325,
+    "std_error": NaN,
+    "odds_ratio": 1.3841,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_Health",
+    "coefficient": -1.1258,
+    "std_error": NaN,
+    "odds_ratio": 0.3244,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_Reintegration",
+    "coefficient": 0.6059,
+    "std_error": NaN,
+    "odds_ratio": 1.8329,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "content_topic_SafehouseLife",
+    "coefficient": 1.7131,
+    "std_error": NaN,
+    "odds_ratio": 5.5463,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Facebook_Campaign",
+    "coefficient": 4.5598,
+    "std_error": NaN,
+    "odds_ratio": 95.5646,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Facebook_EducationalContent",
+    "coefficient": -34.726,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Facebook_EventPromotion",
+    "coefficient": -30.3605,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Facebook_FundraisingAppeal",
+    "coefficient": 7.7457,
+    "std_error": NaN,
+    "odds_ratio": 2311.6643,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Facebook_ThankYou",
+    "coefficient": -28.0287,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Instagram_Campaign",
+    "coefficient": -5.9629,
+    "std_error": NaN,
+    "odds_ratio": 0.0026,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Instagram_EducationalContent",
+    "coefficient": -28.6861,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Instagram_EventPromotion",
+    "coefficient": -26.656,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Instagram_FundraisingAppeal",
+    "coefficient": -2.1448,
+    "std_error": NaN,
+    "odds_ratio": 0.1171,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Instagram_ImpactStory",
+    "coefficient": 7.3337,
+    "std_error": NaN,
+    "odds_ratio": 1531.0585,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Instagram_ThankYou",
+    "coefficient": -32.4275,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_LinkedIn_Campaign",
+    "coefficient": -2.8208,
+    "std_error": NaN,
+    "odds_ratio": 0.0596,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_LinkedIn_EducationalContent",
+    "coefficient": -94.6283,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_LinkedIn_EventPromotion",
+    "coefficient": -122.4889,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_LinkedIn_ImpactStory",
+    "coefficient": 1.2281,
+    "std_error": NaN,
+    "odds_ratio": 3.4147,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_LinkedIn_ThankYou",
+    "coefficient": -25.7782,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_TikTok_Campaign",
+    "coefficient": 6.176,
+    "std_error": NaN,
+    "odds_ratio": 481.0676,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_TikTok_EducationalContent",
+    "coefficient": -28.548,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_TikTok_EventPromotion",
+    "coefficient": -30.8141,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_TikTok_FundraisingAppeal",
+    "coefficient": -0.9214,
+    "std_error": NaN,
+    "odds_ratio": 0.398,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_TikTok_ImpactStory",
+    "coefficient": 23.6822,
+    "std_error": NaN,
+    "odds_ratio": 19277475475.1198,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_TikTok_ThankYou",
+    "coefficient": -33.3239,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Twitter_Campaign",
+    "coefficient": -5.7351,
+    "std_error": NaN,
+    "odds_ratio": 0.0032,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Twitter_EducationalContent",
+    "coefficient": -44.1461,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Twitter_EventPromotion",
+    "coefficient": -28.0602,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Twitter_FundraisingAppeal",
+    "coefficient": 15.2391,
+    "std_error": NaN,
+    "odds_ratio": 4151977.8868,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Twitter_ImpactStory",
+    "coefficient": 3.2314,
+    "std_error": NaN,
+    "odds_ratio": 25.3152,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_Twitter_ThankYou",
+    "coefficient": -23.2243,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_WhatsApp_Campaign",
+    "coefficient": 14.8762,
+    "std_error": NaN,
+    "odds_ratio": 2888259.2693,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_WhatsApp_EducationalContent",
+    "coefficient": -3.6436,
+    "std_error": NaN,
+    "odds_ratio": 0.0262,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_WhatsApp_EventPromotion",
+    "coefficient": -3.4932,
+    "std_error": NaN,
+    "odds_ratio": 0.0304,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_WhatsApp_FundraisingAppeal",
+    "coefficient": 6.5123,
+    "std_error": NaN,
+    "odds_ratio": 673.3724,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_WhatsApp_ImpactStory",
+    "coefficient": 18.2797,
+    "std_error": NaN,
+    "odds_ratio": 86849464.5965,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_WhatsApp_ThankYou",
+    "coefficient": -12.5749,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_YouTube_Campaign",
+    "coefficient": -14.3052,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_YouTube_EducationalContent",
+    "coefficient": -35.1906,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_YouTube_EventPromotion",
+    "coefficient": -35.8074,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_YouTube_FundraisingAppeal",
+    "coefficient": 79.0881,
+    "std_error": NaN,
+    "odds_ratio": 2.2259364820231835e+34,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_YouTube_ImpactStory",
+    "coefficient": 18.3654,
+    "std_error": NaN,
+    "odds_ratio": 94625414.8408,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "inter_YouTube_ThankYou",
+    "coefficient": -35.4185,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "post_hour",
+    "coefficient": 0.7433,
+    "std_error": NaN,
+    "odds_ratio": 2.1029,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "day_of_week_numeric",
+    "coefficient": -0.1995,
+    "std_error": NaN,
+    "odds_ratio": 0.8191,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "quarter",
+    "coefficient": 2.4742,
+    "std_error": NaN,
+    "odds_ratio": 11.872,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "is_peak_hour",
+    "coefficient": 7.1142,
+    "std_error": NaN,
+    "odds_ratio": 1229.3425,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "days_since_first_post",
+    "coefficient": -0.0003,
+    "std_error": NaN,
+    "odds_ratio": 0.9997,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "rolling_avg_ref_30d",
+    "coefficient": -0.4481,
+    "std_error": NaN,
+    "odds_ratio": 0.6388,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "rolling_avg_val_30d",
+    "coefficient": 0.0001,
+    "std_error": NaN,
+    "odds_ratio": 1.0001,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "rolling_post_count_30d",
+    "coefficient": 0.3674,
+    "std_error": NaN,
+    "odds_ratio": 1.444,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "is_during_active",
+    "coefficient": -214.7775,
+    "std_error": NaN,
+    "odds_ratio": 0.0,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "log_reach",
+    "coefficient": 22.5213,
+    "std_error": NaN,
+    "odds_ratio": 6037686287.3427,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "log_boost_budget",
+    "coefficient": 28.3946,
+    "std_error": NaN,
+    "odds_ratio": 2145904136259.925,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "donation_value_per_boost",
+    "coefficient": 38.4708,
+    "std_error": NaN,
+    "odds_ratio": 5.1007963235329896e+16,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  },
+  {
+    "feature": "days_since_last_snap",
+    "coefficient": 0.1089,
+    "std_error": NaN,
+    "odds_ratio": 1.1151,
+    "p_value": NaN,
+    "significant": false,
+    "interpretation": "Not significant (p=nan)."
+  }
+]

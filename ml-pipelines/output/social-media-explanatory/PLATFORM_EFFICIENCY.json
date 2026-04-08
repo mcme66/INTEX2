@@ -1,0 +1,47 @@
+{
+  "n_posts": {
+    "Facebook": 199,
+    "Instagram": 164,
+    "LinkedIn": 79,
+    "TikTok": 89,
+    "Twitter": 117,
+    "WhatsApp": 93,
+    "YouTube": 71
+  },
+  "avg_value": {
+    "Facebook": 31086.19,
+    "Instagram": 30989.33,
+    "LinkedIn": 34921.29,
+    "TikTok": 57424.57,
+    "Twitter": 14264.21,
+    "WhatsApp": 78438.1,
+    "YouTube": 59060.76
+  },
+  "avg_budget": {
+    "Facebook": 2233.89,
+    "Instagram": 2409.88,
+    "LinkedIn": 2998.36,
+    "TikTok": 2515.91,
+    "Twitter": 2054.39,
+    "WhatsApp": 2477.83,
+    "YouTube": 2591.47
+  },
+  "conv_rate": {
+    "Facebook": 0.61,
+    "Instagram": 0.68,
+    "LinkedIn": 0.41,
+    "TikTok": 0.75,
+    "Twitter": 0.63,
+    "WhatsApp": 0.65,
+    "YouTube": 0.77
+  },
+  "ROAS": {
+    "Facebook": 13.92,
+    "Instagram": 12.86,
+    "LinkedIn": 11.65,
+    "TikTok": 22.82,
+    "Twitter": 6.94,
+    "WhatsApp": 31.66,
+    "YouTube": 22.79
+  }
+}

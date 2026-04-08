@@ -168,7 +168,7 @@
     "inter_YouTube_ThankYou",
     "post_hour",
     "day_of_week_numeric",
-    "quarter",
+    "month",
     "is_peak_hour",
     "days_since_first_post",
     "rolling_avg_ref_30d",

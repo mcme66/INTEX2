@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { useLayoutEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,56 +13,77 @@ import Register from "./pages/Register.tsx";
 import Volunteer from "./pages/Volunteer.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
-import MlReport from "./pages/Report.tsx";
+import ReportPage from "./pages/ReportTemp.tsx";
 import DonorDashboard from "./pages/DonorDashboard.tsx";
-import AdminUtilityPage from "./pages/AdminUtilityPage.tsx";
 import Caseload from "./pages/Caseload.tsx";
 import ProcessRecordingPage from "./pages/ProcessRecording.tsx";
 import HomeVisitationPage from "./pages/HomeVisitation.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CookieConsent from "./components/CookieConsent";
 import { AuthProvider, useAuth } from "./state/auth";
 import { MlRefreshProvider } from "./state/mlRefresh";
 
 const queryClient = new QueryClient();
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname]);
+
+  return null;
+};
+
 const AppRoutes = () => {
   const { user } = useAuth();
 
   return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/donors" element={<Donors />} />
-      <Route path="/impact" element={<Impact />} />
-      <Route path="/volunteer" element={<Volunteer />} />
-      <Route path="/privacy" element={<Privacy />} />
-      <Route path="/login" element={user ? <Navigate to="/impact" replace /> : <Login />} />
-      <Route path="/register" element={user ? <Navigate to="/impact" replace /> : <Register />} />
-      <Route
-        path="/donor"
-        element={<ProtectedRoute role="donor" element={<DonorDashboard />} />}
-      />
-      <Route
-        path="/admin"
-        element={<ProtectedRoute role="admin" element={<AdminDashboard />} />}
-      />
-      <Route
-        path="/admin/caseloads"
-        element={<ProtectedRoute role="admin" element={<Caseload />} />}
-      />
-      <Route
-        path="/admin/process-recording"
-        element={<ProtectedRoute role="admin" element={<ProcessRecordingPage />} />}
-      />
-      <Route
-        path="/admin/visits"
-        element={<ProtectedRoute role="admin" element={<HomeVisitationPage />} />}
-      />
-      <Route
-        path="/admin/reports"
-        element={<ProtectedRoute role="admin" element={<MlReport />} />}
-      />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/donors" element={<Donors />} />
+        <Route path="/impact" element={<Impact />} />
+        <Route path="/volunteer" element={<Volunteer />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/login" element={user ? <Navigate to="/impact" replace /> : <Login />} />
+        <Route path="/register" element={user ? <Navigate to="/impact" replace /> : <Register />} />
+        <Route
+          path="/donor"
+          element={<ProtectedRoute role="donor" element={<DonorDashboard />} />}
+        />
+        <Route
+          path="/admin"
+          element={<ProtectedRoute role="admin" element={<AdminDashboard />} />}
+        />
+        <Route
+          path="/admin/caseloads"
+          element={<ProtectedRoute role="admin" element={<Caseload />} />}
+        />
+        <Route
+          path="/admin/process-recording"
+          element={<ProtectedRoute role="admin" element={<ProcessRecordingPage />} />}
+        />
+        <Route
+          path="/admin/visits"
+          element={<ProtectedRoute role="admin" element={<HomeVisitationPage />} />}
+        />
+        <Route
+          path="/admin/reports"
+          element={<ProtectedRoute role="admin" element={<ReportPage />} />}
+        />
+        <Route
+          path="/admin/donor"
+          element={<ProtectedRoute role="admin" element={<Donors />} />}
+        />
+        <Route
+          path="/admin/donors"
+          element={<ProtectedRoute role="admin" element={<Donors />} />}
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 };
 
@@ -73,6 +95,8 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
+            {/* GDPR cookie consent banner — shown on first visit, stores choice in localStorage */}
+            <CookieConsent />
             <AppRoutes />
           </TooltipProvider>
         </MlRefreshProvider>

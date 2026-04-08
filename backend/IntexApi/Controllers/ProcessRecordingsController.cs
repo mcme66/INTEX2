@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using IntexApi.Data;
 using IntexApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -25,25 +26,25 @@ public sealed record ProcessRecordingDto(
 );
 
 public sealed record ProcessRecordingUpsertRequest(
-    int ResidentId,
+    [param: Required] int ResidentId,
     DateOnly? SessionDate,
-    string? SocialWorker,
-    string? SessionType,
-    int? SessionDurationMinutes,
-    string? EmotionalStateObserved,
-    string? EmotionalStateEnd,
-    string? SessionNarrative,
-    string? InterventionsApplied,
-    string? FollowUpActions,
+    [param: StringLength(100)] string? SocialWorker,
+    [param: StringLength(30)] string? SessionType,
+    [param: Range(0, 480)] int? SessionDurationMinutes,
+    [param: StringLength(50)] string? EmotionalStateObserved,
+    [param: StringLength(50)] string? EmotionalStateEnd,
+    [param: StringLength(4000)] string? SessionNarrative,
+    [param: StringLength(2000)] string? InterventionsApplied,
+    [param: StringLength(2000)] string? FollowUpActions,
     bool ProgressNoted,
     bool ConcernsFlagged,
     bool ReferralMade,
-    string? NotesRestricted
+    [param: StringLength(2000)] string? NotesRestricted
 );
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "admin")]
 public sealed class ProcessRecordingsController(AppDbContext db) : ControllerBase
 {
     [HttpGet]
@@ -189,5 +190,15 @@ public sealed class ProcessRecordingsController(AppDbContext db) : ControllerBas
         r.ReferralMade = req.ReferralMade;
         r.NotesRestricted = req.NotesRestricted;
         return r;
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken ct)
+    {
+        var recording = await db.ProcessRecordings.FindAsync([id], ct);
+        if (recording is null) return NotFound();
+        db.ProcessRecordings.Remove(recording);
+        await db.SaveChangesAsync(ct);
+        return NoContent();
     }
 }

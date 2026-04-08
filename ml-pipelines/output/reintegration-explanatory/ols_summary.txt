@@ -1,27 +1,27 @@
                                 OLS Regression Results                               
 =====================================================================================
-Dep. Variable:     log_days_to_reintegration   R-squared:                       0.029
-Model:                                   OLS   Adj. R-squared:                 -0.042
-Method:                        Least Squares   F-statistic:                     1.543
-Date:                       Wed, 08 Apr 2026   Prob (F-statistic):              0.278
-Time:                               07:16:44   Log-Likelihood:                -59.772
-No. Observations:                         60   AIC:                             129.5
-Df Residuals:                             55   BIC:                             140.0
+Dep. Variable:     log_days_to_reintegration   R-squared:                       0.030
+Model:                                   OLS   Adj. R-squared:                 -0.040
+Method:                        Least Squares   F-statistic:                     1.652
+Date:                       Wed, 08 Apr 2026   Prob (F-statistic):              0.253
+Time:                               16:28:02   Log-Likelihood:                -59.844
+No. Observations:                         60   AIC:                             129.7
+Df Residuals:                             55   BIC:                             140.2
 Df Model:                                  4                                         
 Covariance Type:                     cluster                                         
 ===========================================================================================
                               coef    std err          z      P>|z|      [0.025      0.975]
 -------------------------------------------------------------------------------------------
-const                       3.9060      0.587      6.657      0.000       2.756       5.056
-recent_psych_checkup       -0.1756      0.269     -0.652      0.514      -0.703       0.352
-composite_health_trend    -77.1067    106.286     -0.725      0.468    -285.423     131.210
-current_attendance_rate    -0.0654      0.720     -0.091      0.928      -1.477       1.346
-attendance_slope_3m        56.0764     38.483      1.457      0.145     -19.349     131.501
+const                       4.0048      0.638      6.273      0.000       2.753       5.256
+recent_psych_checkup       -0.1687      0.269     -0.627      0.531      -0.696       0.359
+composite_health_trend    -83.3082    105.708     -0.788      0.431    -290.491     123.875
+current_attendance_rate    -0.1827      0.775     -0.236      0.814      -1.701       1.336
+attendance_slope_3m        62.1361     39.826      1.560      0.119     -15.922     140.194
 ==============================================================================
-Omnibus:                       21.317   Durbin-Watson:                   1.830
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               28.957
-Skew:                          -1.396   Prob(JB):                     5.15e-07
-Kurtosis:                       4.947   Cond. No.                     2.34e+03
+Omnibus:                       22.252   Durbin-Watson:                   1.682
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               31.108
+Skew:                          -1.434   Prob(JB):                     1.76e-07
+Kurtosis:                       5.055   Cond. No.                     2.34e+03
 ==============================================================================
 
 Notes:

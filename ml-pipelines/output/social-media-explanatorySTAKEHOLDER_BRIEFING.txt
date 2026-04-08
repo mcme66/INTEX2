@@ -12,7 +12,7 @@
    -  Converting posts: 522
 
 2. MODEL PERFORMANCE
-   -  Logistic (conversion):  Pseudo R² = 0.922
+   -  Logistic (conversion):  Pseudo R² = 0.921
    -  OLS (donation value):   Adj R²    = 0.777
 
 3. KEY FINDINGS
@@ -30,4 +30,4 @@
    -  Boost selection bias exists
    -  Engagement still matters for long-term audience building
 
-Generated: 2026-04-08 07:21:21
+Generated: 2026-04-08 16:29:47

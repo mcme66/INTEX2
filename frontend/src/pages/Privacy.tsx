@@ -36,8 +36,11 @@ const Privacy = () => {
           </p>
 
           <div className="mt-10 rounded-lg border border-border bg-secondary/60 p-5 text-sm leading-relaxed text-foreground">
-            Essential cookies support login state and site function. Optional analytics cookies may
-            be accepted or declined through future consent tooling.
+            Essential cookies support login state and site function. On your first visit a consent
+            banner is shown where you can accept or reject optional analytics cookies. Your choice is
+            stored in your browser's <code>localStorage</code> under the key{" "}
+            <code>cookie_consent</code> and the banner will not appear again. You can withdraw or
+            change your choice at any time by clearing your browser's local storage for this site.
           </div>
 
           <div className="mt-8 space-y-4">

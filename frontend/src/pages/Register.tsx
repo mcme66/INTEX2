@@ -1,25 +1,29 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/state/auth";
+import { apiRegister } from "@/utils/api";
 
 const Register = () => {
-  const { register } = useAuth();
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isDonor, setIsDonor] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [hasCode, setHasCode] = useState(false);
   const [adminCode, setAdminCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const passwordsMatch = password === confirmPassword;
 
   return (
     <Layout>
@@ -27,22 +31,19 @@ const Register = () => {
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-12 lg:grid-cols-[1.1fr,0.9fr] lg:items-start">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                New Staff Account
-              </p>
-              <h1 className="mt-4 font-heading text-4xl font-semibold leading-tight text-foreground md:text-5xl">
-                Create access for the internal dashboards.
+              <h1 className="font-heading text-4xl font-semibold leading-tight text-foreground md:text-5xl">
+                Create an account to get involved with North Star.
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-                This keeps the lovable public frontend intact while enabling donor and admin
-                workflows behind authenticated routes.
+                Sign up to track your giving history, manage your donation preferences, and
+                see the direct impact your contributions are making for children in Colombia.
               </p>
             </div>
 
             <Card className="border-border/80 bg-card/90 shadow-none">
               <CardHeader>
                 <CardTitle>Register</CardTitle>
-                <CardDescription>Assign donor, admin, or both roles.</CardDescription>
+                <CardDescription>All accounts receive donor access by default.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form
@@ -53,25 +54,31 @@ const Register = () => {
                     setLoading(true);
 
                     try {
-                      if (!isAdmin && !isDonor) {
-                        throw new Error("Select at least one role (Donor and/or Admin).");
+                      if (password.length < 14) {
+                        throw new Error("Password must be at least 14 characters.");
                       }
 
-                      if (isAdmin && adminCode.trim().length === 0) {
-                        throw new Error("Admin code is required to register as an admin.");
+                      if (!passwordsMatch) {
+                        throw new Error("Passwords do not match.");
                       }
 
-                      const user = await register(
+                      if (hasCode && adminCode.trim().length === 0) {
+                        throw new Error("Please enter your registration code.");
+                      }
+
+                      const isAdmin = hasCode && adminCode.trim().length > 0;
+
+                      await apiRegister({
                         firstName,
                         email,
                         username,
                         password,
-                        isDonor,
+                        isDonor: true,
                         isAdmin,
                         adminCode,
-                      );
+                      });
 
-                      navigate(user.isAdmin ? "/admin" : user.isDonor ? "/donor" : "/");
+                      navigate("/login", { state: { username } });
                     } catch (err) {
                       setError(err instanceof Error ? err.message : "Registration failed");
                     } finally {
@@ -105,69 +112,100 @@ const Register = () => {
                     </div>
                   </div>
 
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground" htmlFor="new-username">
+                      Username
+                    </label>
+                    <Input
+                      id="new-username"
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      required
+                    />
+                  </div>
+
                   <div className="grid gap-5 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-foreground" htmlFor="new-username">
-                        Username
-                      </label>
-                      <Input
-                        id="new-username"
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        required
-                      />
-                    </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground" htmlFor="new-password">
                         Password
                       </label>
-                      <Input
-                        id="new-password"
-                        type="password"
-                        minLength={6}
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        required
-                      />
+                      {/* Password policy: minimum 14 characters, no complexity requirements */}
+                      <p className="text-xs text-muted-foreground">Must be at least 14 characters.</p>
+                      <div className="relative">
+                        <Input
+                          id="new-password"
+                          type={showPassword ? "text" : "password"}
+                          minLength={14}
+                          value={password}
+                          onChange={(event) => setPassword(event.target.value)}
+                          required
+                          className="pr-10"
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                          onClick={() => setShowPassword(!showPassword)}
+                          tabIndex={-1}
+                        >
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground" htmlFor="confirm-password">
+                        Verify Password
+                      </label>
+                      <div className="relative">
+                        <Input
+                          id="confirm-password"
+                          type={showConfirmPassword ? "text" : "password"}
+                          minLength={14}
+                          value={confirmPassword}
+                          onChange={(event) => setConfirmPassword(event.target.value)}
+                          required
+                          className="pr-10"
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          tabIndex={-1}
+                        >
+                          {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                      {confirmPassword.length > 0 && !passwordsMatch && (
+                        <p className="text-xs text-destructive">Passwords do not match.</p>
+                      )}
                     </div>
                   </div>
 
                   <div className="rounded-lg border border-border bg-background/70 p-4">
-                    <p className="text-sm font-medium text-foreground">Roles</p>
-                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                      <label className="flex items-center gap-3 text-sm text-foreground">
-                        <Checkbox
-                          checked={isDonor}
-                          onCheckedChange={(checked) => setIsDonor(checked === true)}
-                        />
-                        Donor dashboard access
-                      </label>
-                      <label className="flex items-center gap-3 text-sm text-foreground">
-                        <Checkbox
-                          checked={isAdmin}
-                          onCheckedChange={(checked) => {
-                            const next = checked === true;
-                            setIsAdmin(next);
-                            if (!next) setAdminCode("");
-                          }}
-                        />
-                        Admin dashboard access
-                      </label>
-                    </div>
+                    <label className="flex items-center gap-3 text-sm text-foreground cursor-pointer">
+                      <Checkbox
+                        checked={hasCode}
+                        onCheckedChange={(checked) => {
+                          setHasCode(checked === true);
+                          if (!checked) setAdminCode("");
+                        }}
+                      />
+                      Do you have a registration code?
+                    </label>
 
-                    {isAdmin ? (
+                    {hasCode && (
                       <div className="mt-4 space-y-2">
                         <label className="text-sm font-medium text-foreground" htmlFor="adminCode">
-                          Admin code
+                          Registration code
                         </label>
                         <Input
                           id="adminCode"
                           value={adminCode}
                           onChange={(event) => setAdminCode(event.target.value)}
-                          required
+                          placeholder="Enter your code"
+                          autoFocus
                         />
                       </div>
-                    ) : null}
+                    )}
                   </div>
 
                   {error ? (
@@ -177,7 +215,7 @@ const Register = () => {
                   ) : null}
 
                   <div className="flex flex-col gap-3 sm:flex-row">
-                    <Button type="submit" className="sm:flex-1" disabled={loading}>
+                    <Button type="submit" className="sm:flex-1" disabled={loading || (confirmPassword.length > 0 && !passwordsMatch)}>
                       {loading ? "Creating..." : "Create account"}
                     </Button>
                     <Button type="button" variant="outline" asChild className="sm:flex-1">

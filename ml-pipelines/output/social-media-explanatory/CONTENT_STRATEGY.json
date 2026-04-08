@@ -1,0 +1,112 @@
+{
+  "do_more_of": [
+    {
+      "platform": "WhatsApp",
+      "post_type": "ImpactStory",
+      "tone": "Urgent",
+      "conv": 0.714,
+      "avg_value": 424347.08
+    },
+    {
+      "platform": "LinkedIn",
+      "post_type": "ImpactStory",
+      "tone": "Emotional",
+      "conv": 0.75,
+      "avg_value": 354343.15
+    },
+    {
+      "platform": "WhatsApp",
+      "post_type": "ImpactStory",
+      "tone": "Hopeful",
+      "conv": 1.0,
+      "avg_value": 241612.95
+    },
+    {
+      "platform": "YouTube",
+      "post_type": "ImpactStory",
+      "tone": "Celebratory",
+      "conv": 1.0,
+      "avg_value": 225941.75
+    },
+    {
+      "platform": "YouTube",
+      "post_type": "ImpactStory",
+      "tone": "Hopeful",
+      "conv": 1.0,
+      "avg_value": 207260.93
+    },
+    {
+      "platform": "Facebook",
+      "post_type": "ImpactStory",
+      "tone": "Celebratory",
+      "conv": 1.0,
+      "avg_value": 196930.79
+    },
+    {
+      "platform": "Facebook",
+      "post_type": "ImpactStory",
+      "tone": "Urgent",
+      "conv": 1.0,
+      "avg_value": 190654.77
+    },
+    {
+      "platform": "TikTok",
+      "post_type": "ImpactStory",
+      "tone": "Emotional",
+      "conv": 1.0,
+      "avg_value": 176677.43
+    },
+    {
+      "platform": "Instagram",
+      "post_type": "ImpactStory",
+      "tone": "Emotional",
+      "conv": 1.0,
+      "avg_value": 176045.98
+    },
+    {
+      "platform": "YouTube",
+      "post_type": "ImpactStory",
+      "tone": "Informative",
+      "conv": 1.0,
+      "avg_value": 140329.81
+    }
+  ],
+  "stop_doing": [
+    {
+      "platform": "WhatsApp",
+      "post_type": "ThankYou",
+      "tone": "Informative",
+      "conv": 0.0,
+      "avg_value": 0.0
+    },
+    {
+      "platform": "WhatsApp",
+      "post_type": "EventPromotion",
+      "tone": "Hopeful",
+      "conv": 0.0,
+      "avg_value": 0.0
+    },
+    {
+      "platform": "WhatsApp",
+      "post_type": "EventPromotion",
+      "tone": "Urgent",
+      "conv": 0.0,
+      "avg_value": 0.0
+    },
+    {
+      "platform": "WhatsApp",
+      "post_type": "EventPromotion",
+      "tone": "Informative",
+      "conv": 0.0,
+      "avg_value": 0.0
+    },
+    {
+      "platform": "Twitter",
+      "post_type": "ThankYou",
+      "tone": "Grateful",
+      "conv": 0.0,
+      "avg_value": 0.0
+    }
+  ],
+  "test_further": []
+}

@@ -1,7 +1,9 @@
 [
   "case_status_Closed",
   "case_status_Transferred",
+  "birth_status_Marital",
   "birth_status_Non-Marital",
+  "place_of_birth_Antipolo",
   "place_of_birth_Bacolod",
   "place_of_birth_Cagayan de Oro",
   "place_of_birth_Caloocan",
@@ -15,6 +17,7 @@
   "place_of_birth_Quezon City",
   "place_of_birth_Valenzuela",
   "place_of_birth_Zamboanga City",
+  "religion_Buddhism",
   "religion_Evangelical",
   "religion_Islam",
   "religion_Jehovah's Witness",
