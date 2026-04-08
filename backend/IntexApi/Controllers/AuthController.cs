@@ -12,7 +12,7 @@ namespace IntexApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public sealed class AuthController(AppDbContext db, IJwtTokenService jwt) : ControllerBase
+public sealed class AuthController(AppDbContext db, IJwtTokenService jwt, DonorSupporterLinker donorSupporterLinker) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponse>> Register(RegisterRequest req, CancellationToken ct)
@@ -47,6 +47,9 @@ public sealed class AuthController(AppDbContext db, IJwtTokenService jwt) : Cont
 
         db.Users.Add(user);
         await db.SaveChangesAsync(ct);
+
+        if (req.IsDonor)
+            await donorSupporterLinker.TryLinkSupporterByEmailAsync(user, ct);
 
         var token = jwt.CreateToken(user);
         return Ok(new AuthResponse(

@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<DonorSupporterLinker>();
 
 builder.Services.AddSingleton<IntexApi.Services.ImpactCacheService>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<IntexApi.Services.ImpactCacheService>());
