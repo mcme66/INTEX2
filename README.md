@@ -49,7 +49,13 @@ You can also override the connection string via environment variable:
 ConnectionStrings__Default="Host=...;Port=5432;Database=...;Username=...;Password=..."
 ```
 
-Development defaults live in [backend/IntexApi/appsettings.Development.json](/Users/phoenixfisher/Projects/INTEX2/backend/IntexApi/appsettings.Development.json).
+### Team note (important)
+
+Do **not** commit `backend/IntexApi/appsettings.Development.json` (each developer will have different local DB credentials/settings).
+
+- Use `backend/IntexApi/appsettings.Development.example.json` as the template (this file is safe to commit)
+- Each developer should copy it to `backend/IntexApi/appsettings.Development.json` locally (gitignored)
+- Alternatively, store per-developer secrets via .NET User Secrets or environment variables
 
 ### 2. Apply the database
 

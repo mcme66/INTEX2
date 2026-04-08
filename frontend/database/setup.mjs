@@ -25,6 +25,41 @@ CREATE TABLE add_codes (
   CONSTRAINT "PK_add_codes" PRIMARY KEY ("Code")
 );
 
+-- ML status + predictions tables used by backend background services
+CREATE TABLE IF NOT EXISTS ml_notebook_status (
+  notebook      character varying(64) PRIMARY KEY,
+  status        character varying(16) NOT NULL DEFAULT 'idle',
+  started_at    timestamp with time zone,
+  completed_at  timestamp with time zone,
+  error_message text
+);
+
+CREATE TABLE IF NOT EXISTS ml_predictions (
+  id            serial PRIMARY KEY,
+  notebook      character varying(64) NOT NULL,
+  record_id     character varying(64) NOT NULL,
+  record_type   character varying(32) NOT NULL,
+  label         text NOT NULL,
+  score         numeric,
+  tier          character varying(32),
+  meta_json     text,
+  refreshed_at  timestamp with time zone NOT NULL DEFAULT NOW(),
+  UNIQUE(notebook, record_id)
+);
+CREATE INDEX IF NOT EXISTS ix_ml_predictions_notebook ON ml_predictions (notebook, score DESC NULLS LAST);
+
+CREATE TABLE IF NOT EXISTS ml_domain_summaries (
+  domain        character varying(64) PRIMARY KEY,
+  summary       text NOT NULL,
+  refreshed_at  timestamp with time zone NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS impact_stats_cache (
+  id integer PRIMARY KEY,
+  computed_at_utc timestamp with time zone NOT NULL,
+  payload_json text NOT NULL
+);
+
 CREATE TABLE safehouses (
   safehouse_id integer NOT NULL,
   safehouse_code text,
@@ -380,6 +415,31 @@ async function main() {
     for (const stmt of DDL.split(";").map((s) => s.trim()).filter(Boolean)) {
       await client.query(stmt);
     }
+
+    // Seed the known notebooks with idle status so status endpoints always have rows.
+    const notebooks = [
+      "donor-acquisition-prediction",
+      "donor-acquisition-explanatory",
+      "donor-churn-prediction",
+      "donor-churn-explanatory",
+      "incident-prediction",
+      "incident-explanatory",
+      "reintegration-prediction",
+      "reintegration-explanatory",
+      "social-media-prediction",
+      "social-media-explanatory",
+      "volunteer-prediction",
+      "volunteer-explanatory",
+    ];
+    for (const nb of notebooks) {
+      await client.query(
+        `INSERT INTO ml_notebook_status (notebook, status)
+         VALUES ($1, 'idle')
+         ON CONFLICT (notebook) DO NOTHING`,
+        [nb],
+      );
+    }
+
     await client.query("COMMIT");
     console.log("db:setup — created tables (Lighthouse + users/add_codes + supporters.app_user_id).");
   } catch (e) {

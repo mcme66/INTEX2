@@ -54,3 +54,6 @@ Desktop.ini
 appsettings.Development.json
 appsettings.*.json
 !appsettings.json
+
+# Allow committed template files
+!appsettings.Development.example.json

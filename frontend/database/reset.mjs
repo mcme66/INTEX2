@@ -2,6 +2,10 @@ import { createPool } from "./db-utils.mjs";
 
 /** Drop order: children before parents (matches FK graph). */
 const TABLES = [
+  "ml_predictions",
+  "ml_domain_summaries",
+  "ml_notebook_status",
+  "impact_stats_cache",
   "social_media_posts",
   "safehouse_monthly_metrics",
   "public_impact_snapshots",
