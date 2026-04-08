@@ -15,6 +15,6 @@ COPY ml-pipelines/requirements.txt ./ml-pipelines/requirements.txt
 RUN pip3 install --break-system-packages -r ml-pipelines/requirements.txt
 
 COPY --from=build /app/out .
-COPY ml-pipelines/ ./ml-pipelines/
+COPY ml-pipelines/ /ml-pipelines/
 
 ENTRYPOINT ["dotnet", "IntexApi.dll"]
