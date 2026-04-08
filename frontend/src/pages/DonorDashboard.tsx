@@ -34,7 +34,7 @@ const DonorDashboard = () => {
   const [listError, setListError] = useState<string | null>(null);
   const [amount, setAmount] = useState("");
   const [notes, setNotes] = useState("");
-  const [currencyCode, setCurrencyCode] = useState("PHP");
+  const [currencyCode, setCurrencyCode] = useState("USD");
   const [submitting, setSubmitting] = useState(false);
 
   const loadDonations = useCallback(async () => {
