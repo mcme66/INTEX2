@@ -83,7 +83,7 @@ const DonorDashboard = () => {
 
   return (
     <Layout>
-      <section className="px-6 py-14">
+      <section className="px-4 sm:px-6 py-10 sm:py-14 overflow-x-hidden">
         <div className="mx-auto max-w-5xl">
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
@@ -98,8 +98,8 @@ const DonorDashboard = () => {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-8 lg:grid-cols-2">
-            <Card className="shadow-none">
+          <div className="mt-10 grid gap-8 lg:grid-cols-2 min-w-0">
+            <Card className="shadow-none min-w-0">
               <CardHeader>
                 <CardTitle className="font-heading text-2xl">Make a gift</CardTitle>
                 <CardDescription>
@@ -153,7 +153,7 @@ const DonorDashboard = () => {
               </CardContent>
             </Card>
 
-            <Card className="shadow-none">
+            <Card className="shadow-none min-w-0">
               <CardHeader>
                 <CardTitle className="font-heading text-2xl">Your donations</CardTitle>
                 <CardDescription>
@@ -161,7 +161,7 @@ const DonorDashboard = () => {
                   email if you match an existing profile.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="min-w-0">
                 {loadingList && <p className="text-sm text-muted-foreground">Loading…</p>}
                 {listError && (
                   <p className="text-sm text-destructive" role="alert">
@@ -174,8 +174,8 @@ const DonorDashboard = () => {
                   </p>
                 )}
                 {!loadingList && !listError && donations.length > 0 && (
-                  <div className="rounded-md border border-border overflow-x-auto">
-                    <Table>
+                  <div className="rounded-md border border-border w-full min-w-0 overflow-x-auto">
+                    <Table className="min-w-[520px]">
                       <TableHeader>
                         <TableRow>
                           <TableHead>Date</TableHead>
@@ -197,7 +197,7 @@ const DonorDashboard = () => {
                             <TableCell className="text-right font-medium">
                               {formatMoney(d.amount, d.currencyCode)}
                             </TableCell>
-                            <TableCell className="max-w-[200px] truncate text-muted-foreground">
+                            <TableCell className="max-w-[180px] sm:max-w-[240px] truncate text-muted-foreground">
                               {d.notes ?? "—"}
                             </TableCell>
                             <TableCell className="text-muted-foreground text-sm">
