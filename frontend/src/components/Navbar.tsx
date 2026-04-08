@@ -15,15 +15,12 @@ const Navbar = () => {
     : [];
 
   const adminLinks: NavItem[] = user?.isAdmin
-    ? [
-        { to: "/admin", label: "Admin Dashboard" },
-        { to: "/admin/report", label: "Report" },
-      ]
+    ? [{ to: "/admin", label: "Admin Dashboard" }]
     : [];
 
   const publicLinks: NavItem[] = [
     { to: "/donors", label: "Ways to Help" },
-    { to: "/impact", label: "Impact Dashboard" },
+    { to: "/impact", label: "Our Impact" },
     { to: "/volunteer", label: "Volunteer" },
   ];
 

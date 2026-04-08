@@ -10,6 +10,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Supporter> Supporters => Set<Supporter>();
     public DbSet<Donation> Donations => Set<Donation>();
     public DbSet<DonationAllocation> DonationAllocations => Set<DonationAllocation>();
+    public DbSet<Resident> Residents => Set<Resident>();
+    public DbSet<ProcessRecording> ProcessRecordings => Set<ProcessRecording>();
+    public DbSet<HomeVisitation> HomeVisitations => Set<HomeVisitation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,6 +66,27 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
                 .WithMany(d => d.Allocations)
                 .HasForeignKey(x => x.DonationId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Resident>(b =>
+        {
+            b.ToTable("residents");
+            b.HasKey(x => x.ResidentId);
+            b.Property(x => x.ResidentId).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<ProcessRecording>(b =>
+        {
+            b.ToTable("process_recordings");
+            b.HasKey(x => x.RecordingId);
+            b.Property(x => x.RecordingId).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<HomeVisitation>(b =>
+        {
+            b.ToTable("home_visitations");
+            b.HasKey(x => x.VisitationId);
+            b.Property(x => x.VisitationId).ValueGeneratedNever();
         });
     }
 }

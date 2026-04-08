@@ -49,6 +49,16 @@ public static class ImpactQueryHelper
                 "SELECT donation_type AS \"Type\", COALESCE(SUM(estimated_value),0) AS \"TotalValue\" FROM donations GROUP BY donation_type ORDER BY \"TotalValue\" DESC")
             .ToListAsync(ct);
 
+        var donationsByYear = await db.Database
+            .SqlQueryRaw<YearlyDonations>(
+                "SELECT EXTRACT(YEAR FROM donation_date)::int AS \"Year\", COALESCE(SUM(estimated_value),0) AS \"TotalValue\" FROM donations WHERE donation_date IS NOT NULL GROUP BY \"Year\" ORDER BY \"Year\"")
+            .ToListAsync(ct);
+
+        var totalVolunteerHours = await db.Database
+            .SqlQueryRaw<decimal>(
+                "SELECT COALESCE(SUM(estimated_value),0) AS \"Value\" FROM donations WHERE donation_type IN ('Time','Skills') AND impact_unit = 'hours'")
+            .FirstAsync(ct);
+
         return new ImpactStatsDto(
             activeResidents,
             totalResidents,
@@ -58,7 +68,9 @@ public static class ImpactQueryHelper
             occupancy,
             byYear,
             reintegrationBreakdown,
-            donationBreakdown
+            donationBreakdown,
+            donationsByYear,
+            totalVolunteerHours
         );
     }
 }

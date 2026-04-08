@@ -90,6 +90,8 @@ export type ImpactStats = {
   residentsByYear: { year: number; count: number }[];
   reintegrationBreakdown: { status: string; count: number }[];
   donationBreakdown: { type: string; totalValue: number }[];
+  donationsByYear: { year: number; totalValue: number }[];
+  totalVolunteerHours: number;
 };
 
 export async function apiGetImpactStats(live = false): Promise<ImpactStats> {
@@ -218,4 +220,382 @@ export async function apiGetMlPredictions(
   });
   if (!res.ok) throw new Error(await readErrorMessage(res));
   return (await res.json()) as MlPredictionsResponse;
+}
+
+// ── Residents / Caseload ──────────────────────────────────────────────────────
+
+export type ResidentListItem = {
+  residentId: number;
+  caseControlNo: string | null;
+  internalCode: string | null;
+  safehouseId: number | null;
+  caseStatus: string | null;
+  sex: string | null;
+  dateOfBirth: string | null;
+  caseCategory: string | null;
+  subCatOrphaned: boolean;
+  subCatTrafficked: boolean;
+  subCatChildLabor: boolean;
+  subCatPhysicalAbuse: boolean;
+  subCatSexualAbuse: boolean;
+  subCatOsaec: boolean;
+  subCatCicl: boolean;
+  subCatAtRisk: boolean;
+  subCatStreetChild: boolean;
+  subCatChildWithHiv: boolean;
+  isPwd: boolean;
+  pwdType: string | null;
+  hasSpecialNeeds: boolean;
+  specialNeedsDiagnosis: string | null;
+  familyIs4Ps: boolean;
+  familySoloParent: boolean;
+  familyIndigenous: boolean;
+  familyParentPwd: boolean;
+  familyInformalSettler: boolean;
+  dateOfAdmission: string | null;
+  ageUponAdmission: string | null;
+  presentAge: string | null;
+  lengthOfStay: string | null;
+  referralSource: string | null;
+  referringAgencyPerson: string | null;
+  assignedSocialWorker: string | null;
+  initialCaseAssessment: string | null;
+  reintegrationType: string | null;
+  reintegrationStatus: string | null;
+  initialRiskLevel: string | null;
+  currentRiskLevel: string | null;
+  dateEnrolled: string | null;
+  dateClosed: string | null;
+};
+
+export type ResidentListResponse = {
+  total: number;
+  page: number;
+  pageSize: number;
+  items: ResidentListItem[];
+};
+
+export type ResidentFilterOptions = {
+  statuses: string[];
+  categories: string[];
+  safehouseIds: number[];
+  reintegrationStatuses: string[];
+  socialWorkers: string[];
+};
+
+export type ResidentUpsertRequest = {
+  caseControlNo?: string | null;
+  internalCode?: string | null;
+  safehouseId?: number | null;
+  caseStatus?: string | null;
+  sex?: string | null;
+  dateOfBirth?: string | null;
+  birthStatus?: string | null;
+  placeOfBirth?: string | null;
+  religion?: string | null;
+  caseCategory?: string | null;
+  subCatOrphaned: boolean;
+  subCatTrafficked: boolean;
+  subCatChildLabor: boolean;
+  subCatPhysicalAbuse: boolean;
+  subCatSexualAbuse: boolean;
+  subCatOsaec: boolean;
+  subCatCicl: boolean;
+  subCatAtRisk: boolean;
+  subCatStreetChild: boolean;
+  subCatChildWithHiv: boolean;
+  isPwd: boolean;
+  pwdType?: string | null;
+  hasSpecialNeeds: boolean;
+  specialNeedsDiagnosis?: string | null;
+  familyIs4Ps: boolean;
+  familySoloParent: boolean;
+  familyIndigenous: boolean;
+  familyParentPwd: boolean;
+  familyInformalSettler: boolean;
+  dateOfAdmission?: string | null;
+  ageUponAdmission?: string | null;
+  presentAge?: string | null;
+  lengthOfStay?: string | null;
+  referralSource?: string | null;
+  referringAgencyPerson?: string | null;
+  dateColbRegistered?: string | null;
+  dateColbObtained?: string | null;
+  assignedSocialWorker?: string | null;
+  initialCaseAssessment?: string | null;
+  dateCaseStudyPrepared?: string | null;
+  reintegrationType?: string | null;
+  reintegrationStatus?: string | null;
+  initialRiskLevel?: string | null;
+  currentRiskLevel?: string | null;
+  dateEnrolled?: string | null;
+  dateClosed?: string | null;
+  notesRestricted?: string | null;
+};
+
+export async function apiListResidents(
+  token: string,
+  params: {
+    status?: string;
+    safehouseId?: number;
+    category?: string;
+    search?: string;
+    reintegrationStatus?: string;
+    socialWorker?: string;
+    page?: number;
+    pageSize?: number;
+  } = {},
+): Promise<ResidentListResponse> {
+  const qs = new URLSearchParams();
+  if (params.status) qs.set("status", params.status);
+  if (params.safehouseId) qs.set("safehouseId", params.safehouseId.toString());
+  if (params.category) qs.set("category", params.category);
+  if (params.search) qs.set("search", params.search);
+  if (params.reintegrationStatus) qs.set("reintegrationStatus", params.reintegrationStatus);
+  if (params.socialWorker) qs.set("socialWorker", params.socialWorker);
+  qs.set("page", (params.page ?? 1).toString());
+  qs.set("pageSize", (params.pageSize ?? 25).toString());
+
+  const res = await fetch(`${API_URL}/api/residents?${qs}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ResidentListResponse;
+}
+
+export async function apiGetResidentFilters(token: string): Promise<ResidentFilterOptions> {
+  const res = await fetch(`${API_URL}/api/residents/filters`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ResidentFilterOptions;
+}
+
+export async function apiCreateResident(token: string, body: ResidentUpsertRequest): Promise<ResidentListItem> {
+  const res = await fetch(`${API_URL}/api/residents`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ResidentListItem;
+}
+
+export async function apiUpdateResident(token: string, id: number, body: ResidentUpsertRequest): Promise<ResidentListItem> {
+  const res = await fetch(`${API_URL}/api/residents/${id}`, {
+    method: "PUT",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ResidentListItem;
+}
+
+// ── Process Recordings ────────────────────────────────────────────────────────
+
+export type ProcessRecordingDto = {
+  recordingId: number;
+  residentId: number;
+  residentCode: string | null;
+  sessionDate: string | null;
+  socialWorker: string | null;
+  sessionType: string | null;
+  sessionDurationMinutes: number | null;
+  emotionalStateObserved: string | null;
+  emotionalStateEnd: string | null;
+  sessionNarrative: string | null;
+  interventionsApplied: string | null;
+  followUpActions: string | null;
+  progressNoted: boolean;
+  concernsFlagged: boolean;
+  referralMade: boolean;
+};
+
+export type ProcessRecordingListResponse = {
+  total: number;
+  page: number;
+  pageSize: number;
+  items: ProcessRecordingDto[];
+};
+
+export type ProcessRecordingFilterOptions = {
+  socialWorkers: string[];
+  sessionTypes: string[];
+  residents: { residentId: number; label: string }[];
+};
+
+export type ProcessRecordingUpsertRequest = {
+  residentId: number;
+  sessionDate?: string | null;
+  socialWorker?: string | null;
+  sessionType?: string | null;
+  sessionDurationMinutes?: number | null;
+  emotionalStateObserved?: string | null;
+  emotionalStateEnd?: string | null;
+  sessionNarrative?: string | null;
+  interventionsApplied?: string | null;
+  followUpActions?: string | null;
+  progressNoted: boolean;
+  concernsFlagged: boolean;
+  referralMade: boolean;
+  notesRestricted?: string | null;
+};
+
+export async function apiListProcessRecordings(
+  token: string,
+  params: {
+    residentId?: number;
+    socialWorker?: string;
+    sessionType?: string;
+    search?: string;
+    page?: number;
+    pageSize?: number;
+  } = {},
+): Promise<ProcessRecordingListResponse> {
+  const qs = new URLSearchParams();
+  if (params.residentId) qs.set("residentId", params.residentId.toString());
+  if (params.socialWorker) qs.set("socialWorker", params.socialWorker);
+  if (params.sessionType) qs.set("sessionType", params.sessionType);
+  if (params.search) qs.set("search", params.search);
+  qs.set("page", (params.page ?? 1).toString());
+  qs.set("pageSize", (params.pageSize ?? 25).toString());
+  const res = await fetch(`${API_URL}/api/processrecordings?${qs}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ProcessRecordingListResponse;
+}
+
+export async function apiGetProcessRecordingFilters(token: string): Promise<ProcessRecordingFilterOptions> {
+  const res = await fetch(`${API_URL}/api/processrecordings/filters`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ProcessRecordingFilterOptions;
+}
+
+export async function apiCreateProcessRecording(token: string, body: ProcessRecordingUpsertRequest): Promise<ProcessRecordingDto> {
+  const res = await fetch(`${API_URL}/api/processrecordings`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ProcessRecordingDto;
+}
+
+export async function apiUpdateProcessRecording(token: string, id: number, body: ProcessRecordingUpsertRequest): Promise<ProcessRecordingDto> {
+  const res = await fetch(`${API_URL}/api/processrecordings/${id}`, {
+    method: "PUT",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as ProcessRecordingDto;
+}
+
+// ── Home Visitations ──────────────────────────────────────────────────────────
+
+export type HomeVisitationDto = {
+  visitationId: number;
+  residentId: number;
+  residentCode: string | null;
+  visitDate: string | null;
+  socialWorker: string | null;
+  visitType: string | null;
+  locationVisited: string | null;
+  familyMembersPresent: string | null;
+  purpose: string | null;
+  observations: string | null;
+  familyCooperationLevel: string | null;
+  safetyConcernsNoted: boolean;
+  followUpNeeded: boolean;
+  followUpNotes: string | null;
+  visitOutcome: string | null;
+};
+
+export type HomeVisitationListResponse = {
+  total: number;
+  page: number;
+  pageSize: number;
+  items: HomeVisitationDto[];
+};
+
+export type HomeVisitationFilterOptions = {
+  visitTypes: string[];
+  socialWorkers: string[];
+  outcomes: string[];
+  cooperationLevels: string[];
+  residents: { residentId: number; label: string }[];
+};
+
+export type HomeVisitationUpsertRequest = {
+  residentId: number;
+  visitDate?: string | null;
+  socialWorker?: string | null;
+  visitType?: string | null;
+  locationVisited?: string | null;
+  familyMembersPresent?: string | null;
+  purpose?: string | null;
+  observations?: string | null;
+  familyCooperationLevel?: string | null;
+  safetyConcernsNoted: boolean;
+  followUpNeeded: boolean;
+  followUpNotes?: string | null;
+  visitOutcome?: string | null;
+};
+
+export async function apiListHomeVisitations(
+  token: string,
+  params: {
+    residentId?: number;
+    visitType?: string;
+    socialWorker?: string;
+    safetyConcerns?: boolean;
+    search?: string;
+    page?: number;
+    pageSize?: number;
+  } = {},
+): Promise<HomeVisitationListResponse> {
+  const qs = new URLSearchParams();
+  if (params.residentId) qs.set("residentId", params.residentId.toString());
+  if (params.visitType) qs.set("visitType", params.visitType);
+  if (params.socialWorker) qs.set("socialWorker", params.socialWorker);
+  if (params.safetyConcerns !== undefined) qs.set("safetyConcerns", params.safetyConcerns.toString());
+  if (params.search) qs.set("search", params.search);
+  qs.set("page", (params.page ?? 1).toString());
+  qs.set("pageSize", (params.pageSize ?? 25).toString());
+  const res = await fetch(`${API_URL}/api/homevisitations?${qs}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as HomeVisitationListResponse;
+}
+
+export async function apiGetHomeVisitationFilters(token: string): Promise<HomeVisitationFilterOptions> {
+  const res = await fetch(`${API_URL}/api/homevisitations/filters`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as HomeVisitationFilterOptions;
+}
+
+export async function apiCreateHomeVisitation(token: string, body: HomeVisitationUpsertRequest): Promise<HomeVisitationDto> {
+  const res = await fetch(`${API_URL}/api/homevisitations`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as HomeVisitationDto;
+}
+
+export async function apiUpdateHomeVisitation(token: string, id: number, body: HomeVisitationUpsertRequest): Promise<HomeVisitationDto> {
+  const res = await fetch(`${API_URL}/api/homevisitations/${id}`, {
+    method: "PUT",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return (await res.json()) as HomeVisitationDto;
 }

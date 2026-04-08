@@ -51,14 +51,8 @@ const Impact = () => {
   const summaryCards = stats
     ? [
         { label: "Children Currently in Care", value: stats.activeResidents.toString() },
-        {
-          label: "Total Contributions",
-          value: `$${Math.round(stats.totalContributionsValue).toLocaleString()}`,
-        },
-        {
-          label: "Reintegration Rate",
-          value: `~${reintegrationRate}%`,
-        },
+        { label: "Children Supported in Total", value: stats.totalResidents.toString() },
+        { label: "Reintegration Rate", value: `~${reintegrationRate}%` },
         { label: "Active Supporters", value: stats.uniqueSuporters.toString() },
       ]
     : [];
@@ -66,17 +60,31 @@ const Impact = () => {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="mb-12">
-          <h1 className="font-heading text-3xl font-semibold text-foreground">Our Impact</h1>
-          <p className="text-muted-foreground mt-1">
-            Aggregated, anonymized data showing how your contributions make a difference.
-          </p>
+
+        {/* Header */}
+        <div className="mb-12 flex items-end justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              Transparency & Accountability
+            </p>
+            <h1 className="mt-3 font-heading text-4xl font-semibold text-foreground">Our Impact</h1>
+            <p className="text-muted-foreground mt-2 max-w-xl">
+              Aggregated, anonymized data showing outcomes, progress, and resource use across all program areas.
+            </p>
+          </div>
+          <button
+            onClick={() => fetchStats(true)}
+            disabled={refreshing}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 shrink-0 mb-1"
+          >
+            <RefreshCw size={13} className={refreshing ? "animate-spin" : ""} />
+            {refreshing ? "Refreshing…" : "Refresh"}
+          </button>
         </div>
 
         {loading && (
           <div className="text-muted-foreground text-sm py-24 text-center">Loading stats…</div>
         )}
-
         {error && (
           <div className="text-destructive text-sm py-8 text-center">{error}</div>
         )}
@@ -84,35 +92,79 @@ const Impact = () => {
         {!loading && !error && stats && (
           <>
             {/* Summary Cards */}
-            <div className="relative mb-14">
-              <button
-                onClick={() => fetchStats(true)}
-                disabled={refreshing}
-                className="absolute -top-8 right-0 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
-              >
-                <RefreshCw size={13} className={refreshing ? "animate-spin" : ""} />
-                {refreshing ? "Refreshing…" : "Refresh"}
-              </button>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {summaryCards.map((card) => (
-                  <div key={card.label} className="border border-border p-5">
-                    <div className="text-sm text-muted-foreground mb-2">{card.label}</div>
-                    <div className="font-heading text-2xl md:text-3xl font-bold text-foreground">
-                      {card.value}
-                    </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
+              {summaryCards.map((card) => (
+                <div key={card.label} className="border border-border p-5">
+                  <div className="text-sm text-muted-foreground mb-2">{card.label}</div>
+                  <div className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+                    {card.value}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
 
-            {/* Charts Row 1 */}
+            {/* Outcomes */}
+            <div className="mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Outcomes
+              </p>
+            </div>
             <div className="grid md:grid-cols-2 gap-8 mb-14">
-              {/* Residents by Year */}
+
+              {/* Reintegration Progress */}
               <div className="border border-border p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-6">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
+                  Reintegration Progress
+                </h3>
+                <p className="text-sm text-muted-foreground mb-6">
+                  How children are progressing toward returning to a safe family environment.
+                </p>
+                <div className="flex items-center gap-6">
+                  <ResponsiveContainer width="50%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={stats.reintegrationBreakdown}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={45}
+                        outerRadius={85}
+                        paddingAngle={2}
+                        dataKey="count"
+                        nameKey="status"
+                      >
+                        {stats.reintegrationBreakdown.map((_, i) => (
+                          <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={TOOLTIP_STYLE}
+                        formatter={(value: number, _: string, entry: { payload?: { status?: string } }) =>
+                          [`${value} children`, entry.payload?.status ?? ""]
+                        }
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="space-y-2 flex-1">
+                    {stats.reintegrationBreakdown.map((item, i) => (
+                      <div key={item.status} className="flex items-center gap-2 text-sm">
+                        <div className="w-3 h-3 flex-shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
+                        <span className="text-muted-foreground">{item.status}</span>
+                        <span className="font-medium text-foreground ml-auto">{item.count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Children Admitted by Year */}
+              <div className="border border-border p-6">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
                   Children Admitted by Year
                 </h3>
-                <ResponsiveContainer width="100%" height={260}>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Growth in the number of children reached through our program over time.
+                </p>
+                <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={stats.residentsByYear}>
                     <XAxis
                       dataKey="year"
@@ -131,56 +183,24 @@ const Impact = () => {
                 </ResponsiveContainer>
               </div>
 
-              {/* Reintegration Breakdown */}
-              <div className="border border-border p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-6">
-                  Reintegration Progress
-                </h3>
-                <div className="flex items-center gap-6">
-                  <ResponsiveContainer width="50%" height={220}>
-                    <PieChart>
-                      <Pie
-                        data={stats.reintegrationBreakdown}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={50}
-                        outerRadius={90}
-                        paddingAngle={2}
-                        dataKey="count"
-                        nameKey="status"
-                      >
-                        {stats.reintegrationBreakdown.map((_, i) => (
-                          <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        contentStyle={TOOLTIP_STYLE}
-                        formatter={(value: number, _: string, entry: { payload?: { status?: string } }) =>
-                          [`${value} children`, entry.payload?.status ?? ""]
-                        }
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="space-y-2">
-                    {stats.reintegrationBreakdown.map((item, i) => (
-                      <div key={item.status} className="flex items-center gap-2 text-sm">
-                        <div className="w-3 h-3 flex-shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
-                        <span className="text-muted-foreground">{item.status}</span>
-                        <span className="font-medium text-foreground ml-auto">{item.count}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* Charts Row 2 */}
+            {/* Resources */}
+            <div className="mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Resources
+              </p>
+            </div>
             <div className="grid md:grid-cols-2 gap-8 mb-14">
-              {/* Donation Breakdown */}
+
+              {/* Contributions by Type */}
               <div className="border border-border p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-6">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
                   Contributions by Type
                 </h3>
+                <p className="text-sm text-muted-foreground mb-6">
+                  How supporters contribute — including monetary gifts, in-kind donations, and volunteered time.
+                </p>
                 {(() => {
                   const OTHER_TYPES = ["Time", "Skills", "SocialMedia"];
                   const grouped = stats.donationBreakdown.reduce<{ type: string; totalValue: number }[]>(
@@ -198,14 +218,14 @@ const Impact = () => {
                   );
                   return (
                     <div className="flex items-center gap-6">
-                      <ResponsiveContainer width="50%" height={220}>
+                      <ResponsiveContainer width="50%" height={200}>
                         <PieChart>
                           <Pie
                             data={grouped}
                             cx="50%"
                             cy="50%"
-                            innerRadius={50}
-                            outerRadius={90}
+                            innerRadius={45}
+                            outerRadius={85}
                             paddingAngle={2}
                             dataKey="totalValue"
                             nameKey="type"
@@ -222,7 +242,7 @@ const Impact = () => {
                           />
                         </PieChart>
                       </ResponsiveContainer>
-                      <div className="space-y-2">
+                      <div className="space-y-2 flex-1">
                         {grouped.map((item, i) => (
                           <div key={item.type} className="flex items-center gap-2 text-sm">
                             <div className="w-3 h-3 flex-shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
@@ -238,35 +258,55 @@ const Impact = () => {
                 })()}
               </div>
 
-              {/* Safe House Occupancy */}
-              <div className="border border-border p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-6">
-                  Safe House Occupancy
-                </h3>
-                <div className="space-y-5 mt-2">
-                  {stats.safehouseOccupancy.map((sh) => {
-                    const pct = sh.capacity > 0 ? Math.round((sh.occupancy / sh.capacity) * 100) : 0;
-                    return (
-                      <div key={sh.name}>
-                        <div className="flex justify-between text-sm mb-1.5">
-                          <span className="font-medium text-foreground">{sh.name}</span>
-                          <span className="text-muted-foreground">
-                            {sh.occupancy}/{sh.capacity} ({pct}%)
-                          </span>
-                        </div>
-                        <div className="w-full h-2 bg-secondary">
-                          <div
-                            className="h-full bg-accent transition-all"
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+              {/* Donations over time + volunteer hours */}
+              <div className="flex flex-col gap-6">
+                <div className="border border-border p-6">
+                  <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
+                    Contributions Over Time
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Total estimated value of all contributions received each year.
+                  </p>
+                  <ResponsiveContainer width="100%" height={160}>
+                    <BarChart data={stats.donationsByYear}>
+                      <XAxis
+                        dataKey="year"
+                        tick={{ fontSize: 12, fill: "hsl(213,12%,48%)" }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 12, fill: "hsl(213,12%,48%)" }}
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`}
+                      />
+                      <Tooltip
+                        contentStyle={TOOLTIP_STYLE}
+                        formatter={(v: number) => [`$${Math.round(v).toLocaleString()}`, "Contributions"]}
+                      />
+                      <Bar dataKey="totalValue" fill="hsl(43,52%,55%)" radius={[2, 2, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="border border-border p-6 flex items-center gap-6">
+                  <div>
+                    <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+                      Volunteer Hours Contributed
+                    </h3>
+                    <p className="font-heading text-4xl font-bold text-foreground">
+                      {Math.round(stats.totalVolunteerHours).toLocaleString()}
+                      <span className="text-lg font-normal text-muted-foreground ml-2">hrs</span>
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Combined hours donated by volunteers and skilled contributors.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
+            </div>
           </>
         )}
 

@@ -10,6 +10,7 @@ public sealed record SafehouseOccupancy(string Name, int Occupancy, int Capacity
 public sealed record YearlyAdmissions(int Year, int Count);
 public sealed record ReintegrationBreakdown(string Status, int Count);
 public sealed record DonationBreakdown(string Type, decimal TotalValue);
+public sealed record YearlyDonations(int Year, decimal TotalValue);
 
 public sealed record ImpactStatsDto(
     int ActiveResidents,
@@ -20,7 +21,9 @@ public sealed record ImpactStatsDto(
     List<SafehouseOccupancy> SafehouseOccupancy,
     List<YearlyAdmissions> ResidentsByYear,
     List<ReintegrationBreakdown> ReintegrationBreakdown,
-    List<DonationBreakdown> DonationBreakdown
+    List<DonationBreakdown> DonationBreakdown,
+    List<YearlyDonations> DonationsByYear,
+    decimal TotalVolunteerHours
 );
 
 [ApiController]

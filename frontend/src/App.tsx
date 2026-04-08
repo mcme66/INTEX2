@@ -12,9 +12,12 @@ import Register from "./pages/Register.tsx";
 import Volunteer from "./pages/Volunteer.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
-import Report from "./pages/Report.tsx";
+import MlReport from "./pages/Report.tsx";
 import DonorDashboard from "./pages/DonorDashboard.tsx";
 import AdminUtilityPage from "./pages/AdminUtilityPage.tsx";
+import Caseload from "./pages/Caseload.tsx";
+import ProcessRecordingPage from "./pages/ProcessRecording.tsx";
+import HomeVisitationPage from "./pages/HomeVisitation.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider, useAuth } from "./state/auth";
 import { MlRefreshProvider } from "./state/mlRefresh";
@@ -42,68 +45,20 @@ const AppRoutes = () => {
         element={<ProtectedRoute role="admin" element={<AdminDashboard />} />}
       />
       <Route
-        path="/admin/report"
-        element={<ProtectedRoute role="admin" element={<Report />} />}
-      />
-      <Route
         path="/admin/caseloads"
-        element={
-          <ProtectedRoute
-            role="admin"
-            element={
-              <AdminUtilityPage
-                eyebrow="Caseload Inventory"
-                title="Caseload inventory"
-                description="This route from the previous frontend is now hosted inside the lovable app and ready for future caseload tooling."
-              />
-            }
-          />
-        }
+        element={<ProtectedRoute role="admin" element={<Caseload />} />}
       />
       <Route
         path="/admin/process-recording"
-        element={
-          <ProtectedRoute
-            role="admin"
-            element={
-              <AdminUtilityPage
-                eyebrow="Process Recording"
-                title="Process recording"
-                description="This preserved admin route can now be implemented incrementally without abandoning the new frontend design."
-              />
-            }
-          />
-        }
+        element={<ProtectedRoute role="admin" element={<ProcessRecordingPage />} />}
       />
       <Route
         path="/admin/visits"
-        element={
-          <ProtectedRoute
-            role="admin"
-            element={
-              <AdminUtilityPage
-                eyebrow="Home Visitation"
-                title="Home visitation and case conferences"
-                description="The old operational route now exists in the lovable frontend shell with admin protection intact."
-              />
-            }
-          />
-        }
+        element={<ProtectedRoute role="admin" element={<HomeVisitationPage />} />}
       />
       <Route
         path="/admin/reports"
-        element={
-          <ProtectedRoute
-            role="admin"
-            element={
-              <AdminUtilityPage
-                eyebrow="Reports & Analytics"
-                title="Reports and analytics"
-                description="This route is preserved and protected so analytics functionality can be added without revisiting the app shell again."
-              />
-            }
-          />
-        }
+        element={<ProtectedRoute role="admin" element={<MlReport />} />}
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

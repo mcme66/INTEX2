@@ -14,7 +14,7 @@
   {
     "supporter_id": "53",
     "display_name": "Dina DelosReyes",
-    "probability": 0.003,
+    "probability": 0.0045,
     "tier": "Red"
   },
   {
@@ -36,14 +36,14 @@
     "tier": "Red"
   },
   {
-    "supporter_id": "49",
-    "display_name": "Faye Yu",
+    "supporter_id": "48",
+    "display_name": "Ian Xu",
     "probability": 0.0005,
     "tier": "Red"
   },
   {
-    "supporter_id": "48",
-    "display_name": "Ian Xu",
+    "supporter_id": "49",
+    "display_name": "Faye Yu",
     "probability": 0.0005,
     "tier": "Red"
   },
