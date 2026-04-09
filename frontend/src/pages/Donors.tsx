@@ -328,11 +328,11 @@ const Donors = () => {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
             {t("donorsDonationAllocations")}
           </h2>
-          <div className="flex flex-wrap gap-3">
+          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
             {ALLOCATIONS.filter((a) => (allocationSummary[a] || 0) > 0).map((a) => (
-              <div key={a} className="flex-1 min-w-0 border border-border p-4 bg-background">
-                <div className="text-sm text-muted-foreground mb-1 whitespace-nowrap">{a}</div>
-                <div className="font-heading text-xl font-semibold text-foreground">
+              <div key={a} className="border border-border p-3 bg-background min-w-0">
+                <div className="text-xs text-muted-foreground mb-1 truncate">{a}</div>
+                <div className="font-heading text-lg font-semibold text-foreground whitespace-nowrap">
                   ${(allocationSummary[a] || 0).toLocaleString()}
                 </div>
               </div>

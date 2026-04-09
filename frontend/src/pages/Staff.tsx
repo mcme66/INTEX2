@@ -291,7 +291,7 @@ const Staff = () => {
     }
   };
 
-  const thCls = "px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors";
+  const thCls = "px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors whitespace-nowrap";
   const inputCls = "w-full border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
   const labelCls = "block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wide";
   const selectCls = "border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
@@ -355,10 +355,10 @@ const Staff = () => {
         </div>
 
         {/* Table */}
-        <div className="border border-border overflow-x-auto">
-          <table className="w-full text-sm table-fixed">
+        <div className="border border-border overflow-x-auto bg-background">
+          <table className="w-full text-sm table-fixed min-w-[980px]">
             <thead>
-              <tr className="border-b border-border bg-secondary/40">
+              <tr className="border-b border-border bg-secondary">
                 <th className={`text-left ${thCls} w-[14%]`} onClick={() => cycleSort("firstName")}>Name <SortIcon col="firstName" /></th>
                 <th className={`text-left ${thCls} w-[22%]`} onClick={() => cycleSort("email")}>Email <SortIcon col="email" /></th>
                 <th className={`text-left ${thCls} w-[15%]`} onClick={() => cycleSort("username")}>Username <SortIcon col="username" /></th>
@@ -378,7 +378,7 @@ const Staff = () => {
                   </td>
                 </tr>
               ) : rows.map((u) => (
-                <tr key={u.id} className="border-b border-border hover:bg-secondary/20 transition-colors">
+                <tr key={u.id} className="border-b border-border hover:bg-secondary transition-colors">
                   <td className="px-3 py-2.5 font-medium text-foreground truncate">{u.firstName}</td>
                   <td className="px-3 py-2.5 text-muted-foreground truncate">{u.email}</td>
                   <td className="px-3 py-2.5 text-muted-foreground truncate">{u.username}</td>
