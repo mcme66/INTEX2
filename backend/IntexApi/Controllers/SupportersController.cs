@@ -102,11 +102,16 @@ public sealed class SupportersController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateSupporterRequest dto)
+    public async Task<IActionResult> Create([FromBody] CreateSupporterRequest dto, CancellationToken ct)
     {
+        var nextSupporterId = await db.Supporters.AnyAsync(ct)
+            ? await db.Supporters.MaxAsync(s => s.SupporterId, ct) + 1
+            : 1;
+
         await db.Database.ExecuteSqlRawAsync(@"
-            INSERT INTO supporters (first_name, last_name, email, phone, supporter_type, status, created_at)
-            VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6})",
+            INSERT INTO supporters (supporter_id, first_name, last_name, email, phone, supporter_type, status, created_at)
+            VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})",
+            nextSupporterId,
             dto.firstName ?? "",
             dto.lastName ?? "",
             dto.email ?? "",
@@ -115,7 +120,7 @@ public sealed class SupportersController(AppDbContext db) : ControllerBase
             dto.status ?? "Active",
             DateTime.UtcNow);
 
-        return Ok();
+        return Ok(new { supporterId = nextSupporterId });
     }
 
     [HttpPut("{id}")]

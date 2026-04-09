@@ -35,6 +35,8 @@ public sealed partial class SanitizeInputFilter : IActionFilter
         foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
         {
             if (!prop.CanRead) continue;
+            // Skip indexers (they require parameters, e.g. obj["key"])
+            if (prop.GetIndexParameters().Length > 0) continue;
 
             if (prop.PropertyType == typeof(string) && prop.CanWrite)
             {

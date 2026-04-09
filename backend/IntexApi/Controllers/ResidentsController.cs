@@ -184,14 +184,25 @@ public sealed class ResidentsController(AppDbContext db) : ControllerBase
     {
         var resident = MapFromRequest(new Resident(), req);
         resident.CreatedAt = DateTime.UtcNow;
+
+        resident.ResidentId = await db.Residents.AnyAsync(ct)
+            ? await db.Residents.MaxAsync(r => r.ResidentId, ct) + 1
+            : 1;
+
         db.Residents.Add(resident);
         await db.SaveChangesAsync(ct);
 
         if (string.IsNullOrWhiteSpace(resident.CaseControlNo))
         {
-            resident.CaseControlNo = $"CASE-{DateTime.UtcNow:yyyy}-{resident.ResidentId:D6}";
-            await db.SaveChangesAsync(ct);
+            resident.CaseControlNo = $"C{resident.ResidentId:D4}";
         }
+
+        if (string.IsNullOrWhiteSpace(resident.InternalCode))
+        {
+            resident.InternalCode = $"LS-{resident.ResidentId:D4}";
+        }
+
+        await db.SaveChangesAsync(ct);
 
         return CreatedAtAction(nameof(GetById), new { id = resident.ResidentId }, resident);
     }
