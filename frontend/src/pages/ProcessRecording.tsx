@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/state/auth";
+import { useLanguage } from "@/state/language";
 import {
   apiListProcessRecordings,
   apiGetProcessRecordingFilters,
@@ -328,6 +329,7 @@ const PAGE_SIZE = 25;
 
 const ProcessRecordingPage = () => {
   const { token } = useAuth();
+  const { t } = useLanguage();
   const [recordings, setRecordings] = useState<ProcessRecordingDto[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -437,15 +439,15 @@ const ProcessRecordingPage = () => {
           className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft size={13} />
-          Admin Dashboard
+          {t("navAdminDashboard")}
         </Link>
 
         {/* Header */}
         <div className="mb-10 flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="font-heading text-4xl font-semibold text-foreground">Process Recording</h1>
+            <h1 className="font-heading text-4xl font-semibold text-foreground">{t("processTitle")}</h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
-              Counseling session notes documenting each resident's healing journey, recorded chronologically.
+              {t("processSubtitle")}
             </p>
           </div>
           <button
@@ -453,7 +455,7 @@ const ProcessRecordingPage = () => {
             className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors shrink-0"
           >
             <Plus size={14} />
-            New Session
+            {t("processNewSession")}
           </button>
         </div>
 
@@ -463,7 +465,7 @@ const ProcessRecordingPage = () => {
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               className="border border-border bg-background pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent w-56"
-              placeholder="Search resident, worker, narrative…"
+              placeholder={t("processSearchDetailed")}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -532,10 +534,10 @@ const ProcessRecordingPage = () => {
               </thead>
               <tbody>
                 {loading && recordings.length === 0 && (
-                  <tr><td colSpan={9} className="text-center text-muted-foreground py-16">Loading…</td></tr>
+                  <tr><td colSpan={9} className="text-center text-muted-foreground py-16">{t("processLoading")}</td></tr>
                 )}
                 {!loading && recordings.length === 0 && (
-                  <tr><td colSpan={9} className="text-center text-muted-foreground py-16">No recordings found</td></tr>
+                  <tr><td colSpan={9} className="text-center text-muted-foreground py-16">{t("processNoRecordingsFound")}</td></tr>
                 )}
                 {sortedRecordings.map((r) => (
                   <tr key={r.recordingId} className="border-b border-border hover:bg-secondary/20 transition-colors align-top">

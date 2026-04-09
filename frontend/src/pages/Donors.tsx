@@ -3,6 +3,7 @@ import { Search, Plus, X, Trash2, Loader2, ArrowLeft, Pencil, ChevronsUpDown, Ch
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/state/auth";
+import { useLanguage } from "@/state/language";
 
 interface Contribution {
   donationId: number;
@@ -58,6 +59,7 @@ function donorDisplayName(donor: Pick<Donor, "firstName" | "lastName" | "email">
 
 const Donors = () => {
   const { user, token } = useAuth();
+  const { t } = useLanguage();
   const [donors, setDonors] = useState<Donor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -273,17 +275,15 @@ const Donors = () => {
             className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft size={13} />
-            Admin Dashboard
+            {t("navAdminDashboard")}
           </Link>
         )}
 
         <div className="mb-10 flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="font-heading text-4xl font-semibold text-foreground">Donors & Contributions</h1>
+            <h1 className="font-heading text-4xl font-semibold text-foreground">{t("donorsContributionsTitle")}</h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
-              {canManageDonors
-                ? "Manage supporter records, giving history, and donation allocation details."
-                : "A stewardship-first view of where support is going and how the work is sustained."}
+              {canManageDonors ? t("donorsManageDesc") : t("donorsViewDesc")}
             </p>
           </div>
           {canManageDonors ? (
@@ -292,14 +292,14 @@ const Donors = () => {
               className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors shrink-0"
             >
               <Plus size={14} />
-              Add Supporter
+              {t("donorsAddSupporter")}
             </button>
           ) : (
             <Link
               to={user ? "/donor" : "/login"}
               className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors shrink-0"
             >
-              {user ? "Open donor dashboard" : "Staff login"}
+              {user ? t("donorsOpenDashboard") : t("donorsStaffLogin")}
             </Link>
           )}
         </div>
@@ -307,7 +307,7 @@ const Donors = () => {
         {/* Allocation Summary */}
         <div className="mb-10">
           <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
-            Donation Allocations
+            {t("donorsDonationAllocations")}
           </h2>
           <div className="flex flex-wrap gap-3">
             {ALLOCATIONS.filter((a) => (allocationSummary[a] || 0) > 0).map((a) => (
@@ -333,44 +333,42 @@ const Donors = () => {
                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
                   className="border border-border bg-background pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent w-56"
-                  placeholder="Search name or email..."
+                  placeholder={t("donorsSearchNameEmail")}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
 
               <select className={selectCls} value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
-                <option value="all">All supporter types</option>
+                <option value="all">{t("donorsAllTypes")}</option>
                 {Object.entries(DONOR_TYPE_LABELS).map(([k, v]) => (
                   <option key={k} value={k}>{v}</option>
                 ))}
               </select>
 
               <select className={selectCls} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                <option value="all">All statuses</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="all">{t("donorsAllStatuses")}</option>
+                <option value="active">{t("donorsActiveStatus")}</option>
+                <option value="inactive">{t("donorsInactiveStatus")}</option>
               </select>
 
               {hasFilters && (
                 <button onClick={clearFilters} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-                  <X size={12} /> Clear filters
+                  <X size={12} /> {t("donorsClearFilters")}
                 </button>
               )}
             </div>
 
             <div className="mb-4 flex items-center justify-between">
               <p className="text-xs text-muted-foreground">
-                {isLoading ? "Loading..." : `${filtered.length.toLocaleString()} supporter${filtered.length !== 1 ? "s" : ""}`}
+                {isLoading ? t("donorsLoadingText") : `${filtered.length.toLocaleString()} ${t("donorsSupporter").toLowerCase()}${filtered.length !== 1 ? "s" : ""}`}
               </p>
             </div>
           </>
         ) : (
           <div className="mb-6 border border-border bg-secondary/60 p-6">
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              Detailed supporter management remains restricted to admin users. This public-facing
-              version keeps the same design language while exposing only high-level stewardship
-              summaries.
+              {t("donorsRestrictedText")}
             </p>
           </div>
         )}
@@ -380,11 +378,11 @@ const Donors = () => {
           <table className="w-full text-sm table-fixed">
             <thead>
               <tr className="border-b border-border bg-secondary/40">
-                <th className={`text-left ${thCls} w-[28%]`} onClick={() => cycleSort("lastName")}>Supporter<SortIcon col="lastName" /></th>
-                <th className={`text-left ${thCls} w-[18%]`} onClick={() => cycleSort("supporterType")}>Type<SortIcon col="supporterType" /></th>
-                <th className={`text-left ${thCls} w-[12%]`} onClick={() => cycleSort("status")}>Status<SortIcon col="status" /></th>
-                <th className={`text-left ${thCls} w-[16%]`} onClick={() => cycleSort("phone")}>Phone<SortIcon col="phone" /></th>
-                <th className={`text-right ${thCls} w-[16%]`} onClick={() => cycleSort("totalGiven")}>Total Given<SortIcon col="totalGiven" /></th>
+                <th className={`text-left ${thCls} w-[28%]`} onClick={() => cycleSort("lastName")}>{t("donorsSupporter")}<SortIcon col="lastName" /></th>
+                <th className={`text-left ${thCls} w-[18%]`} onClick={() => cycleSort("supporterType")}>{t("donorsType")}<SortIcon col="supporterType" /></th>
+                <th className={`text-left ${thCls} w-[12%]`} onClick={() => cycleSort("status")}>{t("donorsStatus")}<SortIcon col="status" /></th>
+                <th className={`text-left ${thCls} w-[16%]`} onClick={() => cycleSort("phone")}>{t("donorsPhone")}<SortIcon col="phone" /></th>
+                <th className={`text-right ${thCls} w-[16%]`} onClick={() => cycleSort("totalGiven")}>{t("donorsTotalGiven")}<SortIcon col="totalGiven" /></th>
                 <th className="w-[10%] px-3 py-2.5"></th>
               </tr>
             </thead>
@@ -393,7 +391,7 @@ const Donors = () => {
                 <tr>
                   <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
                     <Loader2 className="animate-spin mx-auto mb-2" size={24} />
-                    Loading supporters...
+                    {t("donorsLoadingText")}
                   </td>
                 </tr>
               ) : donorRows.map((donor) => (
@@ -401,7 +399,7 @@ const Donors = () => {
                   <td className="px-3 py-2.5">
                     <button type="button" onClick={() => canManageDonors && setSelectedDonor(donor)} className="text-left w-full">
                       <div className="font-medium text-foreground truncate">{donorDisplayName(donor)}</div>
-                      <div className="text-xs text-muted-foreground truncate">{donor.email || "No email on file"}</div>
+                      <div className="text-xs text-muted-foreground truncate">{donor.email || t("donorsNoEmail")}</div>
                     </button>
                   </td>
                   <td className="px-3 py-2.5 text-xs text-muted-foreground">
@@ -433,7 +431,7 @@ const Donors = () => {
               {!isLoading && donorRows.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
-                    No supporters found matching your criteria.
+                    {t("donorsNoSupporters")}
                   </td>
                 </tr>
               )}
@@ -472,28 +470,28 @@ const Donors = () => {
 
                 <div className="space-y-4 mb-8">
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Type</label>
+                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("donorsType")}</label>
                     <p className="text-sm text-foreground mt-0.5">{DONOR_TYPE_LABELS[selectedDonor.supporterType] || selectedDonor.supporterType}</p>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Email</label>
+                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("donorsEmail")}</label>
                     <p className="text-sm text-foreground mt-0.5">{selectedDonor.email || "-"}</p>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Phone</label>
+                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("donorsPhone")}</label>
                     <p className="text-sm text-foreground mt-0.5">{selectedDonor.phone || "-"}</p>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Contribution History
+                    {t("donorsContribHistory")}
                   </h3>
-                  <button 
+                  <button
                     onClick={() => setIsDonationFormOpen(!isDonationFormOpen)}
                     className="text-xs flex items-center gap-1 font-medium text-accent-foreground hover:text-gold-dark"
                   >
-                    <Plus size={14} /> Log Contribution
+                    <Plus size={14} /> {t("donorsLogContribution")}
                   </button>
                 </div>
 
@@ -501,7 +499,7 @@ const Donors = () => {
                   <form onSubmit={handleSaveDonation} className="bg-secondary/50 border border-border p-4 mb-4 space-y-3">
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-xs font-medium">Type</label>
+                        <label className="text-xs font-medium">{t("donorsType")}</label>
                         <select className="w-full text-sm border p-1.5" required value={newDonation.donationType} onChange={e => setNewDonation({...newDonation, donationType: e.target.value})}>
                           <option value="Monetary">Monetary</option>
                           <option value="InKind">In-Kind</option>
@@ -511,39 +509,39 @@ const Donors = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="text-xs font-medium">Date</label>
+                        <label className="text-xs font-medium">{t("donorsDate")}</label>
                         <input type="date" required className="w-full text-sm border p-1.5" value={newDonation.donationDate || ''} onChange={e => setNewDonation({...newDonation, donationDate: e.target.value})} />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-xs font-medium">Amount/Value ($)</label>
+                        <label className="text-xs font-medium">{t("donorsAmountValue")}</label>
                         <input type="number" step="0.01" className="w-full text-sm border p-1.5" value={newDonation.amount || ''} onChange={e => setNewDonation({...newDonation, amount: e.target.value ? parseFloat(e.target.value) : undefined})} />
                       </div>
                       <div>
-                        <label className="text-xs font-medium">Program Area</label>
+                        <label className="text-xs font-medium">{t("donorsProgramArea")}</label>
                         <select className="w-full text-sm border p-1.5" value={newDonation.programArea} onChange={e => setNewDonation({...newDonation, programArea: e.target.value})}>
                           {ALLOCATIONS.map(a => <option key={a} value={a}>{a}</option>)}
                         </select>
                       </div>
                     </div>
                     <div>
-                      <label className="text-xs font-medium">Notes / Description</label>
+                      <label className="text-xs font-medium">{t("donorsNotesDesc")}</label>
                       <input type="text" required className="w-full text-sm border p-1.5" value={newDonation.notes || ''} onChange={e => setNewDonation({...newDonation, notes: e.target.value})} />
                     </div>
                     {donationError && (
                       <p className="text-xs text-red-600">{donationError}</p>
                     )}
                     <div className="flex gap-2 justify-end pt-2">
-                      <button type="button" onClick={() => setIsDonationFormOpen(false)} className="text-xs px-3 py-1.5 border border-border">Cancel</button>
-                      <button type="submit" className="text-xs px-3 py-1.5 bg-accent text-accent-foreground font-medium">Save</button>
+                      <button type="button" onClick={() => setIsDonationFormOpen(false)} className="text-xs px-3 py-1.5 border border-border">{t("donorsCancel")}</button>
+                      <button type="submit" className="text-xs px-3 py-1.5 bg-accent text-accent-foreground font-medium">{t("donorsSave")}</button>
                     </div>
                   </form>
                 )}
 
                 <div className="space-y-3">
                   {selectedDonor.contributions.length === 0 && (
-                    <p className="text-sm text-muted-foreground italic">No contributions recorded.</p>
+                    <p className="text-sm text-muted-foreground italic">{t("donorsNoContributions")}</p>
                   )}
                   {selectedDonor.contributions.map((c, idx) => (
                     <div key={c.donationId || idx} className="border border-border p-4">
@@ -571,7 +569,7 @@ const Donors = () => {
             <div className="relative bg-background w-full max-w-lg border border-border p-6 shadow-xl">
               <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
                 <h2 className="font-heading font-semibold text-foreground">
-                  {editingDonor.supporterId ? "Edit Supporter" : "New Supporter Record"}
+                  {editingDonor.supporterId ? t("donorsEditTitle") : t("donorsNewSupporter")}
                 </h2>
                 <button onClick={() => setIsDonorFormOpen(false)} className="text-muted-foreground hover:text-foreground">
                   <X size={18} />
@@ -579,41 +577,41 @@ const Donors = () => {
               </div>
               <form onSubmit={handleSaveDonor} className="space-y-5">
                 <div className="space-y-4">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground pb-2 border-b border-border">Supporter Details</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground pb-2 border-b border-border">{t("donorsSupporterDetails")}</p>
                   <div className="grid grid-cols-2 gap-x-5 gap-y-4">
                     <div>
-                      <label className={labelCls}>First Name</label>
+                      <label className={labelCls}>{t("donorsFirstName")}</label>
                       <input className={inputCls}
                         value={editingDonor.firstName || ''} onChange={e => setEditingDonor({...editingDonor, firstName: e.target.value})} />
                     </div>
                     <div>
-                      <label className={labelCls}>Last Name</label>
+                      <label className={labelCls}>{t("donorsLastName")}</label>
                       <input className={inputCls}
                         value={editingDonor.lastName || ''} onChange={e => setEditingDonor({...editingDonor, lastName: e.target.value})} />
                     </div>
                     <div>
-                      <label className={labelCls}>Email</label>
+                      <label className={labelCls}>{t("donorsEmail")}</label>
                       <input type="email" className={inputCls}
                         value={editingDonor.email || ''} onChange={e => setEditingDonor({...editingDonor, email: e.target.value})} />
                     </div>
                     <div>
-                      <label className={labelCls}>Phone</label>
+                      <label className={labelCls}>{t("donorsPhone")}</label>
                       <input type="text" className={inputCls}
                         value={editingDonor.phone || ''} onChange={e => setEditingDonor({...editingDonor, phone: e.target.value})} />
                     </div>
                     <div>
-                      <label className={labelCls}>Supporter Type</label>
+                      <label className={labelCls}>{t("donorsSupporterType")}</label>
                       <select className={inputCls}
                         value={editingDonor.supporterType || "MonetaryDonor"} onChange={e => setEditingDonor({...editingDonor, supporterType: e.target.value})}>
                         {Object.entries(DONOR_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className={labelCls}>Status</label>
+                      <label className={labelCls}>{t("donorsStatus")}</label>
                       <select className={inputCls}
                         value={editingDonor.status || "Active"} onChange={e => setEditingDonor({...editingDonor, status: e.target.value})}>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
+                        <option value="Active">{t("donorsActiveStatus")}</option>
+                        <option value="Inactive">{t("donorsInactiveStatus")}</option>
                       </select>
                     </div>
                   </div>
@@ -630,16 +628,16 @@ const Donors = () => {
                         className="flex items-center gap-1.5 text-sm text-red-500 hover:text-red-700 transition-colors"
                       >
                         <Trash2 size={14} />
-                        Delete Supporter
+                        {t("donorsDeleteSupporter")}
                       </button>
                     )}
                   </div>
                   <div className="flex gap-3">
                     <button type="button" onClick={() => setIsDonorFormOpen(false)} className="px-4 py-2 text-sm border border-border hover:bg-secondary">
-                      Cancel
+                      {t("donorsCancel")}
                     </button>
                     <button type="submit" className="px-4 py-2 text-sm bg-accent text-accent-foreground font-semibold hover:bg-gold-dark">
-                      Save Supporter
+                      {t("donorsSaveSupporter")}
                     </button>
                   </div>
                 </div>
@@ -652,7 +650,7 @@ const Donors = () => {
         {confirmDeleteDonor && editingDonor?.supporterId && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50">
             <div className="bg-background border border-border p-6 w-full max-w-sm shadow-xl">
-              <h3 className="font-heading font-semibold text-foreground mb-2">Delete Supporter</h3>
+              <h3 className="font-heading font-semibold text-foreground mb-2">{t("donorsDeleteSupporter")}</h3>
               <p className="text-sm text-muted-foreground mb-6">
                 Deleting supporter <span className="font-medium text-foreground">{`${editingDonor.firstName ?? ""} ${editingDonor.lastName ?? ""}`.trim() || editingDonor.email || `#${editingDonor.supporterId}`}</span> and all their contributions. This cannot be undone.
               </p>
@@ -661,14 +659,14 @@ const Donors = () => {
                   onClick={() => setConfirmDeleteDonor(false)}
                   className="text-sm px-4 py-2 border border-border hover:bg-secondary transition-colors"
                 >
-                  Cancel
+                  {t("donorsCancel")}
                 </button>
                 <button
                   onClick={() => handleDeleteDonor(editingDonor.supporterId!)}
                   disabled={deletingDonor}
                   className="text-sm font-medium px-4 py-2 bg-red-600 text-white hover:bg-red-700 transition-colors disabled:opacity-50"
                 >
-                  {deletingDonor ? "Deleting…" : "Delete"}
+                  {deletingDonor ? t("donorsDeletingText") : t("donorsDelete")}
                 </button>
               </div>
             </div>

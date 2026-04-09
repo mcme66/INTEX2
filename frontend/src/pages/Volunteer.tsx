@@ -1,6 +1,19 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Heart, Clock, Wrench, Users, Building2, Share2 } from "lucide-react";
+import { useLanguage } from "@/state/language";
+
+const WaysToHelp = () => {
+  const { t } = useLanguage();
+
+  const WAYS = [
+    { icon: Heart,     title: t("volunteerWay1Title"), description: t("volunteerWay1Desc") },
+    { icon: Clock,     title: t("volunteerWay2Title"), description: t("volunteerWay2Desc") },
+    { icon: Wrench,    title: t("volunteerWay3Title"), description: t("volunteerWay3Desc") },
+    { icon: Users,     title: t("volunteerWay4Title"), description: t("volunteerWay4Desc") },
+    { icon: Building2, title: t("volunteerWay5Title"), description: t("volunteerWay5Desc") },
+    { icon: Share2,    title: t("volunteerWay6Title"), description: t("volunteerWay6Desc") },
+  ];
 import { useAuth } from "@/state/auth";
 
 const WAYS = [
@@ -49,35 +62,35 @@ const WaysToHelp = () => {
           <div className="grid gap-8 lg:grid-cols-[1.2fr,0.8fr] mb-20">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                Get Involved
+                {t("volunteerLabel")}
               </p>
               <h1 className="mt-4 font-heading text-4xl font-semibold leading-tight text-foreground md:text-5xl">
-                There are many ways to stand with these children.
+                {t("volunteerHeadline")}
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-                Whether you give financially, offer your time, contribute professional skills, or simply amplify our message — every form of support directly changes the trajectory of a child's life.
+                {t("volunteerSub")}
               </p>
             </div>
 
             <div className="border border-border bg-secondary/60 p-8">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                Our commitment
+                {t("volunteerCommitmentLabel")}
               </p>
               <p className="mt-4 text-base leading-relaxed text-foreground">
-                North Star operates with full transparency. Every contribution — monetary, in-kind, or in service — is tracked, reported, and directed to the programs that need it most.
+                {t("volunteerCommitmentText")}
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link
                   to="/impact"
                   className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
                 >
-                  View our impact
+                  {t("volunteerViewImpact")}
                 </Link>
                 <Link
                   to={isLoggedIn ? "/donor" : "/register"}
                   className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium border border-border hover:bg-secondary transition-colors"
                 >
-                  Get involved
+                  {t("volunteerGetInvolved")}
                 </Link>
               </div>
             </div>
@@ -86,7 +99,7 @@ const WaysToHelp = () => {
           {/* Ways grid */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-8">
-              Six ways to make a difference
+              {t("volunteerSixWays")}
             </p>
             <div className="grid gap-px bg-border md:grid-cols-2 lg:grid-cols-3 border border-border">
               {WAYS.map(({ icon: Icon, title, description }) => (
@@ -108,25 +121,23 @@ const WaysToHelp = () => {
             </div>
           </div>
 
-          {/* Bottom CTA — only shown to unauthenticated users */}
-          {!isLoggedIn && (
-            <div className="mt-16 border border-border p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-              <div>
-                <p className="font-heading text-xl font-semibold text-foreground">
-                  Not sure where to start?
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground max-w-md">
-                  Create an account and our team will help you find the right fit for your capacity and interests.
-                </p>
-              </div>
-              <Link
-                to="/register"
-                className="shrink-0 inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-              >
-                Create an account
-              </Link>
+          {/* Bottom CTA */}
+          <div className="mt-16 border border-border p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <p className="font-heading text-xl font-semibold text-foreground">
+                {t("volunteerNotSure")}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground max-w-md">
+                {t("volunteerNotSureDesc")}
+              </p>
             </div>
-          )}
+            <Link
+              to="/register"
+              className="shrink-0 inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
+            >
+              {t("volunteerCreateAccount")}
+            </Link>
+          </div>
 
         </div>
       </section>

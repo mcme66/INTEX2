@@ -2,45 +2,47 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { apiGetImpactStats, type ImpactStats } from "@/utils/api";
-import { BarChart2, ClipboardList, FileText, Home, RefreshCw, Heart } from "lucide-react";
-
-const ADMIN_LINKS = [
-  {
-    to: "/admin/reports",
-    label: "ML Reports",
-    description: "Machine learning insights and predictions across all program areas.",
-    icon: BarChart2,
-  },
-  {
-    to: "/admin/caseloads",
-    label: "Caseload Inventory",
-    description: "View and manage resident caseloads across safehouses.",
-    icon: ClipboardList,
-  },
-  {
-    to: "/admin/process-recording",
-    label: "Process Recording",
-    description: "Log and review operational process records.",
-    icon: FileText,
-  },
-  {
-    to: "/admin/visits",
-    label: "Visits & Conferences",
-    description: "Log home visits, case conference history, safety concerns, and follow-up actions.",
-    icon: Home,
-  },
-  {
-    to: "/admin/donors",
-    label: "Donor Management",
-    description: "View and manage donor records and contribution history.",
-    icon: Heart,
-  },
-];
+import { BarChart2, Users, ClipboardList, FileText, Home, RefreshCw, Heart } from "lucide-react";
+import { useLanguage } from "@/state/language";
 
 const AdminDashboard = () => {
+  const { t } = useLanguage();
   const [stats, setStats] = useState<ImpactStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  const ADMIN_LINKS = [
+    {
+      to: "/admin/reports",
+      label: t("adminLinkMlReports"),
+      description: t("adminLinkMlReportsDesc"),
+      icon: BarChart2,
+    },
+    {
+      to: "/admin/caseloads",
+      label: t("adminLinkCaseload"),
+      description: t("adminLinkCaseloadDesc"),
+      icon: ClipboardList,
+    },
+    {
+      to: "/admin/process-recording",
+      label: t("adminLinkProcessRecording"),
+      description: t("adminLinkProcessRecordingDesc"),
+      icon: FileText,
+    },
+    {
+      to: "/admin/visits",
+      label: t("adminLinkVisits"),
+      description: t("adminLinkVisitsDesc"),
+      icon: Home,
+    },
+    {
+      to: "/admin/donors",
+      label: t("adminLinkDonorMgmt"),
+      description: t("adminLinkDonorMgmtDesc"),
+      icon: Heart,
+    },
+  ];
 
   const fetchStats = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -58,12 +60,16 @@ const AdminDashboard = () => {
 
   useEffect(() => { fetchStats(); }, [fetchStats]);
 
+  const reintegrationRate = stats
+    ? Math.round((stats.reintegrationProgressCount / stats.totalResidents) * 100)
+    : 0;
+
   const summaryCards = stats
     ? [
-        { label: "Children Currently in Care", value: stats.activeResidents.toString() },
-        { label: "Total Contributions", value: `$${Math.round(stats.totalContributionsValue).toLocaleString()}` },
-        { label: "Avg Donation per Individual", value: `$${Math.round(stats.avgDonationPerIndividual).toLocaleString()}` },
-        { label: "Avg Donation per Organization", value: `$${Math.round(stats.avgDonationPerOrganization).toLocaleString()}` },
+        { label: t("adminChildrenInCare"),     value: stats.activeResidents.toString() },
+        { label: t("adminTotalContributions"), value: `$${Math.round(stats.totalContributionsValue).toLocaleString()}` },
+        { label: t("adminReintegrationRate"),  value: `~${reintegrationRate}%` },
+        { label: t("adminActiveSupporters"),   value: stats.uniqueSuporters.toString() },
       ]
     : [];
 
@@ -75,10 +81,10 @@ const AdminDashboard = () => {
           {/* Header */}
           <div className="mb-10">
             <h1 className="font-heading text-4xl font-semibold text-foreground">
-              Admin Dashboard
+              {t("adminTitle")}
             </h1>
             <p className="mt-2 text-muted-foreground">
-              Command center for staff managing North Star.
+              {t("adminDesc")}
             </p>
           </div>
 
@@ -86,7 +92,7 @@ const AdminDashboard = () => {
           <div className="relative mb-12">
             <div className="flex items-center justify-between mb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Key Metrics
+                {t("adminKeyMetrics")}
               </p>
               <button
                 onClick={() => fetchStats(true)}
@@ -94,7 +100,7 @@ const AdminDashboard = () => {
                 className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
               >
                 <RefreshCw size={12} className={refreshing ? "animate-spin" : ""} />
-                {refreshing ? "Refreshing…" : "Refresh"}
+                {refreshing ? t("adminRefreshing") : t("adminRefresh")}
               </button>
             </div>
             {loading ? (
@@ -126,7 +132,7 @@ const AdminDashboard = () => {
             {/* Left: Safehouse Occupancy */}
             <div className="border border-border p-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-5">
-                Safe House Occupancy
+                {t("adminSafeHouseOccupancy")}
               </p>
               {loading ? (
                 <div className="space-y-5">

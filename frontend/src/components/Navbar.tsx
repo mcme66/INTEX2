@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X, UserCircle, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/state/auth";
+import { useLanguage } from "@/state/language";
 
 type NavItem = { to: string; label: string };
 
@@ -9,6 +10,7 @@ const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, logout, updateProfile } = useAuth();
+  const { lang, setLang, t } = useLanguage();
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -67,30 +69,30 @@ const Navbar = () => {
     setProfileSuccess(false);
 
     if (firstName.trim().length < 2) {
-      setProfileError("Name must be at least 2 characters.");
+      setProfileError(t("profileErrName"));
       return;
     }
     if (username.trim().length < 3) {
-      setProfileError("Username must be at least 3 characters.");
+      setProfileError(t("profileErrUsername"));
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setProfileError("Enter a valid email address.");
+      setProfileError(t("profileErrEmail"));
       return;
     }
 
     const changingPassword = currentPassword || newPassword || confirmPassword;
     if (changingPassword) {
       if (!currentPassword) {
-        setProfileError("Enter your current password.");
+        setProfileError(t("profileErrCurrentPwd"));
         return;
       }
       if (newPassword.length < 6) {
-        setProfileError("New password must be at least 6 characters.");
+        setProfileError(t("profileErrNewPwdLen"));
         return;
       }
       if (newPassword !== confirmPassword) {
-        setProfileError("New passwords do not match.");
+        setProfileError(t("profileErrPwdMismatch"));
         return;
       }
     }
@@ -108,24 +110,24 @@ const Navbar = () => {
       setProfileSuccess(true);
       setTimeout(() => setProfileOpen(false), 800);
     } catch (err: unknown) {
-      setProfileError(err instanceof Error ? err.message : "Update failed.");
+      setProfileError(err instanceof Error ? err.message : t("profileErrFailed"));
     } finally {
       setProfileSaving(false);
     }
   };
 
   const donorLinks: NavItem[] = user?.isDonor
-    ? [{ to: "/donor", label: "Donor Dashboard" }]
+    ? [{ to: "/donor", label: t("navDonorDashboard") }]
     : [];
 
   const adminLinks: NavItem[] = user?.isAdmin
-    ? [{ to: "/admin", label: "Admin Dashboard" }]
+    ? [{ to: "/admin", label: t("navAdminDashboard") }]
     : [];
 
   const publicLinks: NavItem[] = [
-    { to: "/", label: "Home" },
-    { to: "/impact", label: "Our Impact" },
-    { to: "/volunteer", label: "Ways to Help" },
+    { to: "/", label: t("navHome") },
+    { to: "/impact", label: t("navImpact") },
+    { to: "/volunteer", label: t("navWaysToHelp") },
   ];
 
   const linkClass = (to: string) =>
@@ -146,6 +148,36 @@ const Navbar = () => {
     <span className="text-muted-foreground/40 select-none" aria-hidden>
       |
     </span>
+  );
+
+  const LangToggle = () => (
+    <div className="flex items-center text-xs font-semibold border border-border rounded overflow-hidden shrink-0">
+      <button
+        type="button"
+        onClick={() => setLang("en")}
+        className={`px-2 py-1 transition-colors ${
+          lang === "en"
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        aria-label="Switch to English"
+      >
+        EN
+      </button>
+      <span className="text-border select-none">|</span>
+      <button
+        type="button"
+        onClick={() => setLang("es")}
+        className={`px-2 py-1 transition-colors ${
+          lang === "es"
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        aria-label="Cambiar a Español"
+      >
+        ES
+      </button>
+    </div>
   );
 
   const renderDesktopNav = () => {
@@ -193,11 +225,11 @@ const Navbar = () => {
 
   const profileFormContent = (
     <>
-      <h3 className="text-sm font-semibold text-foreground mb-4">Edit Profile</h3>
+      <h3 className="text-sm font-semibold text-foreground mb-4">{t("navEditProfile")}</h3>
 
       <div className="space-y-3">
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Name</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">{t("profileName")}</label>
           <input
             type="text"
             className={inputClass}
@@ -206,7 +238,7 @@ const Navbar = () => {
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Email</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">{t("profileEmail")}</label>
           <input
             type="email"
             className={inputClass}
@@ -215,7 +247,7 @@ const Navbar = () => {
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Username</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">{t("profileUsername")}</label>
           <input
             type="text"
             className={inputClass}
@@ -226,11 +258,11 @@ const Navbar = () => {
       </div>
 
       <div className="border-t border-border mt-4 pt-4">
-        <p className="text-xs font-semibold text-foreground mb-3">Change Password</p>
+        <p className="text-xs font-semibold text-foreground mb-3">{t("profileChangePassword")}</p>
         <div className="space-y-3">
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Current Password
+              {t("profileCurrentPassword")}
             </label>
             <div className="relative">
               <input
@@ -238,7 +270,7 @@ const Navbar = () => {
                 className={inputClass + " pr-9"}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="Required to change password"
+                placeholder={t("profileRequiredToChange")}
               />
               <button
                 type="button"
@@ -252,7 +284,7 @@ const Navbar = () => {
           </div>
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">
-              New Password
+              {t("profileNewPassword")}
             </label>
             <div className="relative">
               <input
@@ -260,7 +292,7 @@ const Navbar = () => {
                 className={inputClass + " pr-9"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Min 6 characters"
+                placeholder={t("profileMinSixChars")}
               />
               <button
                 type="button"
@@ -274,7 +306,7 @@ const Navbar = () => {
           </div>
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Confirm New Password
+              {t("profileConfirmNewPassword")}
             </label>
             <div className="relative">
               <input
@@ -282,7 +314,7 @@ const Navbar = () => {
                 className={inputClass + " pr-9"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter new password"
+                placeholder={t("profileReEnter")}
               />
               <button
                 type="button"
@@ -298,7 +330,7 @@ const Navbar = () => {
       </div>
 
       {profileError && <p className="text-xs text-red-500 mt-3">{profileError}</p>}
-      {profileSuccess && <p className="text-xs text-green-600 mt-3">Profile updated!</p>}
+      {profileSuccess && <p className="text-xs text-green-600 mt-3">{t("profileUpdated")}</p>}
 
       <div className="flex gap-2 mt-4">
         <button
@@ -306,7 +338,7 @@ const Navbar = () => {
           onClick={() => setProfileOpen(false)}
           className="flex-1 text-sm font-medium px-3 py-2 border border-border rounded-md hover:bg-secondary transition-colors"
         >
-          Cancel
+          {t("profileCancel")}
         </button>
         <button
           type="button"
@@ -314,7 +346,7 @@ const Navbar = () => {
           disabled={profileSaving}
           className="flex-1 text-sm font-medium px-3 py-2 bg-accent text-accent-foreground rounded-md hover:bg-gold-dark transition-colors disabled:opacity-50"
         >
-          {profileSaving ? "Saving..." : "Save"}
+          {profileSaving ? t("profileSaving") : t("profileSave")}
         </button>
       </div>
     </>
@@ -333,6 +365,7 @@ const Navbar = () => {
         {renderDesktopNav()}
 
         <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto">
+          <LangToggle />
           {user ? (
             <>
               <span className="text-sm font-medium text-foreground">
@@ -343,7 +376,7 @@ const Navbar = () => {
                   type="button"
                   onClick={() => setProfileOpen((v) => !v)}
                   className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-secondary transition-colors"
-                  aria-label="Profile"
+                  aria-label={t("navEditProfile")}
                 >
                   <UserCircle size={22} className="text-foreground" />
                 </button>
@@ -363,7 +396,7 @@ const Navbar = () => {
                 onClick={logout}
                 className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
               >
-                Sign out
+                {t("navSignOut")}
               </button>
             </>
           ) : (
@@ -372,13 +405,13 @@ const Navbar = () => {
                 to="/register"
                 className="text-sm font-medium px-4 py-2 border border-border hover:bg-secondary transition-colors"
               >
-                Register
+                {t("navRegister")}
               </Link>
               <Link
                 to="/login"
                 className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
               >
-                Login
+                {t("navLogin")}
               </Link>
             </>
           )}
@@ -448,6 +481,12 @@ const Navbar = () => {
               ))}
             </div>
           )}
+
+          {/* Language toggle in mobile menu */}
+          <div className="pt-1">
+            <LangToggle />
+          </div>
+
           {user ? (
             <div className="space-y-2 mt-2">
               <button
@@ -458,7 +497,7 @@ const Navbar = () => {
                 }}
                 className="block w-full text-sm font-medium px-4 py-2 border border-border text-center"
               >
-                Edit Profile
+                {t("navEditProfile")}
               </button>
               <button
                 type="button"
@@ -468,7 +507,7 @@ const Navbar = () => {
                 }}
                 className="block w-full text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
               >
-                Sign out
+                {t("navSignOut")}
               </button>
             </div>
           ) : (
@@ -478,14 +517,14 @@ const Navbar = () => {
                 onClick={() => setMobileOpen(false)}
                 className="block text-sm font-medium px-4 py-2 border border-border text-center"
               >
-                Register
+                {t("navRegister")}
               </Link>
               <Link
                 to="/login"
                 onClick={() => setMobileOpen(false)}
                 className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
               >
-                Login
+                {t("navLogin")}
               </Link>
             </div>
           )}

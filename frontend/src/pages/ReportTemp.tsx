@@ -8,7 +8,9 @@ import {
   ArrowUpDown, BookOpen, Activity, HandHeart, GraduationCap, Stethoscope,
 } from "lucide-react";
 import { useAuth } from "@/state/auth";
+import { useLanguage } from "@/state/language";
 import { useMlRefresh } from "@/state/mlRefresh";
+import type { Translations } from "@/i18n/translations";
 import {
   apiGetMlPredictions, apiGetMlArtifact,
   apiGetImpactStats, apiGetMonthlyDonations,
@@ -30,98 +32,95 @@ import {
 
 const COLORS = ["#d4a439", "#2563eb", "#16a34a", "#dc2626", "#9333ea", "#ea580c"];
 
-const DOMAINS = [
-  {
-    key: "donor-acquisition",
-    label: "Donor Acquisition",
-    summaryDomainKey: "donor",
-    predictionNotebook: "donor-acquisition-prediction",
-    explanatoryNotebook: "donor-acquisition-explanatory",
-    scoreLabel: "Acquisition probability",
-    tierLabel: "Risk tier",
-    artifacts: { prediction: [] as string[], explanatory: ["domain_summary.json"] },
-    insightDescription: "Identifies which new donors are most likely to become recurring givers within 12 months.",
-    recommendations: [
-      "Prioritize outreach to organizational donors and partner-referred contacts — these profiles are most strongly associated with becoming long-term, high-value supporters.",
-      "Track engagement within the first 90 days: donors who interact multiple times early are significantly more likely to convert to recurring givers.",
-    ],
-  },
-  {
-    key: "donor-churn",
-    label: "Donor Churn",
-    summaryDomainKey: "donor-churn",
-    predictionNotebook: "donor-churn-prediction",
-    explanatoryNotebook: "donor-churn-explanatory",
-    scoreLabel: "Churn probability",
-    tierLabel: "Risk tier",
-    artifacts: { prediction: [] as string[], explanatory: ["domain_summary.json"] },
-    insightDescription: "Predicts which active donors are at risk of stopping their giving within 90 days.",
-    recommendations: [
-      "Flag donors who haven't given in 60+ days for personal outreach — recency of last gift is the strongest predictor of churn risk.",
-      "Pay special attention to donors who came through partner referrals, as their initial engagement channel influences long-term retention.",
-    ],
-  },
-  {
-    key: "incident",
-    label: "Incident Risk",
-    summaryDomainKey: "incident",
-    predictionNotebook: "incident-prediction",
-    explanatoryNotebook: "incident-explanatory",
-    scoreLabel: "Severity probability",
-    tierLabel: "Attention tier",
-    artifacts: { prediction: [] as string[], explanatory: ["domain_summary.json"] },
-    insightDescription: "Flags residents at elevated risk of a high-severity incident in the next 30 days.",
-    recommendations: [
-      "Review all intervention plans monthly and prioritize immediate follow-up on stalled safety-category plans.",
-      "Ensure no gap longer than 14 days between counseling sessions for residents with flagged concerns.",
-    ],
-  },
-  {
-    key: "reintegration",
-    label: "Reintegration Readiness",
-    summaryDomainKey: "reintegration",
-    predictionNotebook: "reintegration-prediction",
-    explanatoryNotebook: "reintegration-explanatory",
-    scoreLabel: "Readiness score",
-    tierLabel: "Pathway",
-    artifacts: { prediction: [] as string[], explanatory: ["domain_summary.json"] },
-    insightDescription: "Assesses which residents are ready for reintegration and predicts the most likely pathway.",
-    recommendations: [
-      "Monitor health trends closely — an improving composite health trajectory is the strongest indicator that a resident is ready for reintegration.",
-      "Keep education attendance above 75% before scheduling reintegration assessments, as attendance trends are a key predictor of readiness.",
-    ],
-  },
-  {
-    key: "social-media",
-    label: "Social Media Impact",
-    summaryDomainKey: "social-media",
-    predictionNotebook: "social-media-prediction",
-    explanatoryNotebook: "social-media-explanatory",
-    scoreLabel: "Conversion probability",
-    tierLabel: "Value tier",
-    artifacts: { prediction: [] as string[], explanatory: ["domain_summary.json"] },
-    insightDescription: "Predicts which social media posts are most likely to drive donations.",
-    recommendations: [
-      "Feature resident stories in your posts — this content type drives both donation conversion and donation value more than any other factor.",
-      "Schedule event promotions and impact stories during evening hours on Instagram for the highest conversion rates.",
-    ],
-  },
-  {
-    key: "volunteer",
-    label: "Volunteer Engagement",
-    summaryDomainKey: "volunteer",
-    predictionNotebook: "volunteer-prediction",
-    explanatoryNotebook: "volunteer-explanatory",
-    scoreLabel: "Growth potential",
-    tierLabel: "Status",
-    artifacts: { prediction: [] as string[], explanatory: ["domain_summary.json"] },
-    insightDescription: "Identifies volunteers likely to grow their engagement vs. those at risk of dropping out.",
-    recommendations: [
-      "Re-engage inactive volunteers (50% of the base) with personal outreach and barrier-removal campaigns — even small wins can reactivate them.",
-      "Retain top-performing volunteers with exclusive leadership roles and recognition events — they represent only 12.5% but generate the highest engagement value.",
-    ],
-  },
-] as const;
+type DomainConfig = {
+  key: string;
+  label: string;
+  summaryDomainKey: string;
+  predictionNotebook: string;
+  explanatoryNotebook: string;
+  scoreLabel: string;
+  tierLabel: string;
+  artifacts: { prediction: string[]; explanatory: string[] };
+  insightDescription: string;
+  recommendations: string[];
+};
+
+function getDomains(t: (k: keyof Translations) => string): DomainConfig[] {
+  return [
+    {
+      key: "donor-acquisition",
+      label: t("domainDonorAcqLabel"),
+      summaryDomainKey: "donor",
+      predictionNotebook: "donor-acquisition-prediction",
+      explanatoryNotebook: "donor-acquisition-explanatory",
+      scoreLabel: t("domainDonorAcqScoreLabel"),
+      tierLabel: t("domainDonorAcqTierLabel"),
+      artifacts: { prediction: [], explanatory: ["domain_summary.json"] },
+      insightDescription: t("domainDonorAcqDesc"),
+      recommendations: [t("domainDonorAcqRec1"), t("domainDonorAcqRec2")],
+    },
+    {
+      key: "donor-churn",
+      label: t("domainDonorChurnLabel"),
+      summaryDomainKey: "donor-churn",
+      predictionNotebook: "donor-churn-prediction",
+      explanatoryNotebook: "donor-churn-explanatory",
+      scoreLabel: t("domainDonorChurnScoreLabel"),
+      tierLabel: t("domainDonorChurnTierLabel"),
+      artifacts: { prediction: [], explanatory: ["domain_summary.json"] },
+      insightDescription: t("domainDonorChurnDesc"),
+      recommendations: [t("domainDonorChurnRec1"), t("domainDonorChurnRec2")],
+    },
+    {
+      key: "incident",
+      label: t("domainIncidentLabel"),
+      summaryDomainKey: "incident",
+      predictionNotebook: "incident-prediction",
+      explanatoryNotebook: "incident-explanatory",
+      scoreLabel: t("domainIncidentScoreLabel"),
+      tierLabel: t("domainIncidentTierLabel"),
+      artifacts: { prediction: [], explanatory: ["domain_summary.json"] },
+      insightDescription: t("domainIncidentDesc"),
+      recommendations: [t("domainIncidentRec1"), t("domainIncidentRec2")],
+    },
+    {
+      key: "reintegration",
+      label: t("domainReintLabel"),
+      summaryDomainKey: "reintegration",
+      predictionNotebook: "reintegration-prediction",
+      explanatoryNotebook: "reintegration-explanatory",
+      scoreLabel: t("domainReintScoreLabel"),
+      tierLabel: t("domainReintTierLabel"),
+      artifacts: { prediction: [], explanatory: ["domain_summary.json"] },
+      insightDescription: t("domainReintDesc"),
+      recommendations: [t("domainReintRec1"), t("domainReintRec2")],
+    },
+    {
+      key: "social-media",
+      label: t("domainSocialMediaLabel"),
+      summaryDomainKey: "social-media",
+      predictionNotebook: "social-media-prediction",
+      explanatoryNotebook: "social-media-explanatory",
+      scoreLabel: t("domainSocialMediaScoreLabel"),
+      tierLabel: t("domainSocialMediaTierLabel"),
+      artifacts: { prediction: [], explanatory: ["domain_summary.json"] },
+      insightDescription: t("domainSocialMediaDesc"),
+      recommendations: [t("domainSocialMediaRec1"), t("domainSocialMediaRec2")],
+    },
+    {
+      key: "volunteer",
+      label: t("domainVolunteerLabel"),
+      summaryDomainKey: "volunteer",
+      predictionNotebook: "volunteer-prediction",
+      explanatoryNotebook: "volunteer-explanatory",
+      scoreLabel: t("domainVolunteerScoreLabel"),
+      tierLabel: t("domainVolunteerTierLabel"),
+      artifacts: { prediction: [], explanatory: ["domain_summary.json"] },
+      insightDescription: t("domainVolunteerDesc"),
+      recommendations: [t("domainVolunteerRec1"), t("domainVolunteerRec2")],
+    },
+  ];
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -182,6 +181,7 @@ function humanizeSummary(raw: string): string {
 // ── Analytics Tab ─────────────────────────────────────────────────────────────
 
 function AnalyticsTab({ token }: { token: string }) {
+  const { t } = useLanguage();
   const [impact, setImpact] = useState<ImpactStats | null>(null);
   const [monthly, setMonthly] = useState<MonthlyDonation[]>([]);
   const [safehouses, setSafehouses] = useState<SafehousePerformance[]>([]);
@@ -238,8 +238,8 @@ function AnalyticsTab({ token }: { token: string }) {
       .map(r => ({ name: r.status, value: r.count }));
   }, [impact]);
 
-  if (loading) return <div className="py-20 text-center text-muted-foreground"><Loader2 className="inline animate-spin mr-2" size={20} />Loading analytics…</div>;
-  if (!impact) return <div className="py-20 text-center text-muted-foreground">Could not load analytics data.</div>;
+  if (loading) return <div className="py-20 text-center text-muted-foreground"><Loader2 className="inline animate-spin mr-2" size={20} />{t("reportsLoadingAnalytics")}</div>;
+  if (!impact) return <div className="py-20 text-center text-muted-foreground">{t("reportsCouldNotLoad")}</div>;
 
   const reintRate = impact.totalResidents > 0
     ? ((impact.reintegrationBreakdown.find(r => r.status === "Completed")?.count ?? 0) / impact.totalResidents * 100).toFixed(1)
@@ -249,32 +249,32 @@ function AnalyticsTab({ token }: { token: string }) {
     <div className="space-y-6">
       {/* ── Top-level KPIs ──────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <StatCard icon={Users} label="Active Residents" value={impact.activeResidents.toLocaleString()} sub={`${impact.totalResidents} total`} />
-        <StatCard icon={DollarSign} label="Contributions" value={`$${Math.round(impact.totalContributionsValue).toLocaleString()}`} sub={`${impact.uniqueSuporters} supporters`} />
-        <StatCard icon={Heart} label="Reintegration Rate" value={`${reintRate}%`} sub={`${impact.reintegrationProgressCount} in progress`} />
-        <StatCard icon={TrendingUp} label="Volunteer Hours" value={Math.round(impact.totalVolunteerHours).toLocaleString()} />
+        <StatCard icon={Users} label={t("reportsActiveResidents")} value={impact.activeResidents.toLocaleString()} sub={`${impact.totalResidents} ${t("reportsKpiTotal")}`} />
+        <StatCard icon={DollarSign} label={t("donorsContributions")} value={`$${Math.round(impact.totalContributionsValue).toLocaleString()}`} sub={`${impact.uniqueSuporters} ${t("reportsKpiSupporters")}`} />
+        <StatCard icon={Heart} label={t("reportsReintegrationStatus")} value={`${reintRate}%`} sub={`${impact.reintegrationProgressCount} ${t("reportsKpiInProgress")}`} />
+        <StatCard icon={TrendingUp} label={t("reportsVolunteerHours")} value={Math.round(impact.totalVolunteerHours).toLocaleString()} />
       </div>
 
       {/* ── Services Provided + Beneficiary Counts (side-by-side) ──────── */}
       <div className="grid md:grid-cols-2 gap-4">
         {services && (
           <div className="border border-border p-5">
-            <SectionHeader title="Services Provided" />
+            <SectionHeader title={t("reportsServicesProvided")} />
             <div className="grid grid-cols-3 gap-3">
               <div className="text-center">
                 <HandHeart size={16} className="mx-auto text-muted-foreground mb-1" />
                 <p className="font-heading text-xl font-semibold text-foreground">{services.totals.totalCaring.toLocaleString()}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Caring</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsCaring")}</p>
               </div>
               <div className="text-center">
                 <Heart size={16} className="mx-auto text-muted-foreground mb-1" />
                 <p className="font-heading text-xl font-semibold text-foreground">{services.totals.totalHealing.toLocaleString()}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Healing</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsHealing")}</p>
               </div>
               <div className="text-center">
                 <GraduationCap size={16} className="mx-auto text-muted-foreground mb-1" />
                 <p className="font-heading text-xl font-semibold text-foreground">{services.totals.totalTeaching.toLocaleString()}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Teaching</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsTeaching")}</p>
               </div>
             </div>
             {services.monthly.length > 0 && (
@@ -297,23 +297,23 @@ function AnalyticsTab({ token }: { token: string }) {
 
         {beneficiaries && (
           <div className="border border-border p-5">
-            <SectionHeader title="Beneficiary Counts" />
+            <SectionHeader title={t("reportsBeneficiaryCounts")} />
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="border border-border p-3 text-center">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.totalServed.toLocaleString()}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Total Served</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsTotalServed")}</p>
               </div>
               <div className="border border-border p-3 text-center">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.currentlyActive.toLocaleString()}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Active</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsActiveLabel")}</p>
               </div>
               <div className="border border-border p-3 text-center">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.closedCases.toLocaleString()}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Closed</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsClosed")}</p>
               </div>
               <div className="border border-border p-3 text-center">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.reintegrated.toLocaleString()}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Reintegrated</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsReintegrated")}</p>
               </div>
             </div>
             {beneficiaries.byCategory.length > 0 && (
@@ -335,17 +335,17 @@ function AnalyticsTab({ token }: { token: string }) {
       <div className="grid md:grid-cols-2 gap-4">
         {education && (
           <div className="border border-border p-5">
-            <SectionHeader title="Education Outcomes" />
+            <SectionHeader title={t("reportsEducationOutcomes")} />
             <div className="grid grid-cols-2 gap-3">
               <div className="border border-border p-3 text-center">
                 <BookOpen size={14} className="mx-auto text-muted-foreground mb-1" />
                 <p className="font-heading text-xl font-semibold text-foreground">{education.overallAvgAttendance}%</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Avg Attendance</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsAvgAttendance")}</p>
               </div>
               <div className="border border-border p-3 text-center">
                 <GraduationCap size={14} className="mx-auto text-muted-foreground mb-1" />
                 <p className="font-heading text-xl font-semibold text-foreground">{education.overallAvgProgress}%</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Avg Progress</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsAvgProgress")}</p>
               </div>
             </div>
             {education.enrollment.length > 0 && (
@@ -362,23 +362,23 @@ function AnalyticsTab({ token }: { token: string }) {
 
         {health && (
           <div className="border border-border p-5">
-            <SectionHeader title="Health & Wellbeing" />
+            <SectionHeader title={t("reportsHealthWellbeing")} />
             <div className="grid grid-cols-3 gap-3 mb-3">
               {([
-                { icon: Stethoscope, val: health.overallAvgHealth, label: "General Health" },
-                { icon: Activity, val: health.overallAvgNutrition, label: "Nutrition" },
-                { icon: Heart, val: health.overallAvgSleep, label: "Sleep Quality" },
-              ] as const).map(h => {
+                { icon: Stethoscope, val: health.overallAvgHealth, labelKey: "reportsGeneralHealth" as const },
+                { icon: Activity, val: health.overallAvgNutrition, labelKey: "reportsNutrition" as const },
+                { icon: Heart, val: health.overallAvgSleep, labelKey: "reportsSleepQuality" as const },
+              ]).map(h => {
                 const pct = Math.round((h.val / 5) * 100);
-                const rating = pct >= 80 ? "Excellent" : pct >= 60 ? "Good" : pct >= 40 ? "Fair" : "Needs Improvement";
+                const rating = pct >= 80 ? t("reportsExcellent") : pct >= 60 ? t("reportsGood") : pct >= 40 ? t("reportsFair") : t("reportsNeedsImprovement");
                 const color = pct >= 80 ? "text-green-600" : pct >= 60 ? "text-green-600" : pct >= 40 ? "text-amber-600" : "text-red-600";
                 const barColor = pct >= 60 ? "bg-green-500" : pct >= 40 ? "bg-amber-500" : "bg-red-500";
                 return (
-                  <div key={h.label} className="border border-border p-3 text-center">
+                  <div key={h.labelKey} className="border border-border p-3 text-center">
                     <h.icon size={14} className="mx-auto text-muted-foreground mb-1" />
                     <p className="font-heading text-xl font-semibold text-foreground">{pct}%</p>
                     <p className={`text-[10px] font-medium ${color}`}>{rating}</p>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wide mt-0.5 mb-1.5">{h.label}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wide mt-0.5 mb-1.5">{t(h.labelKey)}</p>
                     <div className="w-full bg-secondary h-1.5 rounded-full">
                       <div className={`h-1.5 rounded-full ${barColor}`} style={{ width: `${Math.min(100, pct)}%` }} />
                     </div>
@@ -386,16 +386,16 @@ function AnalyticsTab({ token }: { token: string }) {
                 );
               })}
             </div>
-            <h4 className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Checkup Completion</h4>
+            <h4 className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">{t("reportsCheckupCompletion")}</h4>
             <div className="grid grid-cols-3 gap-3">
               {([
-                { label: "Medical", pct: health.medicalCheckupPct },
-                { label: "Dental", pct: health.dentalCheckupPct },
-                { label: "Psychological", pct: health.psychCheckupPct },
-              ] as const).map(c => (
-                <div key={c.label}>
+                { labelKey: "reportsMedical" as const, pct: health.medicalCheckupPct },
+                { labelKey: "reportsDental" as const, pct: health.dentalCheckupPct },
+                { labelKey: "reportsPsychological" as const, pct: health.psychCheckupPct },
+              ]).map(c => (
+                <div key={c.labelKey}>
                   <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
-                    <span>{c.label}</span>
+                    <span>{t(c.labelKey)}</span>
                     <span className="font-medium text-foreground">{c.pct.toFixed(0)}%</span>
                   </div>
                   <div className="w-full bg-secondary h-1.5 rounded-full">
@@ -411,7 +411,7 @@ function AnalyticsTab({ token }: { token: string }) {
       {/* ── Donation Trends + Contributions by Type (side-by-side) ──────── */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className="border border-border p-5">
-          <SectionHeader title="Donation Trends" />
+          <SectionHeader title={t("reportsDonationTrends")} />
           {donationChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <AreaChart data={donationChartData}>
@@ -425,11 +425,11 @@ function AnalyticsTab({ token }: { token: string }) {
                 ))}
               </AreaChart>
             </ResponsiveContainer>
-          ) : <p className="text-sm text-muted-foreground">No donation data available.</p>}
+          ) : <p className="text-sm text-muted-foreground">{t("reportsNoDonationData")}</p>}
         </div>
 
         <div className="border border-border p-5">
-          <SectionHeader title="Contributions by Type" />
+          <SectionHeader title={t("reportsContributionsByType")} />
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={impact.donationBreakdown.filter(d => d.type)} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -444,23 +444,23 @@ function AnalyticsTab({ token }: { token: string }) {
 
       {/* ── Safehouse Performance ──────────────────────────────────────── */}
       <div className="border border-border p-5">
-        <SectionHeader title="Safehouse Performance" />
+        <SectionHeader title={t("reportsSafehousePerf")} />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {safehouses.map(sh => (
             <div key={sh.safehouseId} className="border border-border p-3">
               <div className="flex justify-between items-center mb-1.5">
                 <span className="font-medium text-foreground text-sm">{sh.name}</span>
                 <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${sh.occupancy >= sh.capacity ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"}`}>
-                  {Math.round(sh.occupancy / sh.capacity * 100)}% full
+                  {Math.round(sh.occupancy / sh.capacity * 100)}{t("reportsPercentFull")}
                 </span>
               </div>
               <div className="w-full bg-secondary h-1.5 rounded-full mb-2">
                 <div className="bg-accent h-1.5 rounded-full" style={{ width: `${Math.min(100, sh.occupancy / sh.capacity * 100)}%` }} />
               </div>
               <div className="grid grid-cols-3 gap-2 text-[10px] text-muted-foreground">
-                <div><span className="font-medium text-foreground">{sh.activeResidents}</span> active</div>
-                <div><span className="font-medium text-foreground">{sh.reintegratedCount}</span> reinteg.</div>
-                <div><span className="font-medium text-foreground">{sh.incidentCount}</span> incidents</div>
+                <div><span className="font-medium text-foreground">{sh.activeResidents}</span> {t("reportsActiveSmall")}</div>
+                <div><span className="font-medium text-foreground">{sh.reintegratedCount}</span> {t("reportsReintegSmall")}</div>
+                <div><span className="font-medium text-foreground">{sh.incidentCount}</span> {t("reportsIncidents")}</div>
               </div>
             </div>
           ))}
@@ -470,7 +470,7 @@ function AnalyticsTab({ token }: { token: string }) {
       {/* ── Reintegration Status + Resident Flow (side-by-side) ─────────── */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className="border border-border p-5">
-          <SectionHeader title="Reintegration Status" />
+          <SectionHeader title={t("reportsReintegrationStatus")} />
           {reintPieData.length > 0 ? (
             <div className="flex items-center gap-6">
               <div className="w-1/2">
@@ -508,7 +508,7 @@ function AnalyticsTab({ token }: { token: string }) {
 
         {residents.length > 0 && (
           <div className="border border-border p-5">
-            <SectionHeader title="Admissions & Closures" />
+            <SectionHeader title={t("reportsAdmissionsClosures")} />
             <ResponsiveContainer width="100%" height={180}>
               <BarChart data={residents.slice(-24)}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -516,8 +516,8 @@ function AnalyticsTab({ token }: { token: string }) {
                 <YAxis tick={{ fontSize: 9 }} width={30} />
                 <Tooltip contentStyle={{ fontSize: 11 }} />
                 <Legend wrapperStyle={{ fontSize: 10 }} />
-                <Bar dataKey="admissions" fill="#2563eb" name="Admissions" />
-                <Bar dataKey="closures" fill="#16a34a" name="Closures" />
+                <Bar dataKey="admissions" fill="#2563eb" name={t("reportsAdmissionsLegend")} />
+                <Bar dataKey="closures" fill="#16a34a" name={t("reportsClosuresLegend")} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -531,7 +531,7 @@ function AnalyticsTab({ token }: { token: string }) {
 // ── Domain Accordion (simplified) ─────────────────────────────────────────────
 
 type DomainAccordionProps = {
-  domain: typeof DOMAINS[number];
+  domain: DomainConfig;
   token: string;
   notebookStatuses: Record<string, string>;
   completedThisRun: Set<string>;
@@ -542,6 +542,7 @@ type DomainAccordionProps = {
 };
 
 function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pendingAtCycleStart, isRefreshing, summary, predRefreshKey }: DomainAccordionProps) {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [viewAll, setViewAll] = useState(false);
   const [domainSummaryText, setDomainSummaryText] = useState<string | null>(null);
@@ -570,8 +571,8 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-6 overflow-y-auto">
           <div className="w-full max-w-5xl bg-background border border-border p-8 mt-4 mb-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-heading text-xl font-semibold text-foreground">{domain.label} — All Records</h2>
-              <button onClick={() => setViewAll(false)} className="text-sm text-muted-foreground hover:text-foreground border border-border px-3 py-1">Close</button>
+              <h2 className="font-heading text-xl font-semibold text-foreground">{domain.label} — {t("reportsAllRecords")}</h2>
+              <button onClick={() => setViewAll(false)} className="text-sm text-muted-foreground hover:text-foreground border border-border px-3 py-1">{t("reportsClose")}</button>
             </div>
             <PredictionsTable notebook={domain.predictionNotebook} scoreLabel={domain.scoreLabel} tierLabel={domain.tierLabel} token={token} modal refreshKey={predRefreshKey} />
           </div>
@@ -584,8 +585,8 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
             <div className="flex items-center gap-3">
               <span className="font-heading font-semibold text-foreground">{domain.label}</span>
               <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1 text-xs text-muted-foreground">{notebookStatusIcon(explStatus, isRefreshing, explHasRun)} Analysis</span>
-                <span className="flex items-center gap-1 text-xs text-muted-foreground">{notebookStatusIcon(predStatus, isRefreshing, predHasRun)} Prediction</span>
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">{notebookStatusIcon(explStatus, isRefreshing, explHasRun)} {t("reportsAnalysisLabel")}</span>
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">{notebookStatusIcon(predStatus, isRefreshing, predHasRun)} {t("reportsPredictionLabel")}</span>
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-1">{domain.insightDescription}</p>
@@ -597,13 +598,13 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
           <div className="px-6 pb-6 border-t border-border pt-5 space-y-6">
             {displaySummary && (
               <div className="bg-secondary/30 border border-border p-4">
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Analysis Summary</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">{t("reportsAnalysisSummary")}</p>
                 <p className="text-sm text-foreground leading-relaxed">{humanizeSummary(displaySummary)}</p>
               </div>
             )}
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">Actionable Recommendations</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">{t("reportsActionableRecs")}</p>
               <div className="space-y-2">
                 {domain.recommendations.map((rec, i) => (
                   <div key={i} className="flex gap-3 p-3 bg-secondary/30 border border-border text-sm">
@@ -616,8 +617,8 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
 
             <div>
               <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Prediction Records</p>
-                <button onClick={() => setViewAll(true)} className="text-xs text-muted-foreground hover:text-foreground border border-border px-3 py-1">View all</button>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("reportsPredictionRecords")}</p>
+                <button onClick={() => setViewAll(true)} className="text-xs text-muted-foreground hover:text-foreground border border-border px-3 py-1">{t("reportsViewAll")}</button>
               </div>
               <PredictionsTable notebook={domain.predictionNotebook} scoreLabel={domain.scoreLabel} tierLabel={domain.tierLabel} token={token} refreshKey={predRefreshKey} />
             </div>
@@ -630,14 +631,14 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
 
 // ── Predictions Table ─────────────────────────────────────────────────────────
 
-const SORT_OPTIONS = [
-  { key: "score_desc", label: "Score: High → Low" },
-  { key: "score_asc",  label: "Score: Low → High" },
-  { key: "label_asc",  label: "Name: A → Z" },
-  { key: "label_desc", label: "Name: Z → A" },
-] as const;
-
 function PredictionsTable({ notebook, scoreLabel, tierLabel, token, modal = false, refreshKey }: { notebook: string; scoreLabel: string; tierLabel: string; token: string; modal?: boolean; refreshKey: number }) {
+  const { t } = useLanguage();
+  const SORT_OPTIONS = [
+    { key: "score_desc", label: "Score: High → Low" },
+    { key: "score_asc",  label: "Score: Low → High" },
+    { key: "label_asc",  label: "Name: A → Z" },
+    { key: "label_desc", label: "Name: Z → A" },
+  ] as const;
   const [data, setData] = useState<MlPredictionsResponse | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -656,8 +657,8 @@ function PredictionsTable({ notebook, scoreLabel, tierLabel, token, modal = fals
 
   const cycleSort = () => setSortIdx(i => (i + 1) % SORT_OPTIONS.length);
 
-  if (loading) return <div className="py-8 text-center text-sm text-muted-foreground"><Loader2 size={16} className="inline animate-spin mr-2" />Loading…</div>;
-  if (!data || data.records.length === 0) return <div className="py-8 text-center text-sm text-muted-foreground">No predictions yet — run a refresh to generate scores.</div>;
+  if (loading) return <div className="py-8 text-center text-sm text-muted-foreground"><Loader2 size={16} className="inline animate-spin mr-2" />{t("reportsLoadingDots")}</div>;
+  if (!data || data.records.length === 0) return <div className="py-8 text-center text-sm text-muted-foreground">{t("reportsNoPredictions")}</div>;
 
   const totalPages = Math.ceil(data.totalCount / pageSize);
 
@@ -675,8 +676,8 @@ function PredictionsTable({ notebook, scoreLabel, tierLabel, token, modal = fals
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border">
-              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Record</th>
-              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Type</th>
+              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("reportsRecordCol")}</th>
+              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("reportsTypeCol")}</th>
               <th className="text-right py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{scoreLabel}</th>
               <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{tierLabel}</th>
             </tr>
@@ -695,10 +696,10 @@ function PredictionsTable({ notebook, scoreLabel, tierLabel, token, modal = fals
       </div>
       {!modal && totalPages > 1 && (
         <div className="flex items-center justify-between mt-4 text-sm">
-          <span className="text-muted-foreground">{data.totalCount} total · page {page} of {totalPages}</span>
+          <span className="text-muted-foreground">{data.totalCount} {t("reportsTotal")} · {t("reportsPage")} {page} {t("reportsOf")} {totalPages}</span>
           <div className="flex gap-2">
-            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="px-3 py-1 border border-border hover:bg-secondary disabled:opacity-40">Previous</button>
-            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="px-3 py-1 border border-border hover:bg-secondary disabled:opacity-40">Next</button>
+            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="px-3 py-1 border border-border hover:bg-secondary disabled:opacity-40">{t("reportsPrevious")}</button>
+            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="px-3 py-1 border border-border hover:bg-secondary disabled:opacity-40">{t("reportsNextPage")}</button>
           </div>
         </div>
       )}
@@ -708,14 +709,15 @@ function PredictionsTable({ notebook, scoreLabel, tierLabel, token, modal = fals
 
 // ── Record Lookup (Interactive Prediction) ────────────────────────────────────
 
-function RecordLookup({ token }: { token: string }) {
-  const [selectedDomain, setSelectedDomain] = useState(DOMAINS[0].key);
+function RecordLookup({ token, domains }: { token: string; domains: DomainConfig[] }) {
+  const { t } = useLanguage();
+  const [selectedDomain, setSelectedDomain] = useState(domains[0]?.key ?? "");
   const [searchTerm, setSearchTerm] = useState("");
   const [allRecords, setAllRecords] = useState<MlPrediction[]>([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<MlPrediction | null>(null);
 
-  const domain = DOMAINS.find(d => d.key === selectedDomain)!;
+  const domain = domains.find(d => d.key === selectedDomain) ?? domains[0];
 
   useEffect(() => {
     setLoading(true);
@@ -737,12 +739,12 @@ function RecordLookup({ token }: { token: string }) {
     <div className="space-y-6">
       <div className="bg-secondary/30 border border-border p-5">
         <p className="text-sm text-foreground leading-relaxed">
-          Select a domain and search for a specific record to view its detailed prediction. This uses existing scored data from the most recent model run.
+          {t("reportsSelectDomainDesc")}
         </p>
       </div>
 
       <div className="flex flex-wrap gap-3">
-        {DOMAINS.map(d => (
+        {domains.map(d => (
           <button key={d.key} onClick={() => setSelectedDomain(d.key)} className={`px-4 py-2 text-sm border transition-colors ${d.key === selectedDomain ? "border-accent bg-accent/10 text-foreground font-medium" : "border-border text-muted-foreground hover:text-foreground hover:bg-secondary"}`}>
             {d.label}
           </button>
@@ -751,15 +753,15 @@ function RecordLookup({ token }: { token: string }) {
 
       <div className="relative max-w-md">
         <SearchIcon size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-        <input className="w-full border border-border bg-background pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent" placeholder="Search by name or ID…" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+        <input className="w-full border border-border bg-background pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent" placeholder={t("reportsSearchByName")} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
       </div>
 
-      {loading && <div className="py-8 text-center text-muted-foreground"><Loader2 className="inline animate-spin mr-2" size={16} />Loading records…</div>}
+      {loading && <div className="py-8 text-center text-muted-foreground"><Loader2 className="inline animate-spin mr-2" size={16} />{t("reportsLoadingRecords")}</div>}
 
       {!loading && (
         <div className="grid md:grid-cols-2 gap-6">
           <div className="border border-border max-h-[400px] overflow-y-auto">
-            {filtered.length === 0 && <p className="p-4 text-sm text-muted-foreground">No records found.</p>}
+            {filtered.length === 0 && <p className="p-4 text-sm text-muted-foreground">{t("reportsNoRecordsFound")}</p>}
             {filtered.map(r => (
               <button key={r.id} onClick={() => setSelected(r)} className={`w-full text-left px-4 py-3 border-b border-border hover:bg-secondary/40 transition-colors ${selected?.id === r.id ? "bg-secondary/60" : ""}`}>
                 <div className="flex justify-between">
@@ -775,18 +777,18 @@ function RecordLookup({ token }: { token: string }) {
             {!selected ? (
               <div className="text-center text-muted-foreground py-12">
                 <SearchIcon size={32} className="mx-auto mb-3 opacity-40" />
-                <p className="text-sm">Select a record to view details</p>
+                <p className="text-sm">{t("reportsSelectRecord")}</p>
               </div>
             ) : (
               <div className="space-y-4">
                 <h3 className="font-heading text-lg font-semibold text-foreground">{selected.label}</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Record Type</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">{t("reportsRecordType")}</p>
                     <p className="text-sm font-medium text-foreground capitalize">{selected.recordType}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Record ID</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">{t("reportsRecordId")}</p>
                     <p className="text-sm font-medium text-foreground">{selected.recordId}</p>
                   </div>
                   <div>
@@ -800,14 +802,14 @@ function RecordLookup({ token }: { token: string }) {
                 </div>
                 {selected.score != null && (
                   <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">Score Gauge</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide mb-2">{t("reportsScoreGauge")}</p>
                     <div className="w-full bg-secondary h-3 rounded-full overflow-hidden">
                       <div className={`h-3 rounded-full transition-all ${selected.score > 0.7 ? "bg-red-500" : selected.score > 0.4 ? "bg-amber-500" : "bg-green-500"}`} style={{ width: `${Math.min(100, (selected.score > 1 ? selected.score : selected.score * 100))}%` }} />
                     </div>
                   </div>
                 )}
                 <div className="text-xs text-muted-foreground pt-2 border-t border-border">
-                  Last scored: {new Date(selected.refreshedAt).toLocaleString()}
+                  {t("reportsLastScored")} {new Date(selected.refreshedAt).toLocaleString()}
                 </div>
               </div>
             )}
@@ -822,7 +824,9 @@ function RecordLookup({ token }: { token: string }) {
 
 const ReportTemp = () => {
   const { token } = useAuth();
+  const { lang, t } = useLanguage();
   const { status, summaries, isRefreshing, startRefresh, startRetrain, error } = useMlRefresh();
+  const domains = useMemo(() => getDomains(t), [lang]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [activeTab, setActiveTab] = useState<"analytics" | "insights" | "lookup">("analytics");
 
@@ -839,7 +843,7 @@ const ReportTemp = () => {
   const handleRetrain = () => {
     // Full retrain: all prediction + analysis notebooks become clocks instantly.
     const pending = new Set<string>();
-    DOMAINS.forEach(d => { pending.add(d.predictionNotebook); pending.add(d.explanatoryNotebook); });
+    domains.forEach(d => { pending.add(d.predictionNotebook); pending.add(d.explanatoryNotebook); });
     setPendingAtCycleStart(pending);
     setCompletedThisRun(new Set());
     void startRetrain();
@@ -848,7 +852,7 @@ const ReportTemp = () => {
   const handleRefresh = () => {
     // Refresh predictions only: only prediction notebooks become clocks (not analysis).
     const pending = new Set<string>();
-    DOMAINS.forEach(d => { pending.add(d.predictionNotebook); });
+    domains.forEach(d => { pending.add(d.predictionNotebook); });
     setPendingAtCycleStart(pending);
     setCompletedThisRun(new Set());
     void startRefresh();
@@ -864,7 +868,7 @@ const ReportTemp = () => {
         Object.entries(notebookStatuses).filter(([, st]) => st !== "complete").map(([nb]) => nb)
       );
       if (Object.keys(notebookStatuses).length === 0) {
-        DOMAINS.forEach(d => { pending.add(d.predictionNotebook); pending.add(d.explanatoryNotebook); });
+        domains.forEach(d => { pending.add(d.predictionNotebook); pending.add(d.explanatoryNotebook); });
       }
       setPendingAtCycleStart(pending);
       setCompletedThisRun(new Set());
@@ -895,22 +899,22 @@ const ReportTemp = () => {
 
           <Link to="/admin" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-8">
             <ArrowLeft size={13} />
-            Admin Dashboard
+            {t("navAdminDashboard")}
           </Link>
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="font-heading text-4xl font-semibold text-foreground">Reports &amp; Analytics</h1>
-            <p className="mt-2 text-muted-foreground">Aggregated insights, ML predictions, and interactive record exploration.</p>
-            {lastUpdated && <p className="mt-1 text-xs text-muted-foreground">ML last updated: {new Date(lastUpdated).toLocaleString()}</p>}
+            <h1 className="font-heading text-4xl font-semibold text-foreground">{t("reportsFullTitle")}</h1>
+            <p className="mt-2 text-muted-foreground">{t("reportsSubtitleText")}</p>
+            {lastUpdated && <p className="mt-1 text-xs text-muted-foreground">{t("reportsMlLastUpdated")} {new Date(lastUpdated).toLocaleString()}</p>}
           </div>
 
           {/* Tabs */}
           <div className="flex gap-0 border-b border-border mb-8">
             {([
-              { key: "analytics", label: "Analytics Dashboard", icon: BarChart3 },
-              { key: "lookup", label: "Record Lookup", icon: SearchIcon },
-              { key: "insights", label: "ML Insights", icon: Brain },
+              { key: "analytics", label: t("reportsTabAnalytics"), icon: BarChart3 },
+              { key: "lookup", label: t("reportsTabLookup"), icon: SearchIcon },
+              { key: "insights", label: t("reportsTabInsights"), icon: Brain },
             ] as const).map(tab => (
               <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={`px-5 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px flex items-center gap-1.5 ${activeTab === tab.key ? "border-accent text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                 <tab.icon size={14} />
@@ -922,21 +926,21 @@ const ReportTemp = () => {
           {/* Tab Content */}
           {activeTab === "analytics" && token && <AnalyticsTab token={token} />}
 
-          {activeTab === "lookup" && token && <RecordLookup token={token} />}
+          {activeTab === "lookup" && token && <RecordLookup token={token} domains={domains} />}
 
           {activeTab === "insights" && (
             <div className="space-y-3">
               <div className="flex items-center justify-end gap-2 mb-1">
                 <button onClick={handleRefresh} disabled={isRefreshing} className="flex items-center gap-2 border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary disabled:opacity-50">
                   <RefreshCw size={14} className={isRefreshing ? "animate-spin" : ""} />
-                  {isRefreshing ? "Running…" : "Refresh predictions"}
+                  {isRefreshing ? t("reportsRunning") : t("reportsRefreshPredictions")}
                 </button>
                 <button onClick={handleRetrain} disabled={isRefreshing} className="flex items-center gap-2 border border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary disabled:opacity-50">
-                  Full retrain
+                  {t("reportsFullRetrain")}
                 </button>
                 {error && <p className="text-xs text-red-500 ml-2">{error}</p>}
               </div>
-              {DOMAINS.map(domain => (
+              {domains.map(domain => (
                 <DomainAccordion
                   key={domain.key}
                   domain={domain}

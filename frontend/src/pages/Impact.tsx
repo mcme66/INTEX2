@@ -6,6 +6,7 @@ import {
 } from "recharts";
 import { RefreshCw } from "lucide-react";
 import { apiGetImpactStats, type ImpactStats } from "@/utils/api";
+import { useLanguage } from "@/state/language";
 
 const COLORS = [
   "hsl(213,30%,16%)",
@@ -22,6 +23,7 @@ const TOOLTIP_STYLE = {
 };
 
 const Impact = () => {
+  const { t } = useLanguage();
   const [stats, setStats] = useState<ImpactStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,10 +52,10 @@ const Impact = () => {
 
   const summaryCards = stats
     ? [
-        { label: "Children Currently in Care", value: stats.activeResidents.toString() },
-        { label: "Children Supported in Total", value: stats.totalResidents.toString() },
-        { label: "Reintegration Rate", value: `~${reintegrationRate}%` },
-        { label: "Active Supporters", value: stats.uniqueSuporters.toString() },
+        { label: t("impactChildrenInCare"), value: stats.activeResidents.toString() },
+        { label: t("impactChildrenTotal"), value: stats.totalResidents.toString() },
+        { label: t("impactReintegrationRate"), value: `~${reintegrationRate}%` },
+        { label: t("impactActiveSupporters"), value: stats.uniqueSuporters.toString() },
       ]
     : [];
 
@@ -65,11 +67,11 @@ const Impact = () => {
         <div className="mb-12 flex items-end justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Transparency & Accountability
+              {t("impactLabel")}
             </p>
-            <h1 className="mt-3 font-heading text-4xl font-semibold text-foreground">Our Impact</h1>
+            <h1 className="mt-3 font-heading text-4xl font-semibold text-foreground">{t("impactTitle")}</h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
-              Aggregated, anonymized data showing outcomes, progress, and resource use across all program areas.
+              {t("impactSub")}
             </p>
           </div>
           <button
@@ -78,12 +80,12 @@ const Impact = () => {
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 shrink-0 mb-1"
           >
             <RefreshCw size={13} className={refreshing ? "animate-spin" : ""} />
-            {refreshing ? "Refreshing…" : "Refresh"}
+            {refreshing ? t("impactRefreshing") : t("impactRefresh")}
           </button>
         </div>
 
         {loading && (
-          <div className="text-muted-foreground text-sm py-24 text-center">Loading stats…</div>
+          <div className="text-muted-foreground text-sm py-24 text-center">{t("impactLoading")}</div>
         )}
         {error && (
           <div className="text-destructive text-sm py-8 text-center">{error}</div>
@@ -106,7 +108,7 @@ const Impact = () => {
             {/* Outcomes */}
             <div className="mb-3">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Outcomes
+                {t("impactOutcomes")}
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-8 mb-14">
@@ -114,10 +116,10 @@ const Impact = () => {
               {/* Reintegration Progress */}
               <div className="border border-border p-6">
                 <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-                  Reintegration Progress
+                  {t("impactReintegrationProgress")}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-6">
-                  How children are progressing toward returning to a safe family environment.
+                  {t("impactReintegrationProgressDesc")}
                 </p>
                 <div className="flex items-center gap-6">
                   <ResponsiveContainer width="50%" height={200}>
@@ -159,10 +161,10 @@ const Impact = () => {
               {/* Children Admitted by Year */}
               <div className="border border-border p-6">
                 <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-                  Children Admitted by Year
+                  {t("impactChildrenAdmitted")}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-6">
-                  Growth in the number of children reached through our program over time.
+                  {t("impactChildrenAdmittedDesc")}
                 </p>
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={stats.residentsByYear}>
@@ -188,7 +190,7 @@ const Impact = () => {
             {/* Resources */}
             <div className="mb-3">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Resources
+                {t("impactResources")}
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-8 mb-14">
@@ -196,10 +198,10 @@ const Impact = () => {
               {/* Contributions by Type */}
               <div className="border border-border p-6">
                 <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-                  Contributions by Type
+                  {t("impactContributionsByType")}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-6">
-                  How supporters contribute — including monetary gifts, in-kind donations, and volunteered time.
+                  {t("impactContributionsByTypeDesc")}
                 </p>
                 {(() => {
                   const OTHER_TYPES = ["Time", "Skills", "SocialMedia"];
@@ -262,10 +264,10 @@ const Impact = () => {
               <div className="flex flex-col gap-6">
                 <div className="border border-border p-6">
                   <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-                    Contributions Over Time
+                    {t("impactContributionsOverTime")}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Total estimated value of all contributions received each year.
+                    {t("impactContributionsOverTimeDesc")}
                   </p>
                   <ResponsiveContainer width="100%" height={160}>
                     <BarChart data={stats.donationsByYear}>
@@ -293,14 +295,14 @@ const Impact = () => {
                 <div className="border border-border p-6 flex items-center gap-6">
                   <div>
                     <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-                      Volunteer Hours Contributed
+                      {t("impactVolunteerHours")}
                     </h3>
                     <p className="font-heading text-4xl font-bold text-foreground">
                       {Math.round(stats.totalVolunteerHours).toLocaleString()}
-                      <span className="text-lg font-normal text-muted-foreground ml-2">hrs</span>
+                      <span className="text-lg font-normal text-muted-foreground ml-2">{t("impactVolunteerHoursUnit")}</span>
                     </p>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Combined hours donated by volunteers and skilled contributors.
+                      {t("impactVolunteerHoursDesc")}
                     </p>
                   </div>
                 </div>
@@ -311,7 +313,7 @@ const Impact = () => {
         )}
 
         <p className="text-xs text-muted-foreground text-center">
-          All data is aggregated and anonymized to protect the privacy and safety of the children in our care.
+          {t("impactPrivacyNote")}
         </p>
       </div>
     </Layout>

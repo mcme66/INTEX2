@@ -22,6 +22,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { AuthProvider, useAuth } from "./state/auth";
 import { MlRefreshProvider } from "./state/mlRefresh";
+import { LanguageProvider } from "./state/language";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,7 @@ const AppRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
+      <LanguageProvider>
       <AuthProvider>
         <MlRefreshProvider>
           <TooltipProvider>
@@ -101,6 +103,7 @@ const App = () => (
           </TooltipProvider>
         </MlRefreshProvider>
       </AuthProvider>
+      </LanguageProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );

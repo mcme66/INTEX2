@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAuth } from "@/state/auth";
+import { useLanguage } from "@/state/language";
 import type { DonationDto } from "@/utils/api";
 import {
   apiCreateDonorDonation,
@@ -72,6 +73,7 @@ const formatValue = (d: DonationDto) => {
 
 const DonorDashboard = () => {
   const { user, token } = useAuth();
+  const { t } = useLanguage();
   const [donations, setDonations] = useState<DonationDto[]>([]);
   const [loadingList, setLoadingList] = useState(true);
   const [listError, setListError] = useState<string | null>(null);
@@ -84,7 +86,6 @@ const DonorDashboard = () => {
 
   const isMonetary = donationType === "Monetary";
   const isSkills = donationType === "Skills";
-  const needsNumericValue = !isMonetary && !isSkills;
 
   const loadDonations = useCallback(async () => {
     if (!token) return;
@@ -94,11 +95,11 @@ const DonorDashboard = () => {
       const rows = await apiListDonorDonations(token);
       setDonations(rows);
     } catch (e) {
-      setListError(e instanceof Error ? e.message : "Could not load donations.");
+      setListError(e instanceof Error ? e.message : t("donorToastErrLoad"));
     } finally {
       setLoadingList(false);
     }
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     void loadDonations();
@@ -121,11 +122,11 @@ const DonorDashboard = () => {
   }, [donations]);
 
   const valueLabel: Record<string, string> = {
-    Monetary: "Amount",
-    Time: "Number of Hours",
-    Skills: "Number of Hours",
-    InKind: "Number of Items",
-    SocialMedia: "Number of Posts",
+    Monetary: t("donorAmount"),
+    Time: t("donorNumHours"),
+    Skills: t("donorNumHours"),
+    InKind: t("donorNumItems"),
+    SocialMedia: t("donorNumPosts"),
   };
 
   const impactUnitMap: Record<string, string> = {
@@ -142,11 +143,11 @@ const DonorDashboard = () => {
 
     const parsed = Number.parseFloat(amount);
     if (!isSkills && (!Number.isFinite(parsed) || parsed <= 0)) {
-      toast.error("Enter a valid value greater than zero.");
+      toast.error(t("donorToastErrValue"));
       return;
     }
     if (isSkills && !notes.trim()) {
-      toast.error("Please describe the skills or services you contributed.");
+      toast.error(t("donorToastErrSkills"));
       return;
     }
 
@@ -160,12 +161,12 @@ const DonorDashboard = () => {
         notes: notes.trim() || undefined,
         currencyCode: isMonetary ? currencyCode : undefined,
       });
-      toast.success("Thank you — your contribution has been recorded.");
+      toast.success(t("donorToastSuccess"));
       setAmount("");
       setNotes("");
       await loadDonations();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Contribution could not be saved.");
+      toast.error(err instanceof Error ? err.message : t("donorToastErrSave"));
     } finally {
       setSubmitting(false);
     }
@@ -202,11 +203,11 @@ const DonorDashboard = () => {
     if (!token || !editDonation) return;
     const parsed = Number.parseFloat(editAmount);
     if (!editIsSkills && (!Number.isFinite(parsed) || parsed <= 0)) {
-      toast.error("Enter a valid value greater than zero.");
+      toast.error(t("donorToastErrValue"));
       return;
     }
     if (editIsSkills && !editNotes.trim()) {
-      toast.error("Please describe the skills or services contributed.");
+      toast.error(t("donorToastErrSkillsEdit"));
       return;
     }
     setSaving(true);
@@ -219,11 +220,11 @@ const DonorDashboard = () => {
         notes: editNotes.trim() || undefined,
         currencyCode: editIsMonetary ? editCurrency : undefined,
       });
-      toast.success("Donation updated.");
+      toast.success(t("donorToastUpdated"));
       setEditDonation(null);
       await loadDonations();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not update donation.");
+      toast.error(err instanceof Error ? err.message : t("donorToastErrUpdate"));
     } finally {
       setSaving(false);
     }
@@ -234,16 +235,24 @@ const DonorDashboard = () => {
     setDeleting(true);
     try {
       await apiDeleteDonorDonation(token, deleteDonation.donationId);
-      toast.success("Donation deleted.");
+      toast.success(t("donorToastDeleted"));
       setDeleteDonation(null);
       setEditDonation(null);
       await loadDonations();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not delete donation.");
+      toast.error(err instanceof Error ? err.message : t("donorToastErrDelete"));
     } finally {
       setDeleting(false);
     }
   };
+
+  const donationTypeOptions = [
+    { value: "Monetary",    label: t("donorMonetary"),      icon: "💵" },
+    { value: "Time",        label: t("donorVolunteerTime"),  icon: "🕐" },
+    { value: "Skills",      label: t("donorSkillsServices"), icon: "🛠️" },
+    { value: "InKind",      label: t("donorInKindGoods"),    icon: "📦" },
+    { value: "SocialMedia", label: t("donorSocialMedia"),    icon: "📣" },
+  ] as const;
 
   return (
     <Layout>
@@ -252,11 +261,10 @@ const DonorDashboard = () => {
           {/* ── Welcome ────────────────────────────────────────── */}
           <div className="max-w-3xl">
             <h1 className="font-heading text-4xl font-semibold text-foreground md:text-5xl">
-              Welcome back{user?.firstName ? `, ${user.firstName}` : ""}.
+              {t("donorWelcome")}{user?.firstName ? `, ${user.firstName}` : ""}.
             </h1>
             <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-              Track your giving history, see the impact of your contributions, and continue
-              making a difference for children in Colombia.
+              {t("donorSub")}
             </p>
           </div>
 
@@ -268,7 +276,7 @@ const DonorDashboard = () => {
                   <DollarSign className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Given</p>
+                  <p className="text-sm text-muted-foreground">{t("donorTotalGiven")}</p>
                   <p className="text-2xl font-semibold tracking-tight">
                     {loadingList ? "…" : formatMoney(stats.totalGiven)}
                   </p>
@@ -282,7 +290,7 @@ const DonorDashboard = () => {
                   <Gift className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Donations</p>
+                  <p className="text-sm text-muted-foreground">{t("donorDonations")}</p>
                   <p className="text-2xl font-semibold tracking-tight">
                     {loadingList ? "…" : stats.count}
                   </p>
@@ -296,7 +304,7 @@ const DonorDashboard = () => {
                   <CalendarDays className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Active Months</p>
+                  <p className="text-sm text-muted-foreground">{t("donorActiveMonths")}</p>
                   <p className="text-2xl font-semibold tracking-tight">
                     {loadingList ? "…" : stats.uniqueMonths}
                   </p>
@@ -310,7 +318,7 @@ const DonorDashboard = () => {
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Last Gift</p>
+                  <p className="text-sm text-muted-foreground">{t("donorLastGift")}</p>
                   <p className="text-2xl font-semibold tracking-tight">
                     {loadingList
                       ? "…"
@@ -334,20 +342,20 @@ const DonorDashboard = () => {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Heart className="h-5 w-5 text-rose-500" />
-                  <CardTitle className="font-heading text-2xl">Your Impact</CardTitle>
+                  <CardTitle className="font-heading text-2xl">{t("donorYourImpact")}</CardTitle>
                 </div>
                 <CardDescription>
-                  Every donation helps fund safe housing, meals, education, and counseling for children in North Star&apos;s care.
+                  {t("donorImpactDesc")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-5">
                 {loadingList ? (
-                  <p className="text-sm text-muted-foreground">Loading…</p>
+                  <p className="text-sm text-muted-foreground">{t("donorLoading")}</p>
                 ) : (
                   <>
                     <div className="rounded-lg border border-border bg-background p-4">
                       <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                        Most Recent Contribution
+                        {t("donorMostRecent")}
                       </p>
                       {stats.mostRecent ? (
                         <div className="mt-2 flex items-center justify-between gap-4">
@@ -369,7 +377,7 @@ const DonorDashboard = () => {
                         </div>
                       ) : (
                         <p className="mt-2 text-sm text-muted-foreground">
-                          No contributions recorded yet.
+                          {t("donorNoContributions")}
                         </p>
                       )}
                     </div>
@@ -379,18 +387,18 @@ const DonorDashboard = () => {
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-sm font-medium text-foreground">
-                          What your contributions help provide
+                          {t("donorWhatHelps")}
                         </p>
                         <Badge variant="secondary" className="text-xs">
-                          Support in action
+                          {t("donorSupportInAction")}
                         </Badge>
                       </div>
                       <div className="grid gap-3 sm:grid-cols-2">
                         {[
-                          { label: "Safe housing", desc: "A secure home environment" },
-                          { label: "Meals & nutrition", desc: "Daily meals for children" },
-                          { label: "Education", desc: "School supplies & tutoring" },
-                          { label: "Counseling", desc: "Therapeutic support sessions" },
+                          { label: t("donorSafeHousing"),  desc: t("donorSafeHousingDesc") },
+                          { label: t("donorMeals"),         desc: t("donorMealsDesc") },
+                          { label: t("donorEducation"),     desc: t("donorEducationDesc") },
+                          { label: t("donorCounseling"),    desc: t("donorCounselingDesc") },
                         ].map((item) => (
                           <div
                             key={item.label}
@@ -412,25 +420,18 @@ const DonorDashboard = () => {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <HandHeart className="h-5 w-5 text-emerald-600" />
-                  <CardTitle className="font-heading text-2xl">Make a Donation</CardTitle>
+                  <CardTitle className="font-heading text-2xl">{t("donorMakeADonation")}</CardTitle>
                 </div>
                 <CardDescription>
-                  Submit a donation to support North Star's mission. No real payment is
-                  processed — this is a demo environment.
+                  {t("donorMakeADonationDesc")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
                 <form onSubmit={(e) => void handleSubmit(e)} className="space-y-5">
                   <div className="space-y-2">
-                    <Label>Type of Contribution</Label>
+                    <Label>{t("donorTypeOfContribution")}</Label>
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                      {([
-                        { value: "Monetary", label: "Monetary", icon: "💵" },
-                        { value: "Time", label: "Volunteer Time", icon: "🕐" },
-                        { value: "Skills", label: "Skills & Services", icon: "🛠️" },
-                        { value: "InKind", label: "In-Kind Goods", icon: "📦" },
-                        { value: "SocialMedia", label: "Social Media", icon: "📣" },
-                      ] as const).map((opt) => (
+                      {donationTypeOptions.map((opt) => (
                         <button
                           key={opt.value}
                           type="button"
@@ -505,15 +506,15 @@ const DonorDashboard = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="currency">Currency</Label>
+                        <Label htmlFor="currency">{t("donorCurrency")}</Label>
                         <select
                           id="currency"
                           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                           value={currencyCode}
                           onChange={(e) => setCurrencyCode(e.target.value)}
                         >
-                          <option value="USD">USD — US Dollar</option>
-                          <option value="COP">COP — Colombian Peso</option>
+                          <option value="USD">{t("donorUSD")}</option>
+                          <option value="COP">{t("donorCOP")}</option>
                         </select>
                       </div>
                     </>
@@ -521,12 +522,12 @@ const DonorDashboard = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="notes">
-                      {isSkills ? "Describe Your Contribution" : "Note (optional)"}
+                      {isSkills ? t("donorDescribeContribution") : t("donorNoteOptional")}
                     </Label>
                     <Input
                       id="notes"
                       type="text"
-                      placeholder={isSkills ? "e.g. Legal consultation, tutoring, medical screening…" : "In honor of…"}
+                      placeholder={isSkills ? t("donorSkillsPlaceholder") : t("donorNotePlaceholder")}
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       maxLength={500}
@@ -535,7 +536,7 @@ const DonorDashboard = () => {
                   </div>
 
                   <Button type="submit" className="w-full" disabled={submitting}>
-                    {submitting ? "Processing…" : isMonetary ? "Donate Now" : "Log Contribution"}
+                    {submitting ? t("donorProcessing") : isMonetary ? t("donorDonateNow") : t("donorLogContribution")}
                   </Button>
                 </form>
               </CardContent>
@@ -545,13 +546,13 @@ const DonorDashboard = () => {
           {/* ── Donation history ───────────────────────────────── */}
           <Card className="mt-6 shadow-none">
             <CardHeader>
-              <CardTitle className="font-heading text-2xl">Donation History</CardTitle>
+              <CardTitle className="font-heading text-2xl">{t("donorDonationHistory")}</CardTitle>
               <CardDescription>
-                A complete record of every contribution tied to your account.
+                {t("donorHistoryDesc")}
               </CardDescription>
             </CardHeader>
             <CardContent className="min-w-0">
-              {loadingList && <p className="text-sm text-muted-foreground">Loading…</p>}
+              {loadingList && <p className="text-sm text-muted-foreground">{t("donorLoading")}</p>}
               {listError && (
                 <p className="text-sm text-destructive" role="alert">
                   {listError}
@@ -561,7 +562,7 @@ const DonorDashboard = () => {
                 <div className="rounded-lg border border-dashed border-border p-8 text-center">
                   <Gift className="mx-auto h-10 w-10 text-muted-foreground/40" />
                   <p className="mt-3 text-muted-foreground">
-                    No donations yet. When you submit a gift above, it will appear here.
+                    {t("donorNoDonations")}
                   </p>
                 </div>
               )}
@@ -570,10 +571,10 @@ const DonorDashboard = () => {
                   <Table className="min-w-[560px] table-fixed">
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="w-[20%]">Date</TableHead>
-                        <TableHead className="w-[15%]">Type</TableHead>
-                        <TableHead className="w-[20%]">Contribution</TableHead>
-                        <TableHead className="w-[35%]">Note</TableHead>
+                        <TableHead className="w-[20%]">{t("donorDateCol")}</TableHead>
+                        <TableHead className="w-[15%]">{t("donorTypeCol")}</TableHead>
+                        <TableHead className="w-[20%]">{t("donorContributionCol")}</TableHead>
+                        <TableHead className="w-[35%]">{t("donorNoteCol")}</TableHead>
                         <TableHead className="w-[10%]" />
                       </TableRow>
                     </TableHeader>
@@ -628,23 +629,17 @@ const DonorDashboard = () => {
       <Dialog open={editDonation !== null && deleteDonation === null} onOpenChange={(open) => { if (!open) setEditDonation(null); }}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Edit Donation</DialogTitle>
+            <DialogTitle>{t("donorEditDonation")}</DialogTitle>
             <DialogDescription>
-              Update the details for this contribution, or delete it.
+              {t("donorEditDesc")}
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={(e) => void handleUpdate(e)} className="space-y-4 mt-2">
             <div className="space-y-2">
-              <Label>Type</Label>
+              <Label>{t("donorTypeEditLabel")}</Label>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {([
-                  { value: "Monetary", label: "Monetary", icon: "💵" },
-                  { value: "Time", label: "Volunteer Time", icon: "🕐" },
-                  { value: "Skills", label: "Skills & Services", icon: "🛠️" },
-                  { value: "InKind", label: "In-Kind Goods", icon: "📦" },
-                  { value: "SocialMedia", label: "Social Media", icon: "📣" },
-                ] as const).map((opt) => (
+                {donationTypeOptions.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
@@ -665,7 +660,7 @@ const DonorDashboard = () => {
             {!editIsSkills && (
               <div className="space-y-2">
                 <Label htmlFor="edit-amount">
-                  {editIsMonetary ? "Amount" : valueLabel[editType]}
+                  {editIsMonetary ? t("donorAmount") : valueLabel[editType]}
                 </Label>
                 {editIsMonetary ? (
                   <div className="relative">
@@ -699,22 +694,22 @@ const DonorDashboard = () => {
 
             {editIsMonetary && (
               <div className="space-y-2">
-                <Label htmlFor="edit-currency">Currency</Label>
+                <Label htmlFor="edit-currency">{t("donorCurrency")}</Label>
                 <select
                   id="edit-currency"
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   value={editCurrency}
                   onChange={(e) => setEditCurrency(e.target.value)}
                 >
-                  <option value="USD">USD — US Dollar</option>
-                  <option value="COP">COP — Colombian Peso</option>
+                  <option value="USD">{t("donorUSD")}</option>
+                  <option value="COP">{t("donorCOP")}</option>
                 </select>
               </div>
             )}
 
             <div className="space-y-2">
               <Label htmlFor="edit-notes">
-                {editIsSkills ? "Describe Your Contribution" : "Note"}
+                {editIsSkills ? t("donorDescribeContribution") : t("donorNoteCol")}
               </Label>
               <Input
                 id="edit-notes"
@@ -723,7 +718,7 @@ const DonorDashboard = () => {
                 onChange={(e) => setEditNotes(e.target.value)}
                 maxLength={500}
                 required={editIsSkills}
-                placeholder={editIsSkills ? "e.g. Legal consultation, tutoring…" : ""}
+                placeholder={editIsSkills ? t("donorSkillsPlaceholder") : ""}
               />
             </div>
 
@@ -735,14 +730,14 @@ const DonorDashboard = () => {
                 className="sm:mr-auto"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Delete
+                {t("donorDelete")}
               </Button>
               <div className="flex gap-2">
                 <Button type="button" variant="outline" onClick={() => setEditDonation(null)}>
-                  Cancel
+                  {t("donorCancel")}
                 </Button>
                 <Button type="submit" disabled={saving}>
-                  {saving ? "Saving…" : "Save Changes"}
+                  {saving ? t("donorSavingChanges") : t("donorSaveChanges")}
                 </Button>
               </div>
             </DialogFooter>
@@ -754,16 +749,16 @@ const DonorDashboard = () => {
       <Dialog open={deleteDonation !== null} onOpenChange={(open) => { if (!open) setDeleteDonation(null); }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete Donation</DialogTitle>
+            <DialogTitle>{t("donorDeleteDonation")}</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. Are you sure you want to delete this donation?
+              {t("donorDeleteConfirm")}
             </DialogDescription>
           </DialogHeader>
 
           {deleteDonation && (
             <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-1 text-sm">
               <p>
-                <span className="font-medium">Date:</span>{" "}
+                <span className="font-medium">{t("donorDateLabel")}</span>{" "}
                 {new Date(deleteDonation.donationDate).toLocaleDateString(undefined, {
                   year: "numeric",
                   month: "long",
@@ -771,17 +766,17 @@ const DonorDashboard = () => {
                 })}
               </p>
               <p>
-                <span className="font-medium">Type:</span> {deleteDonation.donationType}
+                <span className="font-medium">{t("donorTypeLabelInline")}</span> {deleteDonation.donationType}
               </p>
               {deleteDonation.amount != null && (
                 <p>
-                  <span className="font-medium">Amount:</span>{" "}
+                  <span className="font-medium">{t("donorAmountLabel")}</span>{" "}
                   {formatMoney(deleteDonation.amount, deleteDonation.currencyCode)}
                 </p>
               )}
               {deleteDonation.notes && (
                 <p>
-                  <span className="font-medium">Note:</span> {deleteDonation.notes}
+                  <span className="font-medium">{t("donorNoteLabelInline")}</span> {deleteDonation.notes}
                 </p>
               )}
             </div>
@@ -789,10 +784,10 @@ const DonorDashboard = () => {
 
           <DialogFooter className="gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setDeleteDonation(null)}>
-              Cancel
+              {t("donorCancel")}
             </Button>
             <Button variant="destructive" disabled={deleting} onClick={() => void handleDelete()}>
-              {deleting ? "Deleting…" : "Delete"}
+              {deleting ? t("donorDeleting") : t("donorDelete")}
             </Button>
           </DialogFooter>
         </DialogContent>

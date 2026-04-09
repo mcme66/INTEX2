@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/state/auth";
+import { useLanguage } from "@/state/language";
 
 const Login = () => {
   const { login } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
   const prefilledUsername =
@@ -33,17 +35,17 @@ const Login = () => {
           <div className="grid gap-12 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
             <div className="max-w-2xl">
               <h1 className="font-heading text-4xl font-semibold leading-tight text-foreground md:text-5xl">
-                Sign in to the North Star internal workspace.
+                {t("loginHeadline")}
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-                Welcome back. Sign in to track your giving history, manage your donation preferences, and see the direct impact your contributions are making for children in Colombia.
+                {t("loginSub")}
               </p>
             </div>
 
             <Card className="border-border/80 bg-card/90 shadow-none">
               <CardHeader>
-                <CardTitle>Sign in</CardTitle>
-                <CardDescription>Access donor and admin tools.</CardDescription>
+                <CardTitle>{t("loginSignIn")}</CardTitle>
+                <CardDescription>{t("loginAccessTools")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form
@@ -65,7 +67,7 @@ const Login = () => {
                 >
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground" htmlFor="username">
-                      Username
+                      {t("loginUsernameLabel")}
                     </label>
                       <Input
                         id="username"
@@ -77,7 +79,7 @@ const Login = () => {
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground" htmlFor="password">
-                      Password
+                      {t("loginPasswordLabel")}
                     </label>
                     <div className="relative">
                       <Input
@@ -108,10 +110,10 @@ const Login = () => {
 
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <Button type="submit" className="sm:flex-1" disabled={loading}>
-                      {loading ? "Signing in..." : "Sign in"}
+                      {loading ? t("loginSigningIn") : t("loginSignInBtn")}
                     </Button>
                     <Button type="button" variant="outline" asChild className="sm:flex-1">
-                      <Link to="/register">Create account</Link>
+                      <Link to="/register">{t("loginCreateAccount")}</Link>
                     </Button>
                   </div>
                 </form>

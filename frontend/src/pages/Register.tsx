@@ -7,8 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { apiRegister } from "@/utils/api";
+import { useLanguage } from "@/state/language";
 
 const Register = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -34,18 +36,17 @@ const Register = () => {
           <div className="grid gap-12 lg:grid-cols-[1.1fr,0.9fr] lg:items-start">
             <div className="max-w-2xl">
               <h1 className="font-heading text-4xl font-semibold leading-tight text-foreground md:text-5xl">
-                Create an account to get involved with North Star.
+                {t("registerHeadline")}
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-                Sign up to track your giving history, manage your donation preferences, and
-                see the direct impact your contributions are making for children in Colombia.
+                {t("registerSub")}
               </p>
             </div>
 
             <Card className="border-border/80 bg-card/90 shadow-none">
               <CardHeader>
-                <CardTitle>Register</CardTitle>
-                <CardDescription>All accounts receive donor access by default.</CardDescription>
+                <CardTitle>{t("registerCardTitle")}</CardTitle>
+                <CardDescription>{t("registerAllAccounts")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form
@@ -64,15 +65,15 @@ const Register = () => {
                       }
 
                       if (password.length < 14) {
-                        throw new Error("Password must be at least 14 characters.");
+                        throw new Error(t("registerErrPwdShort"));
                       }
 
                       if (!passwordsMatch) {
-                        throw new Error("Passwords do not match.");
+                        throw new Error(t("registerErrPwdMismatch"));
                       }
 
                       if (hasCode && adminCode.trim().length === 0) {
-                        throw new Error("Please enter your registration code.");
+                        throw new Error(t("registerErrEnterCode"));
                       }
 
                       const isAdmin = hasCode && adminCode.trim().length > 0;
@@ -89,7 +90,7 @@ const Register = () => {
 
                       navigate("/login", { state: { username } });
                     } catch (err) {
-                      setError(err instanceof Error ? err.message : "Registration failed");
+                      setError(err instanceof Error ? err.message : t("registerErrFailed"));
                     } finally {
                       setLoading(false);
                     }
@@ -98,7 +99,7 @@ const Register = () => {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground" htmlFor="firstName">
-                        First name
+                        {t("registerFirstName")}
                       </label>
                       <Input
                         id="firstName"
@@ -109,7 +110,7 @@ const Register = () => {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground" htmlFor="email">
-                        Email
+                        {t("registerEmail")}
                       </label>
                       <Input
                         id="email"
@@ -126,7 +127,7 @@ const Register = () => {
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground" htmlFor="new-username">
-                      Username
+                      {t("registerUsername")}
                     </label>
                     <Input
                       id="new-username"
@@ -139,10 +140,10 @@ const Register = () => {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground" htmlFor="new-password">
-                        Password
+                        {t("registerPassword")}
                       </label>
                       {/* Password policy: minimum 14 characters, no complexity requirements */}
-                      <p className="text-xs text-muted-foreground">Must be at least 14 characters.</p>
+                      <p className="text-xs text-muted-foreground">{t("registerPasswordMin")}</p>
                       <div className="relative">
                         <Input
                           id="new-password"
@@ -165,9 +166,9 @@ const Register = () => {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground" htmlFor="confirm-password">
-                        Verify Password
+                        {t("registerVerifyPassword")}
                       </label>
-                      <p className="text-xs text-muted-foreground">Must be at least 14 characters.</p>
+                      <p className="text-xs text-muted-foreground">{t("registerPasswordMin")}</p>
                       <div className="relative">
                         <Input
                           id="confirm-password"
@@ -188,7 +189,7 @@ const Register = () => {
                         </button>
                       </div>
                       {confirmPassword.length > 0 && !passwordsMatch && (
-                        <p className="text-xs text-destructive">Passwords do not match.</p>
+                        <p className="text-xs text-destructive">{t("registerPwdMismatchInline")}</p>
                       )}
                     </div>
                   </div>
@@ -202,19 +203,19 @@ const Register = () => {
                           if (!checked) setAdminCode("");
                         }}
                       />
-                      Do you have a registration code?
+                      {t("registerHasCode")}
                     </label>
 
                     {hasCode && (
                       <div className="mt-4 space-y-2">
                         <label className="text-sm font-medium text-foreground" htmlFor="adminCode">
-                          Registration code
+                          {t("registerCodeLabel")}
                         </label>
                         <Input
                           id="adminCode"
                           value={adminCode}
                           onChange={(event) => setAdminCode(event.target.value)}
-                          placeholder="Enter your code"
+                          placeholder={t("registerCodePlaceholder")}
                           autoFocus
                         />
                       </div>
@@ -229,10 +230,10 @@ const Register = () => {
 
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <Button type="submit" className="sm:flex-1" disabled={loading || (confirmPassword.length > 0 && !passwordsMatch)}>
-                      {loading ? "Creating..." : "Create account"}
+                      {loading ? t("registerCreating") : t("registerCreateAccount")}
                     </Button>
                     <Button type="button" variant="outline" asChild className="sm:flex-1">
-                      <Link to="/login">Back to login</Link>
+                      <Link to="/login">{t("registerBackToLogin")}</Link>
                     </Button>
                   </div>
                 </form>
