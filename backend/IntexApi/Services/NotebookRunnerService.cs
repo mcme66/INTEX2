@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text.Json;
 using IntexApi.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -10,6 +11,7 @@ namespace IntexApi.Services;
 public sealed class NotebookRunnerService(
     IServiceScopeFactory scopeFactory,
     IOptions<MlOptions> mlOptions,
+    IWebHostEnvironment env,
     ILogger<NotebookRunnerService> logger) : BackgroundService
 {
     // Explanatory runs before prediction so the summary is ready when prediction completes.
@@ -86,11 +88,16 @@ public sealed class NotebookRunnerService(
         _signal.Release();
     }
 
+    private string ResolveDir(string path) =>
+        Path.IsPathRooted(path)
+            ? path
+            : Path.GetFullPath(Path.Combine(env.ContentRootPath, path));
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         // On startup: use fast score-only refresh if all model1.sav files exist;
         // only do a full retrain if any model is missing (first-ever run).
-        var nbDir = Path.GetFullPath(mlOptions.Value.NotebooksDir);
+        var nbDir = ResolveDir(mlOptions.Value.NotebooksDir);
         var outputDir = Path.GetFullPath(Path.Combine(nbDir, "..", "output"));
         var allModelsExist = PredictionNotebooks.All(nb =>
             File.Exists(Path.Combine(outputDir, nb, "model1.sav"))
@@ -143,7 +150,7 @@ public sealed class NotebookRunnerService(
     private async Task RunNotebookAsync(string notebookKey, bool scoreOnly, CancellationToken ct)
     {
         var opts = mlOptions.Value;
-        var nbDir = Path.GetFullPath(opts.NotebooksDir);
+        var nbDir = ResolveDir(opts.NotebooksDir);
         var nbFile = NotebookFileNames[notebookKey];
         var nbPath = Path.Combine(nbDir, nbFile);
 

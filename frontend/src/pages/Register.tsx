@@ -21,9 +21,11 @@ const Register = () => {
   const [hasCode, setHasCode] = useState(false);
   const [adminCode, setAdminCode] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const passwordsMatch = password === confirmPassword;
+  const isValidEmail = (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
   return (
     <Layout>
@@ -51,9 +53,16 @@ const Register = () => {
                   onSubmit={async (event) => {
                     event.preventDefault();
                     setError(null);
+                    setEmailError(null);
                     setLoading(true);
 
                     try {
+                      if (!isValidEmail(email)) {
+                        setEmailError("Please enter a valid email address (e.g. name@example.com).");
+                        setLoading(false);
+                        return;
+                      }
+
                       if (password.length < 14) {
                         throw new Error("Password must be at least 14 characters.");
                       }
@@ -106,9 +115,12 @@ const Register = () => {
                         id="email"
                         type="email"
                         value={email}
-                        onChange={(event) => setEmail(event.target.value)}
+                        onChange={(event) => { setEmail(event.target.value); setEmailError(null); }}
                         required
                       />
+                      {emailError && (
+                        <p className="text-xs text-destructive">{emailError}</p>
+                      )}
                     </div>
                   </div>
 

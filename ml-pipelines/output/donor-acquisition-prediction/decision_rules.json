@@ -300,12 +300,6 @@
     "tier": "Low"
   },
   {
-    "supporter_id": "29",
-    "display_name": "Seth Clark",
-    "probability": 0.0477,
-    "tier": "Low"
-  },
-  {
     "supporter_id": "33",
     "display_name": "Tara Green",
     "probability": 0.0477,
@@ -324,15 +318,9 @@
     "tier": "Low"
   },
   {
-    "supporter_id": "61",
-    "display_name": "donor (online)",
-    "probability": 0.0233,
-    "tier": "Low"
-  },
-  {
-    "supporter_id": "63",
-    "display_name": "whatnot (online)",
-    "probability": 0.0233,
+    "supporter_id": "29",
+    "display_name": "Seth Clark",
+    "probability": 0.0477,
     "tier": "Low"
   },
   {
@@ -356,12 +344,6 @@
   {
     "supporter_id": "11",
     "display_name": "Maya Kim",
-    "probability": 0.0075,
-    "tier": "Low"
-  },
-  {
-    "supporter_id": "62",
-    "display_name": "rachel (online)",
     "probability": 0.0075,
     "tier": "Low"
   },
