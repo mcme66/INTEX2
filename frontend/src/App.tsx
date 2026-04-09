@@ -18,6 +18,7 @@ import DonorDashboard from "./pages/DonorDashboard.tsx";
 import Caseload from "./pages/Caseload.tsx";
 import ProcessRecordingPage from "./pages/ProcessRecording.tsx";
 import HomeVisitationPage from "./pages/HomeVisitation.tsx";
+import Staff from "./pages/Staff.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { AuthProvider, useAuth } from "./state/auth";
@@ -81,6 +82,10 @@ const AppRoutes = () => {
         <Route
           path="/admin/donors"
           element={<ProtectedRoute role="admin" element={<Donors />} />}
+        />
+        <Route
+          path="/admin/staff"
+          element={<ProtectedRoute role="admin" element={<Staff />} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>

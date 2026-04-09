@@ -9,7 +9,7 @@ public static class ImpactQueryHelper
     public static async Task<ImpactStatsDto> ComputeAsync(AppDbContext db, CancellationToken ct)
     {
         var activeResidents = await db.Database
-            .SqlQueryRaw<int>("SELECT COUNT(*)::int AS \"Value\" FROM residents WHERE case_status = 'Active'")
+            .SqlQueryRaw<int>("SELECT COALESCE(SUM(current_occupancy),0)::int AS \"Value\" FROM safehouses")
             .FirstAsync(ct);
 
         var totalResidents = await db.Database

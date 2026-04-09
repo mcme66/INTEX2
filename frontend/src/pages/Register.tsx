@@ -22,6 +22,7 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [hasCode, setHasCode] = useState(false);
   const [adminCode, setAdminCode] = useState("");
+  const [showAdminCode, setShowAdminCode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -220,13 +221,25 @@ const Register = () => {
                         <label className="text-sm font-medium text-foreground" htmlFor="adminCode">
                           {t("registerCodeLabel")}
                         </label>
-                        <Input
-                          id="adminCode"
-                          value={adminCode}
-                          onChange={(event) => setAdminCode(event.target.value)}
-                          placeholder={t("registerCodePlaceholder")}
-                          autoFocus
-                        />
+                        <div className="relative">
+                          <Input
+                            id="adminCode"
+                            type={showAdminCode ? "text" : "password"}
+                            value={adminCode}
+                            onChange={(event) => setAdminCode(event.target.value)}
+                            placeholder={t("registerCodePlaceholder")}
+                            autoFocus
+                            className="pr-10"
+                          />
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                            onClick={() => setShowAdminCode(p => !p)}
+                            tabIndex={-1}
+                          >
+                            {showAdminCode ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>

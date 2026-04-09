@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { apiGetImpactStats, type ImpactStats } from "@/utils/api";
-import { BarChart2, Users, ClipboardList, FileText, Home, RefreshCw, Heart } from "lucide-react";
+import { BarChart2, ClipboardList, FileText, Home, RefreshCw, Heart, UserCog } from "lucide-react";
 import { useLanguage } from "@/state/language";
 
 const AdminDashboard = () => {
@@ -13,22 +13,10 @@ const AdminDashboard = () => {
 
   const ADMIN_LINKS = [
     {
-      to: "/admin/reports",
-      label: t("adminLinkMlReports"),
-      description: t("adminLinkMlReportsDesc"),
-      icon: BarChart2,
-    },
-    {
       to: "/admin/caseloads",
       label: t("adminLinkCaseload"),
       description: t("adminLinkCaseloadDesc"),
       icon: ClipboardList,
-    },
-    {
-      to: "/admin/process-recording",
-      label: t("adminLinkProcessRecording"),
-      description: t("adminLinkProcessRecordingDesc"),
-      icon: FileText,
     },
     {
       to: "/admin/visits",
@@ -37,10 +25,28 @@ const AdminDashboard = () => {
       icon: Home,
     },
     {
+      to: "/admin/process-recording",
+      label: t("adminLinkProcessRecording"),
+      description: t("adminLinkProcessRecordingDesc"),
+      icon: FileText,
+    },
+    {
       to: "/admin/donors",
       label: t("adminLinkDonorMgmt"),
       description: t("adminLinkDonorMgmtDesc"),
       icon: Heart,
+    },
+    {
+      to: "/admin/reports",
+      label: t("adminLinkMlReports"),
+      description: t("adminLinkMlReportsDesc"),
+      icon: BarChart2,
+    },
+    {
+      to: "/admin/staff",
+      label: "Staff",
+      description: "View, edit, and manage all registered users and admin accounts.",
+      icon: UserCog,
     },
   ];
 
