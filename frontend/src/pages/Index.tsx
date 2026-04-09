@@ -12,6 +12,26 @@ const Index = () => {
   const { user } = useAuth();
   const ctaTarget = user ? "/donor" : "/register";
   const { t } = useLanguage();
+  const waysToHelpCards = [
+    {
+      title: t("homeGiveMonthly"),
+      desc: t("homeGiveMonthlyDesc"),
+      cta: t("homeStartGiving"),
+      to: ctaTarget,
+    },
+    {
+      title: t("homeVolunteerSkills"),
+      desc: t("homeVolunteerSkillsDesc"),
+      cta: t("homeSeeOpportunities"),
+      to: "/volunteer",
+    },
+    {
+      title: t("homeCorporatePartnership"),
+      desc: t("homeCorporatePartnershipDesc"),
+      cta: t("homePartnerWithUs"),
+      to: "/volunteer",
+    },
+  ];
 
   const [stats, setStats] = useState<ImpactStats | null>(null);
 
@@ -159,26 +179,7 @@ const Index = () => {
             {t("homeHowHelp")}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                title: t("homeGiveMonthly"),
-                desc: t("homeGiveMonthlyDesc"),
-                cta: t("homeStartGiving"),
-                to: ctaTarget,
-              },
-              {
-                title: t("homeVolunteerSkills"),
-                desc: t("homeVolunteerSkillsDesc"),
-                cta: t("homeSeeOpportunities"),
-                to: ctaTarget,
-              },
-              {
-                title: t("homeCorporatePartnership"),
-                desc: t("homeCorporatePartnershipDesc"),
-                cta: t("homePartnerWithUs"),
-                to: ctaTarget,
-              },
-            ].map((card) => (
+            {waysToHelpCards.map((card) => (
               <div key={card.title} className="border border-border p-8 flex flex-col">
                 <h3 className="font-heading text-xl font-semibold text-foreground mb-3">{card.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-6">{card.desc}</p>

@@ -25,7 +25,9 @@ const Navbar = () => {
   const [profileError, setProfileError] = useState("");
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
+  const [showProxyNav, setShowProxyNav] = useState(false);
 
+  const headerRef = useRef<HTMLElement>(null);
   const desktopPanelRef = useRef<HTMLDivElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
 
@@ -63,6 +65,27 @@ const Navbar = () => {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [profileOpen]);
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowProxyNav(!entry.isIntersecting);
+      },
+      { threshold: 0.05 },
+    );
+
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+    setProfileOpen(false);
+    setShowProxyNav(false);
+  }, [location.pathname]);
 
   const handleProfileSave = async () => {
     setProfileError("");
@@ -209,7 +232,7 @@ const Navbar = () => {
     }
 
     return (
-      <div className="hidden md:flex flex-1 items-center justify-center gap-4 min-w-0 px-4 flex-wrap">
+      <div className="hidden md:flex items-center gap-4 min-w-0 pl-8 pr-4 flex-wrap">
         {sections.map((node, i) => (
           <span key={i} className="flex items-center gap-4">
             {i > 0 && <SectionDivider />}
@@ -352,196 +375,219 @@ const Navbar = () => {
     </>
   );
 
-  return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      <nav className="w-full px-4 sm:px-6 h-16 flex items-center">
-        <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="North Star home">
-          <img src="/icons/kid_stars.svg" alt="" className="w-8 h-8" />
-          <span className="font-heading text-xl font-semibold tracking-tight text-foreground">
-            North Star
-          </span>
-        </Link>
+  const renderNavShell = ({ isProxy = false }: { isProxy?: boolean }) => {
+    const isActiveShell = showProxyNav ? isProxy : !isProxy;
 
-        {renderDesktopNav()}
-
-        <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto">
-          <LangToggle />
-          {user ? (
-            <>
-              <span className="text-sm font-medium text-foreground">
-                {user.firstName}
+    return (
+      <header
+        ref={isProxy ? undefined : headerRef}
+        className={
+          isProxy
+            ? `fixed inset-x-0 top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm transition-all duration-300 ${
+                showProxyNav
+                  ? "translate-y-0 opacity-100 pointer-events-auto"
+                  : "-translate-y-full opacity-0 pointer-events-none"
+              }`
+            : "relative z-40 border-b border-border bg-background/95 backdrop-blur-sm"
+        }
+      >
+        <nav className="w-full px-4 sm:px-6 h-16 flex items-center">
+          <div className="flex min-w-0 items-center">
+            <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="North Star home">
+              <img src="/icons/kid_stars.svg" alt="" className="w-8 h-8" />
+              <span className="font-heading text-xl font-semibold tracking-tight text-foreground">
+                North Star
               </span>
-              <div className="relative">
+            </Link>
+
+            {renderDesktopNav()}
+          </div>
+
+          <div className="hidden md:flex items-center gap-2 shrink-0 ml-auto">
+            <LangToggle />
+            {user ? (
+              <>
+                <span className="text-sm font-medium text-foreground">
+                  {user.firstName}
+                </span>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setProfileOpen((v) => !v)}
+                    className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-secondary transition-colors"
+                    aria-label={t("navEditProfile")}
+                  >
+                    <UserCircle size={22} className="text-foreground" />
+                  </button>
+
+                  {profileOpen && isActiveShell && (
+                    <div
+                      ref={desktopPanelRef}
+                      className="absolute right-0 top-12 w-80 max-h-[80vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5 z-50"
+                    >
+                      {profileFormContent}
+                    </div>
+                  )}
+                </div>
+
                 <button
                   type="button"
-                  onClick={() => setProfileOpen((v) => !v)}
-                  className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-secondary transition-colors"
-                  aria-label={t("navEditProfile")}
+                  onClick={logout}
+                  className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
                 >
-                  <UserCircle size={22} className="text-foreground" />
+                  {t("navSignOut")}
                 </button>
-
-                {profileOpen && (
-                  <div
-                    ref={desktopPanelRef}
-                    className="absolute right-0 top-12 w-80 max-h-[80vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5 z-50"
-                  >
-                    {profileFormContent}
-                  </div>
-                )}
-              </div>
-
-              <button
-                type="button"
-                onClick={logout}
-                className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-              >
-                {t("navSignOut")}
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/register"
-                className="text-sm font-medium px-4 py-2 border border-border hover:bg-secondary transition-colors"
-              >
-                {t("navRegister")}
-              </Link>
-              <Link
-                to="/login"
-                className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-              >
-                {t("navLogin")}
-              </Link>
-            </>
-          )}
-        </div>
-
-        <button
-          className="md:hidden text-foreground ml-auto shrink-0"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </nav>
-
-      {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-background px-4 sm:px-6 py-4 space-y-4">
-          {adminLinks.length > 0 && (
-            <div className="space-y-2">
-              {adminLinks.map((link) => (
+              </>
+            ) : (
+              <>
                 <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
+                  to="/register"
+                  className="text-sm font-medium px-4 py-2 border border-border hover:bg-secondary transition-colors"
                 >
-                  {link.label}
+                  {t("navRegister")}
                 </Link>
-              ))}
-            </div>
-          )}
-          {adminLinks.length > 0 &&
-            (donorLinks.length > 0 || publicLinks.length > 0) && (
+                <Link
+                  to="/login"
+                  className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
+                >
+                  {t("navLogin")}
+                </Link>
+              </>
+            )}
+          </div>
+
+          <button
+            className="md:hidden text-foreground ml-auto shrink-0"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </nav>
+
+        {mobileOpen && isActiveShell && (
+          <div className="md:hidden border-t border-border bg-background px-4 sm:px-6 py-4 space-y-4">
+            {adminLinks.length > 0 && (
+              <div className="space-y-2">
+                {adminLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+            {adminLinks.length > 0 &&
+              (donorLinks.length > 0 || publicLinks.length > 0) && (
+                <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>
+                  |
+                </div>
+              )}
+            {donorLinks.length > 0 && (
+              <div className="space-y-2">
+                {donorLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+            {donorLinks.length > 0 && publicLinks.length > 0 && (
               <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>
                 |
               </div>
             )}
-          {donorLinks.length > 0 && (
-            <div className="space-y-2">
-              {donorLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
+            {publicLinks.length > 0 && (
+              <div className="space-y-2">
+                {publicLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <div className="pt-1">
+              <LangToggle />
+            </div>
+
+            {user ? (
+              <div className="space-y-2 mt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setProfileOpen(true);
+                  }}
+                  className="block w-full text-sm font-medium px-4 py-2 border border-border text-center"
                 >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          )}
-          {donorLinks.length > 0 && publicLinks.length > 0 && (
-            <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>
-              |
-            </div>
-          )}
-          {publicLinks.length > 0 && (
-            <div className="space-y-2">
-              {publicLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
+                  {t("navEditProfile")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    setMobileOpen(false);
+                  }}
+                  className="block w-full text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
                 >
-                  {link.label}
+                  {t("navSignOut")}
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 mt-2">
+                <Link
+                  to="/register"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-sm font-medium px-4 py-2 border border-border text-center"
+                >
+                  {t("navRegister")}
                 </Link>
-              ))}
-            </div>
-          )}
-
-          {/* Language toggle in mobile menu */}
-          <div className="pt-1">
-            <LangToggle />
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
+                >
+                  {t("navLogin")}
+                </Link>
+              </div>
+            )}
           </div>
+        )}
 
-          {user ? (
-            <div className="space-y-2 mt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  setProfileOpen(true);
-                }}
-                className="block w-full text-sm font-medium px-4 py-2 border border-border text-center"
-              >
-                {t("navEditProfile")}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  logout();
-                  setMobileOpen(false);
-                }}
-                className="block w-full text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
-              >
-                {t("navSignOut")}
-              </button>
+        {profileOpen && isActiveShell && (
+          <div className="md:hidden fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-20 px-4">
+            <div
+              ref={mobilePanelRef}
+              className="w-full max-w-sm max-h-[75vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5"
+            >
+              {profileFormContent}
             </div>
-          ) : (
-            <div className="flex flex-col gap-2 mt-2">
-              <Link
-                to="/register"
-                onClick={() => setMobileOpen(false)}
-                className="block text-sm font-medium px-4 py-2 border border-border text-center"
-              >
-                {t("navRegister")}
-              </Link>
-              <Link
-                to="/login"
-                onClick={() => setMobileOpen(false)}
-                className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
-              >
-                {t("navLogin")}
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
-
-      {profileOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-20 px-4">
-          <div
-            ref={mobilePanelRef}
-            className="w-full max-w-sm max-h-[75vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5"
-          >
-            {profileFormContent}
           </div>
-        </div>
-      )}
-    </header>
+        )}
+      </header>
+    );
+  };
+
+  return (
+    <>
+      {renderNavShell({ isProxy: false })}
+      {renderNavShell({ isProxy: true })}
+    </>
   );
 };
 
