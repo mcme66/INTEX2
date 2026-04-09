@@ -8,6 +8,12 @@ const scrollToMission = () => {
   else window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
+const socialLinks = [
+  { name: "Instagram", href: "https://www.instagram.com/lighthousesanctuary/", icon: "/icons/insta_icon.svg" },
+  { name: "Facebook", href: "https://www.facebook.com/lighthousesanctuary/", icon: "/icons/fb_icon.svg" },
+  { name: "YouTube", href: "https://www.youtube.com/@LighthouseSanctuary", icon: "/icons/youtube_icon.svg" },
+];
+
 const Footer = () => {
   const { t } = useLanguage();
 
@@ -89,11 +95,19 @@ const Footer = () => {
               <li>info@northstar.com</li>
               <li>Bogotá, Colombia</li>
               <li className="pt-2">
-                <a href="#" className="hover:text-primary-foreground transition-colors">Instagram</a>
-                {" · "}
-                <a href="#" className="hover:text-primary-foreground transition-colors">Facebook</a>
-                {" · "}
-                <a href="#" className="hover:text-primary-foreground transition-colors">LinkedIn</a>
+                <div className="flex items-center gap-4">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      aria-label={social.name}
+                      title={social.name}
+                      className="inline-flex items-center justify-center text-primary-foreground/70 transition-opacity hover:opacity-80"
+                    >
+                      <img src={social.icon} alt="" aria-hidden="true" className="h-8 w-8 object-contain" />
+                    </a>
+                  ))}
+                </div>
               </li>
             </ul>
           </div>
