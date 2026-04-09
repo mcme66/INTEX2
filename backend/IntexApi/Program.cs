@@ -164,7 +164,7 @@ builder.Services.AddHostedService<IntexApi.Services.MlRetrainCronService>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("frontend", p =>
-        p.WithOrigins("http://localhost:5173", "http://localhost:8080", "https://intex-2.vercel.app")
+        p.WithOrigins("http://localhost:5173", "http://localhost:8080", "https://intex-2.vercel.app", "https://northstar-sanctuaries.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
