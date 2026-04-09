@@ -32,6 +32,23 @@ public sealed record ContributionDto(
     string programArea
 );
 
+public sealed record CreateSupporterRequest(
+    string? firstName,
+    string? lastName,
+    string? email,
+    string? phone,
+    string? supporterType,
+    string? status
+);
+
+public sealed record CreateContributionRequest(
+    string? donationDate,
+    string? donationType,
+    decimal? amount,
+    string? notes,
+    string? programArea
+);
+
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "admin")]
@@ -85,12 +102,18 @@ public sealed class SupportersController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] SupporterDto dto)
+    public async Task<IActionResult> Create([FromBody] CreateSupporterRequest dto)
     {
         await db.Database.ExecuteSqlRawAsync(@"
             INSERT INTO supporters (first_name, last_name, email, phone, supporter_type, status, created_at)
             VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6})",
-            dto.firstName, dto.lastName, dto.email ?? "", dto.phone ?? "", dto.supporterType, dto.status, DateTime.UtcNow);
+            dto.firstName ?? "",
+            dto.lastName ?? "",
+            dto.email ?? "",
+            dto.phone ?? "",
+            dto.supporterType ?? "",
+            dto.status ?? "Active",
+            DateTime.UtcNow);
 
         return Ok();
     }
@@ -119,21 +142,32 @@ public sealed class SupportersController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost("{id}/donations")]
-    public async Task<IActionResult> AddDonation(int id, [FromBody] ContributionDto dto)
+    public async Task<IActionResult> AddDonation(int id, [FromBody] CreateContributionRequest dto, CancellationToken ct)
     {
+        var donationType = string.IsNullOrWhiteSpace(dto.donationType) ? "Monetary" : dto.donationType.Trim();
+        if (dto.amount is null || dto.amount <= 0)
+            return BadRequest(new { message = "Amount is required." });
+
+        var donationDate = DateTime.UtcNow;
+        if (!string.IsNullOrWhiteSpace(dto.donationDate))
+        {
+            if (!DateTime.TryParse(dto.donationDate, out donationDate))
+                return BadRequest(new { message = "Invalid donation date." });
+        }
+
         var newDonationId = await db.Database.SqlQueryRaw<int>(@"
             INSERT INTO donations (supporter_id, donation_type, donation_date, amount, notes)
             VALUES ({0}, {1}, {2}, {3}, {4})
             RETURNING donation_id AS ""Value""",
-            id, dto.donationType, DateTime.Parse(dto.donationDate), dto.amount, dto.notes ?? "")
-            .FirstAsync();
+            id, donationType, donationDate, dto.amount.Value, dto.notes ?? "")
+            .FirstAsync(ct);
 
-        if (!string.IsNullOrEmpty(dto.programArea))
+        if (!string.IsNullOrWhiteSpace(dto.programArea))
         {
             await db.Database.ExecuteSqlRawAsync(@"
                 INSERT INTO donation_allocations (donation_id, program_area, amount_allocated, allocation_date)
                 VALUES ({0}, {1}, {2}, {3})",
-                newDonationId, dto.programArea, dto.amount, DateTime.UtcNow);
+                newDonationId, dto.programArea.Trim(), dto.amount.Value, DateTime.UtcNow);
         }
 
         return Ok();

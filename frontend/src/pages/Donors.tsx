@@ -264,7 +264,7 @@ const Donors = () => {
     return <ChevronDown size={11} className="inline ml-1" />;
   };
 
-  const thCls = "px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors";
+  const thCls = "px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors whitespace-nowrap";
 
   return (
     <Layout>
@@ -394,7 +394,7 @@ const Donors = () => {
 
         {/* Donors Table */}
         <div className="border border-border overflow-x-auto bg-background">
-          <table className="w-full text-sm table-fixed">
+          <table className="w-full text-sm table-fixed min-w-[900px]">
             <thead>
               <tr className="border-b border-border bg-secondary">
                 <th className={`text-left ${thCls} w-[28%]`} onClick={() => cycleSort("lastName")}>{t("donorsSupporter")}<SortIcon col="lastName" /></th>

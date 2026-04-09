@@ -530,7 +530,7 @@ const Caseload = () => {
     return <ChevronDown size={11} className="inline ml-1" />;
   };
 
-  const thCls = "text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors";
+  const thCls = "text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors whitespace-nowrap";
 
   const selectCls = "border border-border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent";
 
@@ -657,8 +657,8 @@ const Caseload = () => {
 
         {/* Table */}
         {!error && (
-          <div className="border border-border bg-background">
-            <table className="w-full text-sm table-fixed">
+          <div className="border border-border bg-background overflow-x-auto">
+            <table className="w-full text-sm table-fixed min-w-[980px]">
               <thead>
                 <tr className="border-b border-border bg-secondary">
                   <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("caseControlNo")}>{t("caseloadCaseNo")}<SortIcon col="caseControlNo" /></th>

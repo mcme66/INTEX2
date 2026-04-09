@@ -186,6 +186,13 @@ public sealed class ResidentsController(AppDbContext db) : ControllerBase
         resident.CreatedAt = DateTime.UtcNow;
         db.Residents.Add(resident);
         await db.SaveChangesAsync(ct);
+
+        if (string.IsNullOrWhiteSpace(resident.CaseControlNo))
+        {
+            resident.CaseControlNo = $"CASE-{DateTime.UtcNow:yyyy}-{resident.ResidentId:D6}";
+            await db.SaveChangesAsync(ct);
+        }
+
         return CreatedAtAction(nameof(GetById), new { id = resident.ResidentId }, resident);
     }
 

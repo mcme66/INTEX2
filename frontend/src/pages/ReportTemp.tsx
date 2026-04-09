@@ -673,13 +673,13 @@ function PredictionsTable({ notebook, scoreLabel, tierLabel, token, modal = fals
         </div>
       )}
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm min-w-[640px]">
           <thead>
             <tr className="border-b border-border">
-              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("reportsRecordCol")}</th>
-              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("reportsTypeCol")}</th>
-              <th className="text-right py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{scoreLabel}</th>
-              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{tierLabel}</th>
+              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">{t("reportsRecordCol")}</th>
+              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">{t("reportsTypeCol")}</th>
+              <th className="text-right py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">{scoreLabel}</th>
+              <th className="text-left py-2 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground whitespace-nowrap">{tierLabel}</th>
             </tr>
           </thead>
           <tbody>
