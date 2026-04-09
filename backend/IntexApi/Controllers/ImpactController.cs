@@ -23,7 +23,9 @@ public sealed record ImpactStatsDto(
     List<ReintegrationBreakdown> ReintegrationBreakdown,
     List<DonationBreakdown> DonationBreakdown,
     List<YearlyDonations> DonationsByYear,
-    decimal TotalVolunteerHours
+    decimal TotalVolunteerHours,
+    decimal AvgDonationPerIndividual,
+    decimal AvgDonationPerOrganization
 );
 
 [ApiController]

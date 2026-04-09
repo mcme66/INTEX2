@@ -59,6 +59,16 @@ public static class ImpactQueryHelper
                 "SELECT COALESCE(SUM(estimated_value),0) AS \"Value\" FROM donations WHERE donation_type IN ('Time','Skills') AND impact_unit = 'hours'")
             .FirstAsync(ct);
 
+        var avgDonationPerIndividual = await db.Database
+            .SqlQueryRaw<decimal>(
+                "SELECT COALESCE(AVG(total),0) AS \"Value\" FROM (SELECT SUM(d.estimated_value) AS total FROM donations d JOIN supporters s ON d.supporter_id = s.supporter_id WHERE s.supporter_type <> 'PartnerOrganization' GROUP BY d.supporter_id) sub")
+            .FirstAsync(ct);
+
+        var avgDonationPerOrganization = await db.Database
+            .SqlQueryRaw<decimal>(
+                "SELECT COALESCE(AVG(total),0) AS \"Value\" FROM (SELECT SUM(d.estimated_value) AS total FROM donations d JOIN supporters s ON d.supporter_id = s.supporter_id WHERE s.supporter_type = 'PartnerOrganization' GROUP BY d.supporter_id) sub")
+            .FirstAsync(ct);
+
         return new ImpactStatsDto(
             activeResidents,
             totalResidents,
@@ -70,7 +80,9 @@ public static class ImpactQueryHelper
             reintegrationBreakdown,
             donationBreakdown,
             donationsByYear,
-            totalVolunteerHours
+            totalVolunteerHours,
+            avgDonationPerIndividual,
+            avgDonationPerOrganization
         );
     }
 }

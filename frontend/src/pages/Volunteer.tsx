@@ -14,6 +14,44 @@ const WaysToHelp = () => {
     { icon: Building2, title: t("volunteerWay5Title"), description: t("volunteerWay5Desc") },
     { icon: Share2,    title: t("volunteerWay6Title"), description: t("volunteerWay6Desc") },
   ];
+import { useAuth } from "@/state/auth";
+
+const WAYS = [
+  {
+    icon: Heart,
+    title: "Make a Monetary Donation",
+    description: "Fund safe housing, meals, counseling, and education for children in our care.",
+  },
+  {
+    icon: Clock,
+    title: "Volunteer Your Time",
+    description: "Mentor, tutor, or lead activities in our safehouses. Consistent presence matters deeply.",
+  },
+  {
+    icon: Wrench,
+    title: "Contribute Skills & Services",
+    description: "Medical, legal, counseling, education, and tech professionals can give their expertise directly.",
+  },
+  {
+    icon: Users,
+    title: "In-Kind Donations",
+    description: "Clothing, school supplies, hygiene products, and food are always needed.",
+  },
+  {
+    icon: Building2,
+    title: "Become a Partner Organization",
+    description: "Churches, businesses, and nonprofits can build sustained partnerships aligned with our mission.",
+  },
+  {
+    icon: Share2,
+    title: "Advocate on Social Media",
+    description: "Share our mission and impact stories to grow awareness and bring in new supporters.",
+  },
+];
+
+const WaysToHelp = () => {
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
 
   return (
     <Layout>
@@ -49,7 +87,7 @@ const WaysToHelp = () => {
                   {t("volunteerViewImpact")}
                 </Link>
                 <Link
-                  to="/register"
+                  to={isLoggedIn ? "/donor" : "/register"}
                   className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium border border-border hover:bg-secondary transition-colors"
                 >
                   {t("volunteerGetInvolved")}

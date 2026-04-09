@@ -122,6 +122,8 @@ export type ImpactStats = {
   donationBreakdown: { type: string; totalValue: number }[];
   donationsByYear: { year: number; totalValue: number }[];
   totalVolunteerHours: number;
+  avgDonationPerIndividual: number;
+  avgDonationPerOrganization: number;
 };
 
 export async function apiGetImpactStats(live = false): Promise<ImpactStats> {

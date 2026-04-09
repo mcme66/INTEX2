@@ -6,9 +6,13 @@ import Layout from "@/components/Layout";
 import heroImage from "@/assets/hero-colombia.jpg";
 import { apiGetImpactStats, type ImpactStats } from "@/utils/api";
 import { useLanguage } from "@/state/language";
+import { useAuth } from "@/state/auth";
 
 const Index = () => {
+  const { user } = useAuth();
+  const ctaTarget = user ? "/donor" : "/register";
   const { t } = useLanguage();
+
   const [stats, setStats] = useState<ImpactStats | null>(null);
 
   useEffect(() => {
@@ -200,7 +204,7 @@ const Index = () => {
             {t("homeCtaSub")}
           </p>
           <Link
-            to="/register"
+            to={ctaTarget}
             className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-8 py-3 text-sm font-semibold hover:bg-gold-dark transition-colors"
           >
             {t("homeCtaBtn")} <ArrowRight size={16} />
