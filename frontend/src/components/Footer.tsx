@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/state/language";
 
 const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 const scrollToMission = () => {
@@ -8,6 +9,8 @@ const scrollToMission = () => {
 };
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="max-w-6xl mx-auto px-6 py-16">
@@ -19,14 +22,14 @@ const Footer = () => {
               <span className="font-heading text-lg font-semibold">North Star</span>
             </div>
             <p className="text-sm text-primary-foreground/70 leading-relaxed">
-              Providing refuge, healing, and hope to trafficked and abused children in Colombia.
+              {t("footerTagline")}
             </p>
           </div>
 
           {/* Organization */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/50 mb-4">
-              Organization
+              {t("footerOrganization")}
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
@@ -34,7 +37,7 @@ const Footer = () => {
                   onClick={scrollToTop}
                   className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
-                  Home
+                  {t("footerHome")}
                 </button>
               </li>
               <li>
@@ -42,12 +45,12 @@ const Footer = () => {
                   onClick={scrollToMission}
                   className="text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
-                  Our Mission
+                  {t("footerOurMission")}
                 </button>
               </li>
               <li>
                 <Link to="/impact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                  Our Impact
+                  {t("footerOurImpact")}
                 </Link>
               </li>
             </ul>
@@ -56,22 +59,22 @@ const Footer = () => {
           {/* Get Involved */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/50 mb-4">
-              Get Involved
+              {t("footerGetInvolved")}
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link to="/register" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                  Donate
+                  {t("footerDonate")}
                 </Link>
               </li>
               <li>
                 <Link to="/volunteer" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                  Volunteer
+                  {t("footerVolunteer")}
                 </Link>
               </li>
               <li>
                 <Link to="/impact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                  Our Impact
+                  {t("footerOurImpact")}
                 </Link>
               </li>
             </ul>
@@ -80,7 +83,7 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/50 mb-4">
-              Contact
+              {t("footerContact")}
             </h4>
             <ul className="space-y-2.5 text-sm text-primary-foreground/70">
               <li>info@northstar.com</li>
@@ -99,7 +102,9 @@ const Footer = () => {
         <div className="mt-14 pt-6 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-primary-foreground/40">
           <span>© {new Date().getFullYear()} North Star Refuge. All rights reserved.</span>
           <div className="flex gap-4">
-            <Link to="/privacy" className="hover:text-primary-foreground/60 transition-colors">Privacy Policy</Link>
+            <Link to="/privacy" className="hover:text-primary-foreground/60 transition-colors">
+              {t("footerPrivacyPolicy")}
+            </Link>
           </div>
         </div>
       </div>

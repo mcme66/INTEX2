@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/state/auth";
+import { useLanguage } from "@/state/language";
 import {
   apiListResidents,
   apiGetResidentFilters,
@@ -426,6 +427,7 @@ const PAGE_SIZE = 25;
 
 const Caseload = () => {
   const { token } = useAuth();
+  const { t } = useLanguage();
   const [residents, setResidents] = useState<ResidentListItem[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -542,15 +544,15 @@ const Caseload = () => {
           className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft size={13} />
-          Admin Dashboard
+          {t("navAdminDashboard")}
         </Link>
 
         {/* Header */}
         <div className="mb-10 flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="font-heading text-4xl font-semibold text-foreground">Caseload Inventory</h1>
+            <h1 className="font-heading text-4xl font-semibold text-foreground">{t("caseloadTitle")}</h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
-              Resident profiles following Philippine social welfare agency standards.
+              {t("caseloadSubtitle")}
             </p>
           </div>
           <button
@@ -558,7 +560,7 @@ const Caseload = () => {
             className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors shrink-0"
           >
             <Plus size={14} />
-            New Record
+            {t("caseloadNewRecord")}
           </button>
         </div>
 
@@ -568,40 +570,40 @@ const Caseload = () => {
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               className="border border-border bg-background pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent w-56"
-              placeholder="Search case no., code, name…"
+              placeholder={t("caseloadSearchPlaceholder")}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
 
           <select className={selectCls} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
-            <option value="">All statuses</option>
+            <option value="">{t("caseloadAllStatuses")}</option>
             {(filters?.statuses ?? []).map(s => <option key={s}>{s}</option>)}
           </select>
 
           <select className={selectCls} value={filterSafehouse} onChange={e => setFilterSafehouse(e.target.value)}>
-            <option value="">All safehouses</option>
+            <option value="">{t("caseloadAllSafehouses")}</option>
             {(filters?.safehouseIds ?? []).map(id => <option key={id} value={id}>Safehouse {id}</option>)}
           </select>
 
           <select className={selectCls} value={filterCategory} onChange={e => setFilterCategory(e.target.value)}>
-            <option value="">All categories</option>
+            <option value="">{t("caseloadAllCategories")}</option>
             {(filters?.categories ?? []).map(c => <option key={c}>{c}</option>)}
           </select>
 
           <select className={selectCls} value={filterReintegration} onChange={e => setFilterReintegration(e.target.value)}>
-            <option value="">All reintegration</option>
+            <option value="">{t("caseloadAllReintegration")}</option>
             {(filters?.reintegrationStatuses ?? []).map(s => <option key={s}>{s}</option>)}
           </select>
 
           <select className={selectCls} value={filterSW} onChange={e => setFilterSW(e.target.value)}>
-            <option value="">All social workers</option>
+            <option value="">{t("caseloadAllSocialWorkers")}</option>
             {(filters?.socialWorkers ?? []).map(sw => <option key={sw}>{sw}</option>)}
           </select>
 
           {hasFilters && (
             <button onClick={clearFilters} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-              <X size={12} /> Clear filters
+              <X size={12} /> {t("caseloadClearFilters")}
             </button>
           )}
         </div>
@@ -640,26 +642,26 @@ const Caseload = () => {
             <table className="w-full text-sm table-fixed">
               <thead>
                 <tr className="border-b border-border bg-secondary/40">
-                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("caseControlNo")}>Case No.<SortIcon col="caseControlNo" /></th>
-                  <th className={`${thCls} w-[8%]`} onClick={() => cycleSort("caseStatus")}>Status<SortIcon col="caseStatus" /></th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("caseControlNo")}>{t("caseloadCaseNo")}<SortIcon col="caseControlNo" /></th>
+                  <th className={`${thCls} w-[8%]`} onClick={() => cycleSort("caseStatus")}>{t("caseloadStatus")}<SortIcon col="caseStatus" /></th>
                   <th className={`${thCls} w-[7%]`} onClick={() => cycleSort("safehouseId")}>SH<SortIcon col="safehouseId" /></th>
-                  <th className={`${thCls} w-[13%]`} onClick={() => cycleSort("caseCategory")}>Category<SortIcon col="caseCategory" /></th>
-                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("dateOfAdmission")}>Admitted<SortIcon col="dateOfAdmission" /></th>
-                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("assignedSocialWorker")}>Social Worker<SortIcon col="assignedSocialWorker" /></th>
-                  <th className={`${thCls} w-[14%]`} onClick={() => cycleSort("reintegrationStatus")}>Reintegration<SortIcon col="reintegrationStatus" /></th>
-                  <th className={`${thCls} w-[9%]`} onClick={() => cycleSort("currentRiskLevel")}>Risk<SortIcon col="currentRiskLevel" /></th>
+                  <th className={`${thCls} w-[13%]`} onClick={() => cycleSort("caseCategory")}>{t("caseloadCategory")}<SortIcon col="caseCategory" /></th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("dateOfAdmission")}>{t("caseloadAdmitted")}<SortIcon col="dateOfAdmission" /></th>
+                  <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("assignedSocialWorker")}>{t("caseloadSocialWorker")}<SortIcon col="assignedSocialWorker" /></th>
+                  <th className={`${thCls} w-[14%]`} onClick={() => cycleSort("reintegrationStatus")}>{t("caseloadReintegration")}<SortIcon col="reintegrationStatus" /></th>
+                  <th className={`${thCls} w-[9%]`} onClick={() => cycleSort("currentRiskLevel")}>{t("caseloadRisk")}<SortIcon col="currentRiskLevel" /></th>
                   <th className="w-[8%] px-3 py-2.5"></th>
                 </tr>
               </thead>
               <tbody>
                 {loading && residents.length === 0 && (
                   <tr>
-                    <td colSpan={9} className="text-center text-muted-foreground py-16">Loading…</td>
+                    <td colSpan={9} className="text-center text-muted-foreground py-16">{t("caseloadLoading")}</td>
                   </tr>
                 )}
                 {!loading && residents.length === 0 && (
                   <tr>
-                    <td colSpan={9} className="text-center text-muted-foreground py-16">No records found</td>
+                    <td colSpan={9} className="text-center text-muted-foreground py-16">{t("caseloadNoRecordsFound")}</td>
                   </tr>
                 )}
                 {sortedResidents.map((r) => {

@@ -27,6 +27,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/state/language";
 
 const CONSENT_KEY = "cookie_consent"; // localStorage key
 
@@ -54,6 +55,7 @@ export function getConsentStatus(): "accepted" | "rejected" | null {
 }
 
 const CookieConsent = () => {
+  const { t } = useLanguage();
   // Show banner only when no prior consent is stored.
   const [visible, setVisible] = useState(false);
 
@@ -102,18 +104,24 @@ const CookieConsent = () => {
       <div className="mx-auto flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1 space-y-1">
           <p className="text-sm font-semibold text-foreground">
-            We use cookies
+            {t("cookieTitle")}
           </p>
           <p className="text-xs leading-relaxed text-muted-foreground">
-            This site uses essential cookies required for login and core
-            functionality. With your consent we may also activate optional
-            analytics cookies to understand how the site is used — no personal
-            data is sold or shared with third parties. See our{" "}
-            <a href="/privacy" className="underline underline-offset-2 hover:text-foreground">
-              Privacy Policy
-            </a>{" "}
-            for details. You can change your preference at any time by clearing
-            your browser's local storage.
+            {(() => {
+              const desc = t("cookieDesc");
+              const policyLabel = t("cookiePrivacyPolicy");
+              const idx = desc.indexOf(policyLabel);
+              if (idx === -1) return desc;
+              return (
+                <>
+                  {desc.slice(0, idx)}
+                  <a href="/privacy" className="underline underline-offset-2 hover:text-foreground">
+                    {policyLabel}
+                  </a>
+                  {desc.slice(idx + policyLabel.length)}
+                </>
+              );
+            })()}
           </p>
         </div>
 
@@ -124,14 +132,14 @@ const CookieConsent = () => {
             onClick={handleReject}
             className="min-w-[90px]"
           >
-            Reject
+            {t("cookieReject")}
           </Button>
           <Button
             size="sm"
             onClick={handleAccept}
             className="min-w-[90px]"
           >
-            Accept
+            {t("cookieAccept")}
           </Button>
         </div>
       </div>

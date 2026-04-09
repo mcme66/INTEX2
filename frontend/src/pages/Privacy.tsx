@@ -1,46 +1,44 @@
 import Layout from "@/components/Layout";
-
-const policySections = [
-  {
-    title: "What data we collect",
-    text: "North Star may collect contact details submitted by staff users, account login credentials, donor records entered by administrators, and site usage information through optional analytics cookies.",
-  },
-  {
-    title: "How data is used",
-    text: "We use data to manage staff access, maintain donor and contribution records, understand which parts of the site are useful, and communicate with users who request updates or support.",
-  },
-  {
-    title: "How data is stored",
-    text: "Account and supporter records are stored in protected application databases with access limited to authorized staff. Analytics preferences are stored locally in your browser.",
-  },
-  {
-    title: "Your rights",
-    text: "Users may request access to personal data, correction of inaccurate information, deletion where appropriate, and withdrawal of consent for non-essential cookies.",
-  },
-];
+import { useLanguage } from "@/state/language";
 
 const Privacy = () => {
+  const { t } = useLanguage();
+
+  const policySections = [
+    { title: t("privacySection1Title"), text: t("privacySection1Text") },
+    { title: t("privacySection2Title"), text: t("privacySection2Text") },
+    { title: t("privacySection3Title"), text: t("privacySection3Text") },
+    { title: t("privacySection4Title"), text: t("privacySection4Text") },
+  ];
+
   return (
     <Layout>
       <section className="px-6 py-14">
         <div className="mx-auto max-w-4xl">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            Privacy Policy
+            {t("privacyLabel")}
           </p>
           <h1 className="mt-3 font-heading text-4xl font-semibold text-foreground">
-            Privacy and cookie use
+            {t("privacyTitle")}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            This project keeps the original policy intent from the previous frontend while fitting
-            it into the current visual system.
+            {t("privacySub")}
           </p>
 
           <div className="mt-10 rounded-lg border border-border bg-secondary/60 p-5 text-sm leading-relaxed text-foreground">
-            Essential cookies support login state and site function. On your first visit a consent
-            banner is shown where you can accept or reject optional analytics cookies. Your choice is
-            stored in your browser's <code>localStorage</code> under the key{" "}
-            <code>cookie_consent</code> and the banner will not appear again. You can withdraw or
-            change your choice at any time by clearing your browser's local storage for this site.
+            {(() => {
+              const text = t("privacyCookieText");
+              const key = "cookie_consent";
+              const idx = text.indexOf(key);
+              if (idx === -1) return text;
+              return (
+                <>
+                  {text.slice(0, idx)}
+                  <code>{key}</code>
+                  {text.slice(idx + key.length)}
+                </>
+              );
+            })()}
           </div>
 
           <div className="mt-8 space-y-4">

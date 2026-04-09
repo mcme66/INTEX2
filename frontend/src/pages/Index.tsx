@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import heroImage from "@/assets/hero-colombia.jpg";
 import { apiGetImpactStats, type ImpactStats } from "@/utils/api";
+import { useLanguage } from "@/state/language";
 
 const Index = () => {
+  const { t } = useLanguage();
   const [stats, setStats] = useState<ImpactStats | null>(null);
 
   useEffect(() => {
@@ -19,16 +21,16 @@ const Index = () => {
 
   const metrics = stats
     ? [
-        { value: stats.activeResidents.toString(), label: "Children in our care" },
-        { value: stats.safehouseOccupancy.length.toString(), label: "Safe houses across Colombia" },
-        { value: reintegrationRate != null ? `${reintegrationRate}%` : "—", label: "Successful reintegration rate" },
-        { value: `$${Math.round(stats.totalContributionsValue / 1000)}k+`, label: "Raised for children in need" },
+        { value: stats.activeResidents.toString(), label: t("homeStatChildren") },
+        { value: stats.safehouseOccupancy.length.toString(), label: t("homeStatSafehouses") },
+        { value: reintegrationRate != null ? `${reintegrationRate}%` : "—", label: t("homeStatReintegration") },
+        { value: `$${Math.round(stats.totalContributionsValue / 1000)}k+`, label: t("homeStatRaised") },
       ]
     : [
-        { value: "—", label: "Children in our care" },
-        { value: "—", label: "Safe houses across Colombia" },
-        { value: "—", label: "Successful reintegration rate" },
-        { value: "—", label: "Raised for children in need" },
+        { value: "—", label: t("homeStatChildren") },
+        { value: "—", label: t("homeStatSafehouses") },
+        { value: "—", label: t("homeStatReintegration") },
+        { value: "—", label: t("homeStatRaised") },
       ];
 
   return (
@@ -49,23 +51,23 @@ const Index = () => {
             className="max-w-2xl"
           >
             <h1 className="font-heading text-4xl md:text-6xl font-semibold text-primary-foreground leading-[1.1] mb-6">
-              Every child deserves a safe place to heal.
+              {t("homeHeroHeadline")}
             </h1>
             <p className="text-primary-foreground/80 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
-              North Star provides refuge, restoration, and long-term care for children rescued from trafficking and abuse in Colombia.
+              {t("homeHeroSub")}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/volunteer"
                 className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-3 text-sm font-semibold hover:bg-gold-dark transition-colors"
               >
-                Ways to Help <ArrowRight size={16} />
+                {t("homeWaysToHelp")} <ArrowRight size={16} />
               </Link>
               <a
                 href="#mission"
                 className="inline-flex items-center gap-2 border border-primary-foreground/30 text-primary-foreground px-6 py-3 text-sm font-medium hover:bg-primary-foreground/10 transition-colors"
               >
-                Learn More
+                {t("homeLearnMore")}
               </a>
             </div>
           </motion.div>
@@ -78,16 +80,16 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-16 items-start">
             <div>
               <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Our Mission
+                {t("homeMissionLabel")}
               </span>
               <h2 className="font-heading text-3xl md:text-4xl font-semibold text-foreground mt-3 mb-6 leading-tight">
-                Restoring childhood, one life at a time
+                {t("homeMissionHeadline")}
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                In Colombia, thousands of children are victims of sexual trafficking and abuse each year. Many have nowhere to turn. North Star operates safe houses where rescued children receive trauma-informed care, education, and the stability they need to rebuild their lives.
+                {t("homeMissionP1")}
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                We work alongside Colombian authorities, local communities, and international partners to identify at-risk children, provide immediate refuge, and support long-term recovery through counseling, education, and vocational training.
+                {t("homeMissionP2")}
               </p>
             </div>
             <div className="space-y-8 pt-2">
@@ -96,9 +98,9 @@ const Index = () => {
                   <Shield size={20} className="text-gold-dark" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">Safe Houses</h3>
+                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">{t("homeSafeHousesTitle")}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Secure residential facilities staffed 24/7 with trained caregivers, therapists, and educators in multiple Colombian cities.
+                    {t("homeSafeHousesDesc")}
                   </p>
                 </div>
               </div>
@@ -107,9 +109,9 @@ const Index = () => {
                   <Heart size={20} className="text-gold-dark" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">Trauma Recovery</h3>
+                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">{t("homeTraumaTitle")}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Licensed counselors provide individual and group therapy using evidence-based approaches tailored to each child's needs.
+                    {t("homeTraumaDesc")}
                   </p>
                 </div>
               </div>
@@ -118,9 +120,9 @@ const Index = () => {
                   <Users size={20} className="text-gold-dark" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">Reintegration</h3>
+                  <h3 className="font-heading text-lg font-semibold text-foreground mb-1">{t("homeReintegrationTitle")}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Education, life skills, and vocational training to help older youth transition toward independence with dignity.
+                    {t("homeReintegrationDesc")}
                   </p>
                 </div>
               </div>
@@ -147,29 +149,29 @@ const Index = () => {
       <section id="get-involved" className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Get Involved
+            {t("homeGetInvolved")}
           </span>
           <h2 className="font-heading text-3xl md:text-4xl font-semibold text-foreground mt-3 mb-12 leading-tight">
-            How you can help
+            {t("homeHowHelp")}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                title: "Give Monthly",
-                desc: "Consistent funding allows us to plan long-term care. $50/month covers a child's food and schooling for 30 days.",
-                cta: "Start Giving",
+                title: t("homeGiveMonthly"),
+                desc: t("homeGiveMonthlyDesc"),
+                cta: t("homeStartGiving"),
                 to: "/register",
               },
               {
-                title: "Volunteer Your Skills",
-                desc: "We need therapists, teachers, translators, grant writers, and tech professionals. Remote and on-site roles available.",
-                cta: "See Opportunities",
+                title: t("homeVolunteerSkills"),
+                desc: t("homeVolunteerSkillsDesc"),
+                cta: t("homeSeeOpportunities"),
                 to: "/volunteer",
               },
               {
-                title: "Corporate Partnership",
-                desc: "Align your organization with our mission. We offer sponsorship tiers, impact reports, and co-branded campaigns.",
-                cta: "Partner With Us",
+                title: t("homeCorporatePartnership"),
+                desc: t("homeCorporatePartnershipDesc"),
+                cta: t("homePartnerWithUs"),
                 to: "/register",
               },
             ].map((card) => (
@@ -192,16 +194,16 @@ const Index = () => {
       <section className="py-24 px-6 bg-secondary">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-semibold text-foreground mb-6">
-            Be their North Star.
+            {t("homeCtaHeadline")}
           </h2>
           <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-            Every contribution—whether financial, professional, or personal—directly changes a child's life. Join us.
+            {t("homeCtaSub")}
           </p>
           <Link
             to="/register"
             className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-8 py-3 text-sm font-semibold hover:bg-gold-dark transition-colors"
           >
-            Get Involved <ArrowRight size={16} />
+            {t("homeCtaBtn")} <ArrowRight size={16} />
           </Link>
         </div>
       </section>
