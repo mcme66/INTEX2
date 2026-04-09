@@ -775,7 +775,26 @@ const HomeVisitationPage = () => {
 
   return (
     <Layout>
-      <div className="max-w-screen-xl mx-auto px-6 py-12">
+      <div className="max-w-screen-xl mx-auto px-6 py-12 relative">
+        {/* Alternating background strips */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(to bottom," +
+              "transparent 0," +
+              "transparent 24rem," +
+              "hsl(var(--accent) / 0.16) 24rem," +
+              "hsl(var(--accent) / 0.16) 44rem," +
+              "transparent 44rem," +
+              "transparent 68rem," +
+              "hsl(199 80% 92% / 0.35) 68rem," +
+              "hsl(199 80% 92% / 0.35) 88rem," +
+              "transparent 88rem," +
+              "transparent 112rem" +
+              ")",
+          }}
+        />
 
         {/* Back button */}
         <Link
@@ -893,10 +912,10 @@ const HomeVisitationPage = () => {
 
         {/* Table */}
         {!error && (
-          <div className="border border-border">
+          <div className="border border-border bg-background">
             <table className="w-full text-sm table-fixed">
               <thead>
-                <tr className="border-b border-border bg-secondary/40">
+                <tr className="border-b border-border bg-secondary">
                   <th className={`${thCls} w-[9%]`} onClick={() => cycleSort("residentCode")}>Resident<SortIcon col="residentCode" /></th>
                   <th className={`${thCls} w-[8%]`} onClick={() => cycleSort("visitDate")}>Date<SortIcon col="visitDate" /></th>
                   <th className={`${thCls} w-[14%]`} onClick={() => cycleSort("visitType")}>Visit Type<SortIcon col="visitType" /></th>
@@ -917,7 +936,7 @@ const HomeVisitationPage = () => {
                   <tr><td colSpan={10} className="text-center text-muted-foreground py-16">No visits found</td></tr>
                 )}
                 {sortedVisits.map((v) => (
-                  <tr key={v.visitationId} className="border-b border-border hover:bg-secondary/20 transition-colors align-top">
+                  <tr key={v.visitationId} className="border-b border-border hover:bg-secondary transition-colors align-top">
                     <td className="px-3 py-2.5 font-mono text-xs text-foreground">{v.residentCode ?? `ID ${v.residentId}`}</td>
                     <td className="px-3 py-2.5 text-xs text-muted-foreground whitespace-nowrap">{v.visitDate ?? "—"}</td>
                     <td className="px-3 py-2.5">
@@ -1047,10 +1066,10 @@ const HomeVisitationPage = () => {
 
         {/* Conference Table */}
         {!confError && (
-          <div className="border border-border">
+          <div className="border border-border bg-background">
             <table className="w-full text-sm table-fixed">
               <thead>
-                <tr className="border-b border-border bg-secondary/40">
+                <tr className="border-b border-border bg-secondary">
                   <th className={`${thCls} w-[10%]`} onClick={() => confCycleSort("residentCode")}>Resident<ConfSortIcon col="residentCode" /></th>
                   <th className={`${thCls} w-[11%]`} onClick={() => confCycleSort("caseConferenceDate")}>Conference Date<ConfSortIcon col="caseConferenceDate" /></th>
                   <th className={`${thCls} w-[11%]`} onClick={() => confCycleSort("planCategory")}>Category<ConfSortIcon col="planCategory" /></th>
@@ -1071,7 +1090,7 @@ const HomeVisitationPage = () => {
                 {sortedConferences.map((c) => {
                   const isUpcoming = c.caseConferenceDate != null && c.caseConferenceDate >= today;
                   return (
-                    <tr key={c.planId} className={`border-b border-border hover:bg-secondary/20 transition-colors align-top ${isUpcoming ? "bg-blue-50/40" : ""}`}>
+                    <tr key={c.planId} className={`border-b border-border hover:bg-secondary transition-colors align-top ${isUpcoming ? "bg-blue-50" : ""}`}>
                       <td className="px-3 py-2.5 font-mono text-xs text-foreground">{c.residentCode ?? `ID ${c.residentId}`}</td>
                       <td className="px-3 py-2.5 text-xs text-muted-foreground whitespace-nowrap">
                         {c.caseConferenceDate ?? "—"}

@@ -268,77 +268,115 @@ const DonorDashboard = () => {
             </p>
           </div>
 
-          {/* ── Stats strip ────────────────────────────────────── */}
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Card className="shadow-none">
-              <CardContent className="flex items-center gap-4 p-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-                  <DollarSign className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{t("donorTotalGiven")}</p>
-                  <p className="text-2xl font-semibold tracking-tight">
-                    {loadingList ? "…" : formatMoney(stats.totalGiven)}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+          <div
+            className="relative"
+            style={{
+              ["--donor-top-h" as never]: "22rem",
+              ["--donor-strip-h" as never]: "32rem",
+            }}
+          >
+            {/* Background strips (full-bleed) */}
+            <div
+              className="absolute left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10 bg-accent/20"
+              style={{
+                top: "calc(var(--donor-top-h) * 3 / 4)",
+                height: "var(--donor-strip-h)",
+              }}
+            />
+            <div
+              className="absolute left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10 bg-sky-200/20"
+              style={{
+                top: "calc((var(--donor-top-h) * 3 / 4) + var(--donor-strip-h))",
+                height: "var(--donor-strip-h)",
+              }}
+            />
 
-            <Card className="shadow-none">
-              <CardContent className="flex items-center gap-4 p-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
-                  <Gift className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{t("donorDonations")}</p>
-                  <p className="text-2xl font-semibold tracking-tight">
-                    {loadingList ? "…" : stats.count}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            {/* ── Top image + stats ──────────────────────────────── */}
+            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen mt-6">
+              <div className="mx-auto max-w-6xl px-2 sm:px-3">
+                <div className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
+                  <div className="order-1 lg:order-1 border border-border overflow-hidden">
+                    <img
+                      src="/img/wooden_star.png"
+                      alt="Wooden star"
+                      className="w-full h-40 sm:h-48 lg:h-full object-cover -scale-x-100"
+                      loading="lazy"
+                    />
+                  </div>
 
-            <Card className="shadow-none">
-              <CardContent className="flex items-center gap-4 p-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-700">
-                  <CalendarDays className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{t("donorActiveMonths")}</p>
-                  <p className="text-2xl font-semibold tracking-tight">
-                    {loadingList ? "…" : stats.uniqueMonths}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="order-2 lg:order-2 grid gap-4 sm:grid-cols-2">
+                    <Card className="shadow-none">
+                      <CardContent className="flex items-center gap-4 p-5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                          <DollarSign className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">{t("donorTotalGiven")}</p>
+                          <p className="text-2xl font-semibold tracking-tight">
+                            {loadingList ? "…" : formatMoney(stats.totalGiven)}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card className="shadow-none">
-              <CardContent className="flex items-center gap-4 p-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
-                  <TrendingUp className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{t("donorLastGift")}</p>
-                  <p className="text-2xl font-semibold tracking-tight">
-                    {loadingList
-                      ? "…"
-                      : stats.mostRecent
-                        ? new Date(stats.mostRecent.donationDate).toLocaleDateString(undefined, {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })
-                        : "—"}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    <Card className="shadow-none">
+                      <CardContent className="flex items-center gap-4 p-5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
+                          <Gift className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">{t("donorDonations")}</p>
+                          <p className="text-2xl font-semibold tracking-tight">
+                            {loadingList ? "…" : stats.count}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
 
-          {/* ── Impact + Give ──────────────────────────────────── */}
-          <div className="mt-6 grid gap-6 lg:grid-cols-[0.95fr,1.05fr]">
-            {/* Impact snapshot */}
-            <Card className="shadow-none">
+                    <Card className="shadow-none">
+                      <CardContent className="flex items-center gap-4 p-5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-700">
+                          <CalendarDays className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">{t("donorActiveMonths")}</p>
+                          <p className="text-2xl font-semibold tracking-tight">
+                            {loadingList ? "…" : stats.uniqueMonths}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="shadow-none">
+                      <CardContent className="flex items-center gap-4 p-5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+                          <TrendingUp className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">{t("donorLastGift")}</p>
+                          <p className="text-2xl font-semibold tracking-tight">
+                            {loadingList
+                              ? "…"
+                              : stats.mostRecent
+                                ? new Date(stats.mostRecent.donationDate).toLocaleDateString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric",
+                                  })
+                                : "—"}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Impact + Give ──────────────────────────────────── */}
+            <div className="mt-6 grid gap-6 lg:grid-cols-[0.95fr,1.05fr]">
+              {/* Impact snapshot */}
+              <Card className="shadow-none">
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Heart className="h-5 w-5 text-rose-500" />
@@ -413,10 +451,10 @@ const DonorDashboard = () => {
                   </>
                 )}
               </CardContent>
-            </Card>
+              </Card>
 
-            {/* Make a gift */}
-            <Card className="shadow-none">
+              {/* Make a gift */}
+              <Card className="shadow-none">
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <HandHeart className="h-5 w-5 text-emerald-600" />
@@ -540,11 +578,11 @@ const DonorDashboard = () => {
                   </Button>
                 </form>
               </CardContent>
-            </Card>
-          </div>
+              </Card>
+            </div>
 
-          {/* ── Donation history ───────────────────────────────── */}
-          <Card className="mt-6 shadow-none">
+            {/* ── Donation history ───────────────────────────────── */}
+            <Card className="mt-6 shadow-none">
             <CardHeader>
               <CardTitle className="font-heading text-2xl">{t("donorDonationHistory")}</CardTitle>
               <CardDescription>
@@ -621,7 +659,8 @@ const DonorDashboard = () => {
                 </div>
               )}
             </CardContent>
-          </Card>
+            </Card>
+          </div>
         </div>
       </section>
 

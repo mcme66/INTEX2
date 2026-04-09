@@ -268,7 +268,26 @@ const Donors = () => {
 
   return (
     <Layout>
-      <div className="max-w-screen-xl mx-auto px-6 py-12">
+      <div className="max-w-screen-xl mx-auto px-6 py-12 relative">
+        {/* Alternating background strips */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(to bottom," +
+              "transparent 0," +
+              "transparent 24rem," +
+              "hsl(var(--accent) / 0.16) 24rem," +
+              "hsl(var(--accent) / 0.16) 44rem," +
+              "transparent 44rem," +
+              "transparent 68rem," +
+              "hsl(199 80% 92% / 0.35) 68rem," +
+              "hsl(199 80% 92% / 0.35) 88rem," +
+              "transparent 88rem," +
+              "transparent 112rem" +
+              ")",
+          }}
+        />
         {canManageDonors && (
           <Link
             to="/admin"
@@ -311,7 +330,7 @@ const Donors = () => {
           </h2>
           <div className="flex flex-wrap gap-3">
             {ALLOCATIONS.filter((a) => (allocationSummary[a] || 0) > 0).map((a) => (
-              <div key={a} className="flex-1 min-w-0 border border-border p-4">
+              <div key={a} className="flex-1 min-w-0 border border-border p-4 bg-background">
                 <div className="text-sm text-muted-foreground mb-1 whitespace-nowrap">{a}</div>
                 <div className="font-heading text-xl font-semibold text-foreground">
                   ${(allocationSummary[a] || 0).toLocaleString()}
@@ -366,7 +385,7 @@ const Donors = () => {
             </div>
           </>
         ) : (
-          <div className="mb-6 border border-border bg-secondary/60 p-6">
+          <div className="mb-6 border border-border bg-background p-6">
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
               {t("donorsRestrictedText")}
             </p>
@@ -374,10 +393,10 @@ const Donors = () => {
         )}
 
         {/* Donors Table */}
-        <div className="border border-border overflow-x-auto">
+        <div className="border border-border overflow-x-auto bg-background">
           <table className="w-full text-sm table-fixed">
             <thead>
-              <tr className="border-b border-border bg-secondary/40">
+              <tr className="border-b border-border bg-secondary">
                 <th className={`text-left ${thCls} w-[28%]`} onClick={() => cycleSort("lastName")}>{t("donorsSupporter")}<SortIcon col="lastName" /></th>
                 <th className={`text-left ${thCls} w-[18%]`} onClick={() => cycleSort("supporterType")}>{t("donorsType")}<SortIcon col="supporterType" /></th>
                 <th className={`text-left ${thCls} w-[12%]`} onClick={() => cycleSort("status")}>{t("donorsStatus")}<SortIcon col="status" /></th>
@@ -395,7 +414,7 @@ const Donors = () => {
                   </td>
                 </tr>
               ) : donorRows.map((donor) => (
-                <tr key={donor.supporterId} className="border-b border-border hover:bg-secondary/20 transition-colors">
+                <tr key={donor.supporterId} className="border-b border-border hover:bg-secondary transition-colors">
                   <td className="px-3 py-2.5">
                     <button type="button" onClick={() => canManageDonors && setSelectedDonor(donor)} className="text-left w-full">
                       <div className="font-medium text-foreground truncate">{donorDisplayName(donor)}</div>
@@ -496,7 +515,7 @@ const Donors = () => {
                 </div>
 
                 {isDonationFormOpen && (
-                  <form onSubmit={handleSaveDonation} className="bg-secondary/50 border border-border p-4 mb-4 space-y-3">
+                  <form onSubmit={handleSaveDonation} className="bg-background border border-border p-4 mb-4 space-y-3">
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="text-xs font-medium">{t("donorsType")}</label>

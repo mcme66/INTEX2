@@ -78,7 +78,26 @@ const AdminDashboard = () => {
   return (
     <Layout>
       <section className="px-6 py-14">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-6xl relative">
+          {/* Alternating background strips (26rem each) */}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(to bottom," +
+                "transparent 0," +
+                "transparent 24rem," +
+                "hsl(var(--accent) / 0.16) 24rem," +
+                "hsl(var(--accent) / 0.16) 44rem," +
+                "transparent 44rem," +
+                "transparent 68rem," +
+                "hsl(199 80% 92% / 0.35) 68rem," +
+                "hsl(199 80% 92% / 0.35) 88rem," +
+                "transparent 88rem," +
+                "transparent 112rem" +
+                ")",
+            }}
+          />
 
           {/* Header */}
           <div className="mb-10">
@@ -132,7 +151,7 @@ const AdminDashboard = () => {
           <div className="grid md:grid-cols-2 gap-8">
 
             {/* Left: Safehouse Occupancy */}
-            <div className="border border-border p-6">
+            <div className="border border-border p-6 bg-background">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-5">
                 {t("adminSafeHouseOccupancy")}
               </p>
@@ -173,7 +192,7 @@ const AdminDashboard = () => {
                 <Link
                   key={to}
                   to={to}
-                  className="flex-1 border border-border border-b-0 last:border-b p-5 hover:bg-secondary/40 transition-colors group flex items-start gap-4"
+                  className="flex-1 border border-border border-b-0 last:border-b p-5 bg-background hover:bg-secondary transition-colors group flex items-start gap-4"
                 >
                   <Icon size={16} className="text-muted-foreground group-hover:text-foreground transition-colors mt-0.5 shrink-0" />
                   <div>

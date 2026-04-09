@@ -431,7 +431,26 @@ const ProcessRecordingPage = () => {
 
   return (
     <Layout>
-      <div className="max-w-screen-xl mx-auto px-6 py-12">
+      <div className="max-w-screen-xl mx-auto px-6 py-12 relative">
+        {/* Alternating background strips */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(to bottom," +
+              "transparent 0," +
+              "transparent 24rem," +
+              "hsl(var(--accent) / 0.16) 24rem," +
+              "hsl(var(--accent) / 0.16) 44rem," +
+              "transparent 44rem," +
+              "transparent 68rem," +
+              "hsl(199 80% 92% / 0.35) 68rem," +
+              "hsl(199 80% 92% / 0.35) 88rem," +
+              "transparent 88rem," +
+              "transparent 112rem" +
+              ")",
+          }}
+        />
 
         {/* Back button */}
         <Link
@@ -517,10 +536,10 @@ const ProcessRecordingPage = () => {
 
         {/* Table */}
         {!error && (
-          <div className="border border-border">
+          <div className="border border-border bg-background">
             <table className="w-full text-sm table-fixed">
               <thead>
-                <tr className="border-b border-border bg-secondary/40">
+                <tr className="border-b border-border bg-secondary">
                   <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("residentCode")}>Resident<SortIcon col="residentCode" /></th>
                   <th className={`${thCls} w-[9%]`} onClick={() => cycleSort("sessionDate")}>Date<SortIcon col="sessionDate" /></th>
                   <th className={`${thCls} w-[10%]`} onClick={() => cycleSort("socialWorker")}>Social Worker<SortIcon col="socialWorker" /></th>
@@ -540,7 +559,7 @@ const ProcessRecordingPage = () => {
                   <tr><td colSpan={9} className="text-center text-muted-foreground py-16">{t("processNoRecordingsFound")}</td></tr>
                 )}
                 {sortedRecordings.map((r) => (
-                  <tr key={r.recordingId} className="border-b border-border hover:bg-secondary/20 transition-colors align-top">
+                  <tr key={r.recordingId} className="border-b border-border hover:bg-secondary transition-colors align-top">
                     <td className="px-3 py-2.5">
                       <div className="font-mono text-xs text-foreground">{r.residentCode ?? `ID ${r.residentId}`}</div>
                     </td>

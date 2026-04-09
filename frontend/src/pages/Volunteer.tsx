@@ -61,28 +61,65 @@ const WaysToHelp = () => {
             </div>
           </div>
 
-          {/* Ways grid */}
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-8">
-              {t("volunteerSixWays")}
-            </p>
-            <div className="grid gap-px bg-border md:grid-cols-2 lg:grid-cols-3 border border-border">
-              {WAYS.map(({ icon: Icon, title, description }) => (
-                <div
-                  key={title}
-                  className="bg-secondary/30 p-8 flex flex-col gap-3"
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon size={18} className="text-accent shrink-0" />
-                    <h2 className="font-heading font-semibold text-foreground leading-snug">
-                      {title}
-                    </h2>
+          <div
+            className="relative"
+            style={{
+              ["--volunteer-img-h" as never]: "16rem",
+              ["--volunteer-way-bleed" as never]: "28rem",
+            }}
+          >
+            {/* Background strip (full-bleed) */}
+            <div
+              className="absolute left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10 bg-accent/20"
+              style={{
+                top: "calc(var(--volunteer-img-h) * 3 / 4)",
+                height: "calc((var(--volunteer-img-h) / 2) + var(--volunteer-way-bleed))",
+              }}
+            />
+
+            {/* Images */}
+            <div className="mb-16 grid gap-4 md:grid-cols-3">
+              <div className="md:col-span-2 border border-border overflow-hidden">
+                <img
+                  src="/img/coloring_on_floor.webp"
+                  alt="Children coloring together on the floor"
+                  className="w-full h-64 md:h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="md:col-span-1 border border-border overflow-hidden">
+                <img
+                  src="/img/Volunteer engaging with children in community.png"
+                  alt="Volunteer engaging with children in the community"
+                  className="w-full h-64 md:h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            {/* Ways grid */}
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground mb-8">
+                {t("volunteerSixWays")}
+              </p>
+              <div className="grid gap-px bg-border md:grid-cols-2 lg:grid-cols-3 border border-border">
+                {WAYS.map(({ icon: Icon, title, description }) => (
+                  <div
+                    key={title}
+                    className="bg-secondary/30 p-8 flex flex-col gap-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon size={18} className="text-accent shrink-0" />
+                      <h2 className="font-heading font-semibold text-foreground leading-snug">
+                        {title}
+                      </h2>
+                    </div>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {description}
+                    </p>
                   </div>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {description}
-                  </p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 

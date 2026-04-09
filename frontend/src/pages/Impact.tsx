@@ -55,7 +55,6 @@ const Impact = () => {
         { label: t("impactChildrenInCare"), value: stats.activeResidents.toString() },
         { label: t("impactChildrenTotal"), value: stats.totalResidents.toString() },
         { label: t("impactReintegrationRate"), value: `~${reintegrationRate}%` },
-        { label: t("impactActiveSupporters"), value: stats.uniqueSuporters.toString() },
       ]
     : [];
 
@@ -93,98 +92,129 @@ const Impact = () => {
 
         {!loading && !error && stats && (
           <>
+            <div
+              className="relative"
+              style={{
+                ["--impact-top-h" as never]: "60rem",
+                ["--impact-next-h" as never]: "48rem",
+              }}
+            >
+              {/* Background strip (full-bleed) */}
+              <div
+                className="absolute left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10 bg-sky-200/20"
+                style={{
+                  top: "calc(var(--impact-top-h) / 3)",
+                  height: "calc((var(--impact-top-h) / 3) + (var(--impact-next-h) / 3))",
+                }}
+              />
+
             {/* Summary Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
-              {summaryCards.map((card) => (
-                <div key={card.label} className="border border-border p-5">
-                  <div className="text-sm text-muted-foreground mb-2">{card.label}</div>
-                  <div className="font-heading text-2xl md:text-3xl font-bold text-foreground">
-                    {card.value}
-                  </div>
+            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen mb-14">
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="md:col-span-1 border border-border overflow-hidden">
+                  <img
+                    src="/img/orphan.webp"
+                    alt="Child in care"
+                    className="w-full h-56 md:h-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
-              ))}
-            </div>
 
-            {/* Outcomes */}
-            <div className="mb-3">
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                {t("impactOutcomes")}
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8 mb-14">
-
-              {/* Reintegration Progress */}
-              <div className="border border-border p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-                  {t("impactReintegrationProgress")}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-6">
-                  {t("impactReintegrationProgressDesc")}
-                </p>
-                <div className="flex items-center gap-6">
-                  <ResponsiveContainer width="50%" height={200}>
-                    <PieChart>
-                      <Pie
-                        data={stats.reintegrationBreakdown}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={45}
-                        outerRadius={85}
-                        paddingAngle={2}
-                        dataKey="count"
-                        nameKey="status"
-                      >
-                        {stats.reintegrationBreakdown.map((_, i) => (
-                          <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        contentStyle={TOOLTIP_STYLE}
-                        formatter={(value: number, _: string, entry: { payload?: { status?: string } }) =>
-                          [`${value} children`, entry.payload?.status ?? ""]
-                        }
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="space-y-2 flex-1">
-                    {stats.reintegrationBreakdown.map((item, i) => (
-                      <div key={item.status} className="flex items-center gap-2 text-sm">
-                        <div className="w-3 h-3 flex-shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
-                        <span className="text-muted-foreground">{item.status}</span>
-                        <span className="font-medium text-foreground ml-auto">{item.count}</span>
+                <div className="md:col-span-2 px-6 md:pr-12">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-14">
+                    {summaryCards.map((card) => (
+                      <div key={card.label} className="border border-border p-5">
+                        <div className="text-sm text-muted-foreground mb-2">{card.label}</div>
+                        <div className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+                          {card.value}
+                        </div>
                       </div>
                     ))}
                   </div>
+
+                  {/* Outcomes */}
+                  <div className="mb-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      {t("impactOutcomes")}
+                    </p>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-8">
+
+                    {/* Reintegration Progress */}
+                    <div className="border border-border p-6 bg-background">
+                      <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
+                        {t("impactReintegrationProgress")}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-6">
+                        {t("impactReintegrationProgressDesc")}
+                      </p>
+                      <div className="flex items-center gap-6">
+                        <ResponsiveContainer width="50%" height={200}>
+                          <PieChart>
+                            <Pie
+                              data={stats.reintegrationBreakdown}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={45}
+                              outerRadius={85}
+                              paddingAngle={2}
+                              dataKey="count"
+                              nameKey="status"
+                            >
+                              {stats.reintegrationBreakdown.map((_, i) => (
+                                <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                              ))}
+                            </Pie>
+                            <Tooltip
+                              contentStyle={TOOLTIP_STYLE}
+                              formatter={(value: number, _: string, entry: { payload?: { status?: string } }) =>
+                                [`${value} children`, entry.payload?.status ?? ""]
+                              }
+                            />
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="space-y-2 flex-1">
+                          {stats.reintegrationBreakdown.map((item, i) => (
+                            <div key={item.status} className="flex items-center gap-2 text-sm">
+                              <div className="w-3 h-3 flex-shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
+                              <span className="text-muted-foreground">{item.status}</span>
+                              <span className="font-medium text-foreground ml-auto">{item.count}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Children Admitted by Year */}
+                    <div className="border border-border p-6 bg-background">
+                      <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
+                        {t("impactChildrenAdmitted")}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-6">
+                        {t("impactChildrenAdmittedDesc")}
+                      </p>
+                      <ResponsiveContainer width="100%" height={220}>
+                        <BarChart data={stats.residentsByYear}>
+                          <XAxis
+                            dataKey="year"
+                            tick={{ fontSize: 12, fill: "hsl(213,12%,48%)" }}
+                            axisLine={false}
+                            tickLine={false}
+                          />
+                          <YAxis
+                            tick={{ fontSize: 12, fill: "hsl(213,12%,48%)" }}
+                            axisLine={false}
+                            tickLine={false}
+                          />
+                          <Tooltip contentStyle={TOOLTIP_STYLE} />
+                          <Bar dataKey="count" fill="hsl(43,52%,55%)" radius={[2, 2, 0, 0]} name="Children" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                  </div>
                 </div>
               </div>
-
-              {/* Children Admitted by Year */}
-              <div className="border border-border p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-                  {t("impactChildrenAdmitted")}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-6">
-                  {t("impactChildrenAdmittedDesc")}
-                </p>
-                <ResponsiveContainer width="100%" height={220}>
-                  <BarChart data={stats.residentsByYear}>
-                    <XAxis
-                      dataKey="year"
-                      tick={{ fontSize: 12, fill: "hsl(213,12%,48%)" }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 12, fill: "hsl(213,12%,48%)" }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <Tooltip contentStyle={TOOLTIP_STYLE} />
-                    <Bar dataKey="count" fill="hsl(43,52%,55%)" radius={[2, 2, 0, 0]} name="Children" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-
             </div>
 
             {/* Resources */}
@@ -193,10 +223,13 @@ const Impact = () => {
                 {t("impactResources")}
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-8 mb-14">
+            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen mb-14">
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="md:col-span-2 px-6 md:pl-12">
+                  <div className="grid md:grid-cols-2 gap-8">
 
               {/* Contributions by Type */}
-              <div className="border border-border p-6">
+              <div className="border border-border p-6 bg-background">
                 <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
                   {t("impactContributionsByType")}
                 </h3>
@@ -262,7 +295,7 @@ const Impact = () => {
 
               {/* Donations over time + volunteer hours */}
               <div className="flex flex-col gap-6">
-                <div className="border border-border p-6">
+                <div className="border border-border p-6 bg-background">
                   <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
                     {t("impactContributionsOverTime")}
                   </h3>
@@ -292,7 +325,7 @@ const Impact = () => {
                   </ResponsiveContainer>
                 </div>
 
-                <div className="border border-border p-6 flex items-center gap-6">
+                <div className="border border-border p-6 flex items-center gap-6 bg-background">
                   <div>
                     <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
                       {t("impactVolunteerHours")}
@@ -308,6 +341,19 @@ const Impact = () => {
                 </div>
               </div>
 
+                  </div>
+                </div>
+
+                <div className="border border-border overflow-hidden">
+                  <img
+                    src="/img/Community volunteers in rural Colombia.png"
+                    alt="Community volunteers in rural Colombia"
+                    className="w-full h-64 md:h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
             </div>
           </>
         )}

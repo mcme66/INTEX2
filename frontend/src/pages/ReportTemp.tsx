@@ -145,7 +145,7 @@ function SectionHeader({ title }: { title: string }) {
 
 function StatCard({ icon: Icon, label, value, sub }: { icon: typeof Users; label: string; value: string; sub?: string }) {
   return (
-    <div className="border border-border p-5">
+    <div className="border border-border p-5 bg-background">
       <div className="flex items-center gap-2 mb-2">
         <Icon size={16} className="text-muted-foreground" />
         <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}</span>
@@ -258,7 +258,7 @@ function AnalyticsTab({ token }: { token: string }) {
       {/* ── Services Provided + Beneficiary Counts (side-by-side) ──────── */}
       <div className="grid md:grid-cols-2 gap-4">
         {services && (
-          <div className="border border-border p-5">
+          <div className="border border-border p-5 bg-background">
             <SectionHeader title={t("reportsServicesProvided")} />
             <div className="grid grid-cols-3 gap-3">
               <div className="text-center">
@@ -296,22 +296,22 @@ function AnalyticsTab({ token }: { token: string }) {
         )}
 
         {beneficiaries && (
-          <div className="border border-border p-5">
+          <div className="border border-border p-5 bg-background">
             <SectionHeader title={t("reportsBeneficiaryCounts")} />
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <div className="border border-border p-3 text-center">
+              <div className="border border-border p-3 text-center bg-background">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.totalServed.toLocaleString()}</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsTotalServed")}</p>
               </div>
-              <div className="border border-border p-3 text-center">
+              <div className="border border-border p-3 text-center bg-background">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.currentlyActive.toLocaleString()}</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsActiveLabel")}</p>
               </div>
-              <div className="border border-border p-3 text-center">
+              <div className="border border-border p-3 text-center bg-background">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.closedCases.toLocaleString()}</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsClosed")}</p>
               </div>
-              <div className="border border-border p-3 text-center">
+              <div className="border border-border p-3 text-center bg-background">
                 <p className="font-heading text-xl font-semibold text-foreground">{beneficiaries.reintegrated.toLocaleString()}</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsReintegrated")}</p>
               </div>
@@ -334,15 +334,15 @@ function AnalyticsTab({ token }: { token: string }) {
       {/* ── Program Outcomes (Education + Health side-by-side) ──────────── */}
       <div className="grid md:grid-cols-2 gap-4">
         {education && (
-          <div className="border border-border p-5">
+          <div className="border border-border p-5 bg-background">
             <SectionHeader title={t("reportsEducationOutcomes")} />
             <div className="grid grid-cols-2 gap-3">
-              <div className="border border-border p-3 text-center">
+              <div className="border border-border p-3 text-center bg-background">
                 <BookOpen size={14} className="mx-auto text-muted-foreground mb-1" />
                 <p className="font-heading text-xl font-semibold text-foreground">{education.overallAvgAttendance}%</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsAvgAttendance")}</p>
               </div>
-              <div className="border border-border p-3 text-center">
+              <div className="border border-border p-3 text-center bg-background">
                 <GraduationCap size={14} className="mx-auto text-muted-foreground mb-1" />
                 <p className="font-heading text-xl font-semibold text-foreground">{education.overallAvgProgress}%</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t("reportsAvgProgress")}</p>
@@ -361,7 +361,7 @@ function AnalyticsTab({ token }: { token: string }) {
         )}
 
         {health && (
-          <div className="border border-border p-5">
+          <div className="border border-border p-5 bg-background">
             <SectionHeader title={t("reportsHealthWellbeing")} />
             <div className="grid grid-cols-3 gap-3 mb-3">
               {([
@@ -374,7 +374,7 @@ function AnalyticsTab({ token }: { token: string }) {
                 const color = pct >= 80 ? "text-green-600" : pct >= 60 ? "text-green-600" : pct >= 40 ? "text-amber-600" : "text-red-600";
                 const barColor = pct >= 60 ? "bg-green-500" : pct >= 40 ? "bg-amber-500" : "bg-red-500";
                 return (
-                  <div key={h.labelKey} className="border border-border p-3 text-center">
+                  <div key={h.labelKey} className="border border-border p-3 text-center bg-background">
                     <h.icon size={14} className="mx-auto text-muted-foreground mb-1" />
                     <p className="font-heading text-xl font-semibold text-foreground">{pct}%</p>
                     <p className={`text-[10px] font-medium ${color}`}>{rating}</p>
@@ -410,7 +410,7 @@ function AnalyticsTab({ token }: { token: string }) {
 
       {/* ── Donation Trends + Contributions by Type (side-by-side) ──────── */}
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="border border-border p-5">
+        <div className="border border-border p-5 bg-background">
           <SectionHeader title={t("reportsDonationTrends")} />
           {donationChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
@@ -428,7 +428,7 @@ function AnalyticsTab({ token }: { token: string }) {
           ) : <p className="text-sm text-muted-foreground">{t("reportsNoDonationData")}</p>}
         </div>
 
-        <div className="border border-border p-5">
+        <div className="border border-border p-5 bg-background">
           <SectionHeader title={t("reportsContributionsByType")} />
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={impact.donationBreakdown.filter(d => d.type)} layout="vertical">
@@ -443,11 +443,11 @@ function AnalyticsTab({ token }: { token: string }) {
       </div>
 
       {/* ── Safehouse Performance ──────────────────────────────────────── */}
-      <div className="border border-border p-5">
+      <div className="border border-border p-5 bg-background">
         <SectionHeader title={t("reportsSafehousePerf")} />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {safehouses.map(sh => (
-            <div key={sh.safehouseId} className="border border-border p-3">
+            <div key={sh.safehouseId} className="border border-border p-3 bg-background">
               <div className="flex justify-between items-center mb-1.5">
                 <span className="font-medium text-foreground text-sm">{sh.name}</span>
                 <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${sh.occupancy >= sh.capacity ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"}`}>
@@ -469,7 +469,7 @@ function AnalyticsTab({ token }: { token: string }) {
 
       {/* ── Reintegration Status + Resident Flow (side-by-side) ─────────── */}
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="border border-border p-5">
+        <div className="border border-border p-5 bg-background">
           <SectionHeader title={t("reportsReintegrationStatus")} />
           {reintPieData.length > 0 ? (
             <div className="flex items-center gap-6">
@@ -507,7 +507,7 @@ function AnalyticsTab({ token }: { token: string }) {
         </div>
 
         {residents.length > 0 && (
-          <div className="border border-border p-5">
+          <div className="border border-border p-5 bg-background">
             <SectionHeader title={t("reportsAdmissionsClosures")} />
             <ResponsiveContainer width="100%" height={180}>
               <BarChart data={residents.slice(-24)}>
@@ -579,8 +579,8 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
         </div>
       )}
 
-      <div className="border border-border">
-        <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between px-6 py-4 hover:bg-secondary/40 transition-colors text-left">
+      <div className="border border-border bg-background">
+        <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between px-6 py-4 hover:bg-secondary transition-colors text-left bg-background">
           <div className="flex-1">
             <div className="flex items-center gap-3">
               <span className="font-heading font-semibold text-foreground">{domain.label}</span>
@@ -597,7 +597,7 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
         {open && (
           <div className="px-6 pb-6 border-t border-border pt-5 space-y-6">
             {displaySummary && (
-              <div className="bg-secondary/30 border border-border p-4">
+              <div className="bg-background border border-border p-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">{t("reportsAnalysisSummary")}</p>
                 <p className="text-sm text-foreground leading-relaxed">{humanizeSummary(displaySummary)}</p>
               </div>
@@ -607,7 +607,7 @@ function DomainAccordion({ domain, token, notebookStatuses, completedThisRun, pe
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">{t("reportsActionableRecs")}</p>
               <div className="space-y-2">
                 {domain.recommendations.map((rec, i) => (
-                  <div key={i} className="flex gap-3 p-3 bg-secondary/30 border border-border text-sm">
+                  <div key={i} className="flex gap-3 p-3 bg-background border border-border text-sm">
                     <span className="text-accent font-bold shrink-0">{i + 1}.</span>
                     <p className="text-foreground">{rec}</p>
                   </div>
@@ -684,7 +684,7 @@ function PredictionsTable({ notebook, scoreLabel, tierLabel, token, modal = fals
           </thead>
           <tbody>
             {data.records.map((r: MlPrediction) => (
-              <tr key={r.id} className="border-b border-border last:border-0 hover:bg-secondary/40 transition-colors">
+              <tr key={r.id} className="border-b border-border last:border-0 hover:bg-secondary transition-colors">
                 <td className="py-2.5 px-3 font-medium text-foreground">{r.label}</td>
                 <td className="py-2.5 px-3 text-muted-foreground capitalize">{r.recordType}</td>
                 <td className="py-2.5 px-3 text-right tabular-nums">{r.score != null ? (r.score > 1 ? r.score.toFixed(1) : `${(r.score * 100).toFixed(1)}%`) : "—"}</td>
@@ -760,10 +760,10 @@ function RecordLookup({ token, domains }: { token: string; domains: DomainConfig
 
       {!loading && (
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="border border-border max-h-[400px] overflow-y-auto">
+          <div className="border border-border max-h-[400px] overflow-y-auto bg-background">
             {filtered.length === 0 && <p className="p-4 text-sm text-muted-foreground">{t("reportsNoRecordsFound")}</p>}
             {filtered.map(r => (
-              <button key={r.id} onClick={() => setSelected(r)} className={`w-full text-left px-4 py-3 border-b border-border hover:bg-secondary/40 transition-colors ${selected?.id === r.id ? "bg-secondary/60" : ""}`}>
+              <button key={r.id} onClick={() => setSelected(r)} className={`w-full text-left px-4 py-3 border-b border-border bg-background hover:bg-secondary transition-colors ${selected?.id === r.id ? "bg-secondary" : ""}`}>
                 <div className="flex justify-between">
                   <span className="font-medium text-foreground text-sm">{r.label}</span>
                   <span className={`text-xs ${tierColor(r.tier)}`}>{r.tier}</span>
@@ -773,7 +773,7 @@ function RecordLookup({ token, domains }: { token: string; domains: DomainConfig
             ))}
           </div>
 
-          <div className="border border-border p-6">
+          <div className="border border-border p-6 bg-background">
             {!selected ? (
               <div className="text-center text-muted-foreground py-12">
                 <SearchIcon size={32} className="mx-auto mb-3 opacity-40" />
@@ -895,7 +895,26 @@ const ReportTemp = () => {
   return (
     <Layout>
       <section className="px-6 py-14">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-6xl relative">
+          {/* Alternating background strips */}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -z-10"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(to bottom," +
+                "transparent 0," +
+                "transparent 24rem," +
+                "hsl(var(--accent) / 0.16) 24rem," +
+                "hsl(var(--accent) / 0.16) 44rem," +
+                "transparent 44rem," +
+                "transparent 68rem," +
+                "hsl(199 80% 92% / 0.35) 68rem," +
+                "hsl(199 80% 92% / 0.35) 88rem," +
+                "transparent 88rem," +
+                "transparent 112rem" +
+                ")",
+            }}
+          />
 
           <Link to="/admin" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-8">
             <ArrowLeft size={13} />
