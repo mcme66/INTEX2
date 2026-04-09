@@ -105,6 +105,7 @@ const Register = () => {
                         id="firstName"
                         value={firstName}
                         onChange={(event) => setFirstName(event.target.value)}
+                        autoComplete="given-name"
                         required
                       />
                     </div>
@@ -117,6 +118,7 @@ const Register = () => {
                         type="email"
                         value={email}
                         onChange={(event) => { setEmail(event.target.value); setEmailError(null); }}
+                        autoComplete="email"
                         required
                       />
                       {emailError && (
@@ -133,6 +135,7 @@ const Register = () => {
                       id="new-username"
                       value={username}
                       onChange={(event) => setUsername(event.target.value)}
+                      autoComplete="username"
                       required
                     />
                   </div>
@@ -151,6 +154,7 @@ const Register = () => {
                           minLength={14}
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
+                          autoComplete="new-password"
                           required
                           className="pr-10"
                         />
@@ -158,7 +162,9 @@ const Register = () => {
                           type="button"
                           className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
                           onClick={() => setShowPassword(!showPassword)}
-                          tabIndex={-1}
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                          aria-pressed={showPassword}
+                          aria-controls="new-password"
                         >
                           {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
@@ -176,6 +182,7 @@ const Register = () => {
                           minLength={14}
                           value={confirmPassword}
                           onChange={(event) => setConfirmPassword(event.target.value)}
+                          autoComplete="new-password"
                           required
                           className="pr-10"
                         />
@@ -183,7 +190,9 @@ const Register = () => {
                           type="button"
                           className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          tabIndex={-1}
+                          aria-label={showConfirmPassword ? "Hide password confirmation" : "Show password confirmation"}
+                          aria-pressed={showConfirmPassword}
+                          aria-controls="confirm-password"
                         >
                           {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>

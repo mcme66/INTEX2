@@ -355,8 +355,8 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <nav className="w-full px-4 sm:px-6 h-16 flex items-center">
-        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-          <img src="/icons/kid_stars.svg" alt="North Star" className="w-8 h-8" />
+        <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="North Star home">
+          <img src="/icons/kid_stars.svg" alt="" className="w-8 h-8" />
           <span className="font-heading text-xl font-semibold tracking-tight text-foreground">
             North Star
           </span>

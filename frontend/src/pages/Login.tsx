@@ -69,11 +69,12 @@ const Login = () => {
                     <label className="text-sm font-medium text-foreground" htmlFor="username">
                       {t("loginUsernameLabel")}
                     </label>
-                      <Input
-                        id="username"
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        required
+                    <Input
+                      id="username"
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      autoComplete="username"
+                      required
                     />
                   </div>
 
@@ -87,6 +88,7 @@ const Login = () => {
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
+                        autoComplete="current-password"
                         required
                         className="pr-10"
                         autoFocus={prefilledUsername.length > 0}
@@ -95,7 +97,9 @@ const Login = () => {
                         type="button"
                         className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
                         onClick={() => setShowPassword(!showPassword)}
-                        tabIndex={-1}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-pressed={showPassword}
+                        aria-controls="password"
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>

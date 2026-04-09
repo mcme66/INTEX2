@@ -18,7 +18,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <img src="/icons/kid_stars.svg" alt="North Star" className="w-7 h-7 brightness-200" />
+              <img src="/icons/kid_stars.svg" alt="" className="w-7 h-7 brightness-200" />
               <span className="font-heading text-lg font-semibold">North Star</span>
             </div>
             <p className="text-sm text-primary-foreground/70 leading-relaxed">
