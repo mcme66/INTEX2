@@ -45,6 +45,10 @@ export type Translations = {
   footerGetInvolved: string;
   footerDonate: string;
   footerVolunteer: string;
+  footerWaysToHelp: string;
+  footerShare: string;
+  footerShareSuccess: string;
+  footerShareUnavailable: string;
   footerContact: string;
   footerPrivacyPolicy: string;
   // ── Cookie consent ─────────────────────────────────────────────────────────
@@ -607,6 +611,10 @@ export const en: Translations = {
   footerGetInvolved: "Get Involved",
   footerDonate: "Donate",
   footerVolunteer: "Volunteer",
+  footerWaysToHelp: "Ways to Help",
+  footerShare: "Share",
+  footerShareSuccess: "Link copied. Share it anywhere.",
+  footerShareUnavailable: "Sharing is not available on this device.",
   footerContact: "Contact",
   footerPrivacyPolicy: "Privacy Policy",
   // Cookie consent
@@ -1209,6 +1217,10 @@ export const es: Translations = {
   footerGetInvolved: "Involúcrese",
   footerDonate: "Donar",
   footerVolunteer: "Voluntariado",
+  footerWaysToHelp: "Cómo Ayudar",
+  footerShare: "Compartir",
+  footerShareSuccess: "Enlace copiado. Compártalo donde quiera.",
+  footerShareUnavailable: "Compartir no está disponible en este dispositivo.",
   footerContact: "Contacto",
   footerPrivacyPolicy: "Política de Privacidad",
   // Cookie consent
