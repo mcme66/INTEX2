@@ -9,6 +9,10 @@ await withClient(async (client) => {
       "Email" varchar(256) NOT NULL,
       "Username" varchar(64) NOT NULL,
       "PasswordHash" text NOT NULL,
+      "MfaEnabled" boolean NOT NULL DEFAULT false,
+      "MfaSecretProtected" text,
+      "MfaPendingSecretProtected" text,
+      "MfaRecoveryCodesJson" text,
       "IsDonor" boolean NOT NULL DEFAULT false,
       "IsAdmin" boolean NOT NULL DEFAULT false,
       "CreatedAtUtc" timestamptz NOT NULL
@@ -450,4 +454,3 @@ await withClient(async (client) => {
 
   console.log('Database setup complete: tables/indexes ensured.')
 })
-

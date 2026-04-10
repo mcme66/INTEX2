@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Menu, X, UserCircle, Eye, EyeOff } from "lucide-react";
+import QRCode from "qrcode";
 import { toast } from "sonner";
 import { useAuth } from "@/state/auth";
 import { useLanguage } from "@/state/language";
@@ -30,6 +31,8 @@ const Navbar = () => {
   const [mfaPassword, setMfaPassword] = useState("");
   const [mfaCode, setMfaCode] = useState("");
   const [mfaSetupKey, setMfaSetupKey] = useState("");
+  const [mfaSetupUri, setMfaSetupUri] = useState("");
+  const [mfaQrDataUrl, setMfaQrDataUrl] = useState("");
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
   const [mfaError, setMfaError] = useState("");
   const [mfaLoading, setMfaLoading] = useState(false);
@@ -55,9 +58,35 @@ const Navbar = () => {
     setMfaPassword("");
     setMfaCode("");
     setMfaSetupKey("");
+    setMfaSetupUri("");
+    setMfaQrDataUrl("");
     setRecoveryCodes([]);
     setMfaError("");
   }, [user]);
+
+  useEffect(() => {
+    if (!mfaSetupUri) {
+      setMfaQrDataUrl("");
+      return;
+    }
+
+    let cancelled = false;
+    QRCode.toDataURL(mfaSetupUri, {
+      width: 176,
+      margin: 1,
+      color: { dark: "#1f2937", light: "#0000" },
+    })
+      .then((dataUrl) => {
+        if (!cancelled) setMfaQrDataUrl(dataUrl);
+      })
+      .catch(() => {
+        if (!cancelled) setMfaQrDataUrl("");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mfaSetupUri]);
 
   useEffect(() => {
     if (profileOpen) resetForm();
@@ -162,6 +191,7 @@ const Navbar = () => {
     try {
       const setup = await setupMfa(mfaPassword);
       setMfaSetupKey(setup.manualEntryKey);
+      setMfaSetupUri(setup.otpAuthUri);
       setRecoveryCodes([]);
     } catch (err: unknown) {
       setMfaError(err instanceof Error ? err.message : t("profileErrFailed"));
@@ -186,6 +216,8 @@ const Navbar = () => {
       const codes = await enableMfa(mfaPassword, mfaCode);
       setRecoveryCodes(codes);
       setMfaSetupKey("");
+      setMfaSetupUri("");
+      setMfaQrDataUrl("");
       setMfaCode("");
       toast.success(t("profileMfaSetupSuccess"));
     } catch (err: unknown) {
@@ -211,6 +243,8 @@ const Navbar = () => {
       await disableMfa(mfaPassword, mfaCode);
       setMfaCode("");
       setMfaSetupKey("");
+      setMfaSetupUri("");
+      setMfaQrDataUrl("");
       setRecoveryCodes([]);
       toast.success(t("profileMfaDisableSuccess"));
     } catch (err: unknown) {
@@ -493,6 +527,11 @@ const Navbar = () => {
                 <div className="rounded-md border border-border bg-secondary/50 p-3 space-y-2">
                   <p className="text-xs font-semibold text-foreground">{t("profileMfaSetupReady")}</p>
                   <p className="text-xs text-muted-foreground">{t("profileMfaSetupHint")}</p>
+                  {mfaQrDataUrl && (
+                    <div className="flex justify-center rounded-md bg-white p-3">
+                      <img src={mfaQrDataUrl} alt="Scan this QR code with your authenticator app" className="h-44 w-44" />
+                    </div>
+                  )}
                   <div>
                     <p className="text-[11px] font-medium text-muted-foreground mb-1">{t("profileMfaManualKey")}</p>
                     <code className="block break-all rounded bg-background px-2 py-2 text-xs text-foreground">
