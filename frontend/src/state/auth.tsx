@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  apiDeleteAccount,
   apiDisableMfa,
   apiEnableMfa,
   apiGetMe,
@@ -44,6 +45,7 @@ type AuthState = {
   enableMfa: (currentPassword: string, code: string) => Promise<string[]>;
   disableMfa: (currentPassword: string, code: string) => Promise<UserDto>;
   regenerateRecoveryCodes: (currentPassword: string, code: string) => Promise<string[]>;
+  deleteAccount: (currentPassword: string, code?: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
@@ -167,6 +169,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return res.recoveryCodes;
   }
 
+  async function deleteAccount(currentPassword: string, code?: string) {
+    if (!token) throw new Error("Not authenticated");
+    await apiDeleteAccount(token, { currentPassword, code });
+    persist(null, null);
+    navigate("/", { replace: true });
+  }
+
   async function refreshMe() {
     if (!token) {
       if (user) {
@@ -201,6 +210,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     enableMfa,
     disableMfa,
     regenerateRecoveryCodes,
+    deleteAccount,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

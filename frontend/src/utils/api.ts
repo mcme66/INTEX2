@@ -225,6 +225,24 @@ export async function apiRegenerateRecoveryCodes(
   return (await res.json()) as MfaRecoveryCodesResponse;
 }
 
+export async function apiDeleteAccount(
+  token: string,
+  input: { currentPassword: string; code?: string },
+): Promise<void> {
+  const res = await fetch(`${API_URL}/api/auth/account`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(input),
+  });
+
+  if (!res.ok) {
+    throw new Error(await readErrorMessage(res));
+  }
+}
+
 export type SafehouseOccupancy = {
   name: string;
   occupancy: number;

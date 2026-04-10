@@ -1,8 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { Menu, X, UserCircle, Eye, EyeOff } from "lucide-react";
-import QRCode from "qrcode";
-import { toast } from "sonner";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Menu, X, UserCircle } from "lucide-react";
 import { useAuth } from "@/state/auth";
 import { useLanguage } from "@/state/language";
 
@@ -11,96 +9,19 @@ type NavItem = { to: string; label: string };
 const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, logout, updateProfile, setupMfa, enableMfa, disableMfa, regenerateRecoveryCodes } = useAuth();
-  const { lang, setLang, t } = useLanguage();
-
   const [profileOpen, setProfileOpen] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showCurrent, setShowCurrent] = useState(false);
-  const [showNew, setShowNew] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [profileError, setProfileError] = useState("");
-  const [profileSaving, setProfileSaving] = useState(false);
-  const [profileSuccess, setProfileSuccess] = useState(false);
   const [showProxyNav, setShowProxyNav] = useState(false);
-  const [mfaPassword, setMfaPassword] = useState("");
-  const [mfaCode, setMfaCode] = useState("");
-  const [mfaSetupKey, setMfaSetupKey] = useState("");
-  const [mfaSetupUri, setMfaSetupUri] = useState("");
-  const [mfaQrDataUrl, setMfaQrDataUrl] = useState("");
-  const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
-  const [mfaError, setMfaError] = useState("");
-  const [mfaLoading, setMfaLoading] = useState(false);
+  const { user, logout } = useAuth();
+  const { lang, setLang, t } = useLanguage();
 
   const headerRef = useRef<HTMLElement>(null);
   const desktopPanelRef = useRef<HTMLDivElement>(null);
-  const mobilePanelRef = useRef<HTMLDivElement>(null);
-
-  const resetForm = useCallback(() => {
-    if (user) {
-      setFirstName(user.firstName);
-      setEmail(user.email);
-      setUsername(user.username);
-    }
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setShowCurrent(false);
-    setShowNew(false);
-    setShowConfirm(false);
-    setProfileError("");
-    setProfileSuccess(false);
-    setMfaPassword("");
-    setMfaCode("");
-    setMfaSetupKey("");
-    setMfaSetupUri("");
-    setMfaQrDataUrl("");
-    setRecoveryCodes([]);
-    setMfaError("");
-  }, [user]);
-
-  useEffect(() => {
-    if (!mfaSetupUri) {
-      setMfaQrDataUrl("");
-      return;
-    }
-
-    let cancelled = false;
-    QRCode.toDataURL(mfaSetupUri, {
-      width: 176,
-      margin: 1,
-      color: { dark: "#1f2937", light: "#0000" },
-    })
-      .then((dataUrl) => {
-        if (!cancelled) setMfaQrDataUrl(dataUrl);
-      })
-      .catch(() => {
-        if (!cancelled) setMfaQrDataUrl("");
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [mfaSetupUri]);
-
-  useEffect(() => {
-    if (profileOpen) resetForm();
-  }, [profileOpen, resetForm]);
 
   useEffect(() => {
     if (!profileOpen) return;
     const handler = (e: MouseEvent) => {
       const target = e.target as Node;
-      if (
-        desktopPanelRef.current?.contains(target) ||
-        mobilePanelRef.current?.contains(target)
-      )
-        return;
+      if (desktopPanelRef.current?.contains(target)) return;
       setProfileOpen(false);
     };
     document.addEventListener("mousedown", handler);
@@ -112,9 +33,7 @@ const Navbar = () => {
     if (!header) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setShowProxyNav(!entry.isIntersecting);
-      },
+      ([entry]) => setShowProxyNav(!entry.isIntersecting),
       { threshold: 0.05 },
     );
 
@@ -128,164 +47,8 @@ const Navbar = () => {
     setShowProxyNav(false);
   }, [location.pathname]);
 
-  const handleProfileSave = async () => {
-    setProfileError("");
-    setProfileSuccess(false);
-
-    if (firstName.trim().length < 2) {
-      setProfileError(t("profileErrName"));
-      return;
-    }
-    if (username.trim().length < 3) {
-      setProfileError(t("profileErrUsername"));
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setProfileError(t("profileErrEmail"));
-      return;
-    }
-
-    const changingPassword = currentPassword || newPassword || confirmPassword;
-    if (changingPassword) {
-      if (!currentPassword) {
-        setProfileError(t("profileErrCurrentPwd"));
-        return;
-      }
-      if (newPassword.length < 6) {
-        setProfileError(t("profileErrNewPwdLen"));
-        return;
-      }
-      if (newPassword !== confirmPassword) {
-        setProfileError(t("profileErrPwdMismatch"));
-        return;
-      }
-    }
-
-    setProfileSaving(true);
-    try {
-      await updateProfile({
-        firstName: firstName.trim(),
-        email: email.trim(),
-        username: username.trim(),
-        ...(changingPassword
-          ? { currentPassword, newPassword }
-          : {}),
-      });
-      setProfileSuccess(true);
-      setTimeout(() => setProfileOpen(false), 800);
-    } catch (err: unknown) {
-      setProfileError(err instanceof Error ? err.message : t("profileErrFailed"));
-    } finally {
-      setProfileSaving(false);
-    }
-  };
-
-  const handleMfaSetup = async () => {
-    if (!mfaPassword) {
-      setMfaError(t("profileErrCurrentPwd"));
-      return;
-    }
-
-    setMfaLoading(true);
-    setMfaError("");
-    try {
-      const setup = await setupMfa(mfaPassword);
-      setMfaSetupKey(setup.manualEntryKey);
-      setMfaSetupUri(setup.otpAuthUri);
-      setRecoveryCodes([]);
-    } catch (err: unknown) {
-      setMfaError(err instanceof Error ? err.message : t("profileErrFailed"));
-    } finally {
-      setMfaLoading(false);
-    }
-  };
-
-  const handleMfaEnable = async () => {
-    if (!mfaPassword) {
-      setMfaError(t("profileErrCurrentPwd"));
-      return;
-    }
-    if (!mfaCode.trim()) {
-      setMfaError(t("loginMfaCodeHelp"));
-      return;
-    }
-
-    setMfaLoading(true);
-    setMfaError("");
-    try {
-      const codes = await enableMfa(mfaPassword, mfaCode);
-      setRecoveryCodes(codes);
-      setMfaSetupKey("");
-      setMfaSetupUri("");
-      setMfaQrDataUrl("");
-      setMfaCode("");
-      toast.success(t("profileMfaSetupSuccess"));
-    } catch (err: unknown) {
-      setMfaError(err instanceof Error ? err.message : t("profileErrFailed"));
-    } finally {
-      setMfaLoading(false);
-    }
-  };
-
-  const handleMfaDisable = async () => {
-    if (!mfaPassword) {
-      setMfaError(t("profileErrCurrentPwd"));
-      return;
-    }
-    if (!mfaCode.trim()) {
-      setMfaError(t("loginMfaCodeHelp"));
-      return;
-    }
-
-    setMfaLoading(true);
-    setMfaError("");
-    try {
-      await disableMfa(mfaPassword, mfaCode);
-      setMfaCode("");
-      setMfaSetupKey("");
-      setMfaSetupUri("");
-      setMfaQrDataUrl("");
-      setRecoveryCodes([]);
-      toast.success(t("profileMfaDisableSuccess"));
-    } catch (err: unknown) {
-      setMfaError(err instanceof Error ? err.message : t("profileErrFailed"));
-    } finally {
-      setMfaLoading(false);
-    }
-  };
-
-  const handleRecoveryCodesRegenerate = async () => {
-    if (!mfaPassword) {
-      setMfaError(t("profileErrCurrentPwd"));
-      return;
-    }
-    if (!mfaCode.trim()) {
-      setMfaError(t("loginMfaCodeHelp"));
-      return;
-    }
-
-    setMfaLoading(true);
-    setMfaError("");
-    try {
-      const codes = await regenerateRecoveryCodes(mfaPassword, mfaCode);
-      setRecoveryCodes(codes);
-      setMfaCode("");
-      toast.success(t("profileMfaRegenerateSuccess"));
-    } catch (err: unknown) {
-      setMfaError(err instanceof Error ? err.message : t("profileErrFailed"));
-    } finally {
-      setMfaLoading(false);
-    }
-  };
-
-  const donorLinks: NavItem[] = user?.isDonor
-    ? [{ to: "/donor", label: t("navDonorDashboard") }]
-    : [];
-
-  const adminLinks: NavItem[] = user?.isAdmin
-    ? [{ to: "/admin", label: t("navAdminDashboard") }]
-    : [];
-
+  const donorLinks: NavItem[] = user?.isDonor ? [{ to: "/donor", label: t("navDonorDashboard") }] : [];
+  const adminLinks: NavItem[] = user?.isAdmin ? [{ to: "/admin", label: t("navAdminDashboard") }] : [];
   const publicLinks: NavItem[] = [
     { to: "/", label: t("navHome") },
     { to: "/impact", label: t("navImpact") },
@@ -294,9 +57,7 @@ const Navbar = () => {
 
   const linkClass = (to: string) =>
     `text-sm font-medium transition-colors ${
-      location.pathname === to
-        ? "text-foreground"
-        : "text-muted-foreground hover:text-foreground"
+      location.pathname === to ? "text-foreground" : "text-muted-foreground hover:text-foreground"
     }`;
 
   const NavLinkList = ({ items }: { items: NavItem[] }) =>
@@ -318,9 +79,7 @@ const Navbar = () => {
         type="button"
         onClick={() => setLang("en")}
         className={`px-2 py-1 transition-colors ${
-          lang === "en"
-            ? "bg-foreground text-background"
-            : "text-muted-foreground hover:text-foreground"
+          lang === "en" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
         }`}
         aria-label="Switch to English"
       >
@@ -331,9 +90,7 @@ const Navbar = () => {
         type="button"
         onClick={() => setLang("es")}
         className={`px-2 py-1 transition-colors ${
-          lang === "es"
-            ? "bg-foreground text-background"
-            : "text-muted-foreground hover:text-foreground"
+          lang === "es" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
         }`}
         aria-label="Cambiar a Español"
       >
@@ -343,32 +100,10 @@ const Navbar = () => {
   );
 
   const renderDesktopNav = () => {
-    const hasDonor = donorLinks.length > 0;
-    const hasAdmin = adminLinks.length > 0;
-    const hasPublic = publicLinks.length > 0;
     const sections: ReactNode[] = [];
-
-    if (hasAdmin) {
-      sections.push(
-        <div key="admin" className="flex items-center gap-6">
-          <NavLinkList items={adminLinks} />
-        </div>,
-      );
-    }
-    if (hasDonor) {
-      sections.push(
-        <div key="donor" className="flex items-center gap-6">
-          <NavLinkList items={donorLinks} />
-        </div>,
-      );
-    }
-    if (hasPublic) {
-      sections.push(
-        <div key="public" className="flex items-center gap-6">
-          <NavLinkList items={publicLinks} />
-        </div>,
-      );
-    }
+    if (adminLinks.length) sections.push(<div key="admin" className="flex items-center gap-6"><NavLinkList items={adminLinks} /></div>);
+    if (donorLinks.length) sections.push(<div key="donor" className="flex items-center gap-6"><NavLinkList items={donorLinks} /></div>);
+    if (publicLinks.length) sections.push(<div key="public" className="flex items-center gap-6"><NavLinkList items={publicLinks} /></div>);
 
     return (
       <div className="hidden md:flex items-center gap-4 min-w-0 pl-8 pr-4 flex-wrap">
@@ -382,263 +117,6 @@ const Navbar = () => {
     );
   };
 
-  const inputClass =
-    "w-full px-3 py-2 text-sm border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent";
-
-  const profileFormContent = (
-    <>
-      <h3 className="text-sm font-semibold text-foreground mb-4">{t("navEditProfile")}</h3>
-
-      <div className="space-y-3">
-        <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">{t("profileName")}</label>
-          <input
-            type="text"
-            className={inputClass}
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">{t("profileEmail")}</label>
-          <input
-            type="email"
-            className={inputClass}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">{t("profileUsername")}</label>
-          <input
-            type="text"
-            className={inputClass}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className="border-t border-border mt-4 pt-4">
-        <p className="text-xs font-semibold text-foreground mb-3">{t("profileChangePassword")}</p>
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              {t("profileCurrentPassword")}
-            </label>
-            <div className="relative">
-              <input
-                type={showCurrent ? "text" : "password"}
-                className={inputClass + " pr-9"}
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder={t("profileRequiredToChange")}
-              />
-              <button
-                type="button"
-                tabIndex={-1}
-                onClick={() => setShowCurrent((v) => !v)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              {t("profileNewPassword")}
-            </label>
-            <div className="relative">
-              <input
-                type={showNew ? "text" : "password"}
-                className={inputClass + " pr-9"}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder={t("profileMinSixChars")}
-              />
-              <button
-                type="button"
-                tabIndex={-1}
-                onClick={() => setShowNew((v) => !v)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              {t("profileConfirmNewPassword")}
-            </label>
-            <div className="relative">
-              <input
-                type={showConfirm ? "text" : "password"}
-                className={inputClass + " pr-9"}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder={t("profileReEnter")}
-              />
-              <button
-                type="button"
-                tabIndex={-1}
-                onClick={() => setShowConfirm((v) => !v)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-t border-border mt-4 pt-4">
-        <p className="text-xs font-semibold text-foreground mb-1">{t("profileSecurity")}</p>
-        <p className="text-xs text-muted-foreground mb-3">{t("profileMfaTitle")}</p>
-        <p className="text-xs text-muted-foreground mb-3">
-          {user?.mfaEnabled ? t("profileMfaEnabled") : t("profileMfaDisabled")}
-        </p>
-
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              {t("profileMfaSetupPasswordLabel")}
-            </label>
-            <input
-              type="password"
-              className={inputClass}
-              value={mfaPassword}
-              onChange={(e) => setMfaPassword(e.target.value)}
-            />
-            <p className="text-[11px] text-muted-foreground mt-1">{t("profileMfaPasswordHelp")}</p>
-          </div>
-
-          {!user?.mfaEnabled && (
-            <>
-              <button
-                type="button"
-                onClick={handleMfaSetup}
-                disabled={mfaLoading}
-                className="w-full text-sm font-medium px-3 py-2 border border-border rounded-md hover:bg-secondary transition-colors disabled:opacity-50"
-              >
-                {t("profileMfaStartSetup")}
-              </button>
-
-              {mfaSetupKey && (
-                <div className="rounded-md border border-border bg-secondary/50 p-3 space-y-2">
-                  <p className="text-xs font-semibold text-foreground">{t("profileMfaSetupReady")}</p>
-                  <p className="text-xs text-muted-foreground">{t("profileMfaSetupHint")}</p>
-                  {mfaQrDataUrl && (
-                    <div className="flex justify-center rounded-md bg-white p-3">
-                      <img src={mfaQrDataUrl} alt="Scan this QR code with your authenticator app" className="h-44 w-44" />
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-[11px] font-medium text-muted-foreground mb-1">{t("profileMfaManualKey")}</p>
-                    <code className="block break-all rounded bg-background px-2 py-2 text-xs text-foreground">
-                      {mfaSetupKey}
-                    </code>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">
-                      {t("profileMfaCode")}
-                    </label>
-                    <input
-                      type="text"
-                      className={inputClass}
-                      value={mfaCode}
-                      onChange={(e) => setMfaCode(e.target.value)}
-                      placeholder={t("profileMfaCodePlaceholder")}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleMfaEnable}
-                    disabled={mfaLoading}
-                    className="w-full text-sm font-medium px-3 py-2 bg-accent text-accent-foreground rounded-md hover:bg-gold-dark transition-colors disabled:opacity-50"
-                  >
-                    {t("profileMfaEnable")}
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-
-          {user?.mfaEnabled && (
-            <>
-              <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">
-                  {t("profileMfaCode")}
-                </label>
-                <input
-                  type="text"
-                  className={inputClass}
-                  value={mfaCode}
-                  onChange={(e) => setMfaCode(e.target.value)}
-                  placeholder={t("profileMfaCodePlaceholder")}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 gap-2">
-                <button
-                  type="button"
-                  onClick={handleRecoveryCodesRegenerate}
-                  disabled={mfaLoading}
-                  className="text-sm font-medium px-3 py-2 border border-border rounded-md hover:bg-secondary transition-colors disabled:opacity-50"
-                >
-                  {t("profileMfaRegenerateCodes")}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleMfaDisable}
-                  disabled={mfaLoading}
-                  className="text-sm font-medium px-3 py-2 border border-destructive/30 text-destructive rounded-md hover:bg-destructive/5 transition-colors disabled:opacity-50"
-                >
-                  {t("profileMfaDisable")}
-                </button>
-              </div>
-            </>
-          )}
-
-          {recoveryCodes.length > 0 && (
-            <div className="rounded-md border border-border bg-secondary/50 p-3 space-y-2">
-              <p className="text-xs font-semibold text-foreground">{t("profileMfaRecoveryCodes")}</p>
-              <p className="text-xs text-muted-foreground">{t("profileMfaRecoveryCodesHelp")}</p>
-              <div className="grid grid-cols-2 gap-2">
-                {recoveryCodes.map((code) => (
-                  <code key={code} className="rounded bg-background px-2 py-1.5 text-xs text-foreground">
-                    {code}
-                  </code>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {profileError && <p className="text-xs text-red-500 mt-3">{profileError}</p>}
-      {profileSuccess && <p className="text-xs text-green-600 mt-3">{t("profileUpdated")}</p>}
-      {mfaError && <p className="text-xs text-red-500 mt-3">{mfaError}</p>}
-
-      <div className="flex gap-2 mt-4">
-        <button
-          type="button"
-          onClick={() => setProfileOpen(false)}
-          className="flex-1 text-sm font-medium px-3 py-2 border border-border rounded-md hover:bg-secondary transition-colors"
-        >
-          {t("profileCancel")}
-        </button>
-        <button
-          type="button"
-          onClick={handleProfileSave}
-          disabled={profileSaving}
-          className="flex-1 text-sm font-medium px-3 py-2 bg-accent text-accent-foreground rounded-md hover:bg-gold-dark transition-colors disabled:opacity-50"
-        >
-          {profileSaving ? t("profileSaving") : t("profileSave")}
-        </button>
-      </div>
-    </>
-  );
-
   const renderNavShell = ({ isProxy = false }: { isProxy?: boolean }) => {
     const isActiveShell = showProxyNav ? isProxy : !isProxy;
 
@@ -648,9 +126,7 @@ const Navbar = () => {
         className={
           isProxy
             ? `fixed inset-x-0 top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm transition-all duration-300 ${
-                showProxyNav
-                  ? "translate-y-0 opacity-100 pointer-events-auto"
-                  : "-translate-y-full opacity-0 pointer-events-none"
+                showProxyNav ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"
               }`
             : "relative z-40 border-b border-border bg-background/95 backdrop-blur-sm"
         }
@@ -659,11 +135,8 @@ const Navbar = () => {
           <div className="flex min-w-0 items-center">
             <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="North Star home">
               <img src="/icons/kid_stars.svg" alt="" className="w-8 h-8" />
-              <span className="font-heading text-xl font-semibold tracking-tight text-foreground">
-                North Star
-              </span>
+              <span className="font-heading text-xl font-semibold tracking-tight text-foreground">North Star</span>
             </Link>
-
             {renderDesktopNav()}
           </div>
 
@@ -671,15 +144,13 @@ const Navbar = () => {
             <LangToggle />
             {user ? (
               <>
-                <span className="text-sm font-medium text-foreground">
-                  {user.firstName}
-                </span>
+                <span className="text-sm font-medium text-foreground">{user.firstName}</span>
                 <div className="relative">
                   <button
                     type="button"
                     onClick={() => setProfileOpen((v) => !v)}
                     className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-secondary transition-colors"
-                    aria-label={t("navEditProfile")}
+                    aria-label={t("navAccountSettings")}
                   >
                     <UserCircle size={22} className="text-foreground" />
                   </button>
@@ -687,160 +158,70 @@ const Navbar = () => {
                   {profileOpen && isActiveShell && (
                     <div
                       ref={desktopPanelRef}
-                      className="absolute right-0 top-12 w-80 max-h-[80vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5 z-50"
+                      className="absolute right-0 top-12 w-56 bg-background border border-border rounded-lg shadow-lg p-2 z-50"
                     >
-                      {profileFormContent}
+                      <Link
+                        to="/settings"
+                        className="block rounded-md px-3 py-2 text-sm text-foreground hover:bg-secondary transition-colors"
+                      >
+                        {t("navAccountSettings")}
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={logout}
+                        className="block w-full text-left rounded-md px-3 py-2 text-sm text-foreground hover:bg-secondary transition-colors"
+                      >
+                        {t("navSignOut")}
+                      </button>
                     </div>
                   )}
                 </div>
-
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-                >
-                  {t("navSignOut")}
-                </button>
               </>
             ) : (
               <>
-                <Link
-                  to="/register"
-                  className="text-sm font-medium px-4 py-2 border border-border hover:bg-secondary transition-colors"
-                >
+                <Link to="/register" className="text-sm font-medium px-4 py-2 border border-border hover:bg-secondary transition-colors">
                   {t("navRegister")}
                 </Link>
-                <Link
-                  to="/login"
-                  className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors"
-                >
+                <Link to="/login" className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors">
                   {t("navLogin")}
                 </Link>
               </>
             )}
           </div>
 
-          <button
-            className="md:hidden text-foreground ml-auto shrink-0"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
+          <button className="md:hidden text-foreground ml-auto shrink-0" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </nav>
 
         {mobileOpen && isActiveShell && (
           <div className="md:hidden border-t border-border bg-background px-4 sm:px-6 py-4 space-y-4">
-            {adminLinks.length > 0 && (
-              <div className="space-y-2">
-                {adminLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-            {adminLinks.length > 0 &&
-              (donorLinks.length > 0 || publicLinks.length > 0) && (
-                <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>
-                  |
-                </div>
-              )}
-            {donorLinks.length > 0 && (
-              <div className="space-y-2">
-                {donorLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-            {donorLinks.length > 0 && publicLinks.length > 0 && (
-              <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>
-                |
-              </div>
-            )}
-            {publicLinks.length > 0 && (
-              <div className="space-y-2">
-                {publicLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-
-            <div className="pt-1">
-              <LangToggle />
-            </div>
+            {[...adminLinks, ...donorLinks, ...publicLinks].map((link) => (
+              <Link key={link.to} to={link.to} onClick={() => setMobileOpen(false)} className={`block text-sm font-medium py-1 ${linkClass(link.to)}`}>
+                {link.label}
+              </Link>
+            ))}
 
             {user ? (
-              <div className="space-y-2 mt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setProfileOpen(true);
-                  }}
-                  className="block w-full text-sm font-medium px-4 py-2 border border-border text-center"
-                >
-                  {t("navEditProfile")}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    logout();
-                    setMobileOpen(false);
-                  }}
-                  className="block w-full text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
-                >
+              <>
+                <div className="text-center text-muted-foreground/40 select-none py-0.5" aria-hidden>|</div>
+                <Link to="/settings" onClick={() => setMobileOpen(false)} className="block text-sm font-medium py-1 text-foreground">
+                  {t("navAccountSettings")}
+                </Link>
+                <button type="button" onClick={logout} className="block text-sm font-medium py-1 text-foreground">
                   {t("navSignOut")}
                 </button>
-              </div>
+              </>
             ) : (
-              <div className="flex flex-col gap-2 mt-2">
-                <Link
-                  to="/register"
-                  onClick={() => setMobileOpen(false)}
-                  className="block text-sm font-medium px-4 py-2 border border-border text-center"
-                >
+              <div className="pt-2 flex flex-col gap-3">
+                <Link to="/register" onClick={() => setMobileOpen(false)} className="text-sm font-medium px-4 py-2 border border-border hover:bg-secondary transition-colors text-center">
                   {t("navRegister")}
                 </Link>
-                <Link
-                  to="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="block text-sm font-medium px-4 py-2 bg-accent text-accent-foreground text-center"
-                >
+                <Link to="/login" onClick={() => setMobileOpen(false)} className="text-sm font-medium px-4 py-2 bg-accent text-accent-foreground hover:bg-gold-dark transition-colors text-center">
                   {t("navLogin")}
                 </Link>
               </div>
             )}
-          </div>
-        )}
-
-        {profileOpen && isActiveShell && (
-          <div className="md:hidden fixed inset-0 z-50 bg-black/40 flex items-start justify-center pt-20 px-4">
-            <div
-              ref={mobilePanelRef}
-              className="w-full max-w-sm max-h-[75vh] overflow-y-auto bg-background border border-border rounded-lg shadow-lg p-5"
-            >
-              {profileFormContent}
-            </div>
           </div>
         )}
       </header>

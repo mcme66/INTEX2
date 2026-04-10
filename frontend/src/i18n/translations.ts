@@ -15,6 +15,7 @@ export type Translations = {
   navLogin: string;
   // Profile panel
   navEditProfile: string;
+  navAccountSettings: string;
   profileName: string;
   profileEmail: string;
   profileUsername: string;
@@ -56,6 +57,17 @@ export type Translations = {
   profileMfaSetupSuccess: string;
   profileMfaDisableSuccess: string;
   profileMfaRegenerateSuccess: string;
+  settingsTitle: string;
+  settingsSub: string;
+  settingsProfileSection: string;
+  settingsPasswordSection: string;
+  settingsSecuritySection: string;
+  settingsDangerSection: string;
+  settingsDeleteTitle: string;
+  settingsDeleteBody: string;
+  settingsDeleteAction: string;
+  settingsDeleteConfirmLabel: string;
+  settingsDeleteSuccess: string;
   // ── Footer ─────────────────────────────────────────────────────────────────
   footerTagline: string;
   footerOrganization: string;
@@ -608,6 +620,7 @@ export const en: Translations = {
   navRegister: "Register",
   navLogin: "Login",
   navEditProfile: "Edit Profile",
+  navAccountSettings: "Account Settings",
   profileName: "Name",
   profileEmail: "Email",
   profileUsername: "Username",
@@ -649,6 +662,17 @@ export const en: Translations = {
   profileMfaSetupSuccess: "MFA is now enabled.",
   profileMfaDisableSuccess: "MFA has been disabled.",
   profileMfaRegenerateSuccess: "Recovery codes regenerated.",
+  settingsTitle: "Account Settings",
+  settingsSub: "Manage your profile, password, and sign-in security in one place.",
+  settingsProfileSection: "Profile",
+  settingsPasswordSection: "Password",
+  settingsSecuritySection: "Security",
+  settingsDangerSection: "Danger Zone",
+  settingsDeleteTitle: "Delete Account",
+  settingsDeleteBody: "This removes your login account. Linked donor/supporter history stays in the system, but you will lose access immediately.",
+  settingsDeleteAction: "Delete Account",
+  settingsDeleteConfirmLabel: "Use your current password, and your MFA or recovery code if MFA is enabled.",
+  settingsDeleteSuccess: "Account deleted.",
   // Footer
   footerTagline: "Providing refuge, healing, and hope to trafficked and abused children in Colombia.",
   footerOrganization: "Organization",
@@ -1240,6 +1264,7 @@ export const es: Translations = {
   navRegister: "Registrarse",
   navLogin: "Iniciar sesión",
   navEditProfile: "Editar Perfil",
+  navAccountSettings: "Configuración de la Cuenta",
   profileName: "Nombre",
   profileEmail: "Correo electrónico",
   profileUsername: "Nombre de usuario",
@@ -1281,6 +1306,17 @@ export const es: Translations = {
   profileMfaSetupSuccess: "MFA ya está activado.",
   profileMfaDisableSuccess: "MFA ha sido desactivado.",
   profileMfaRegenerateSuccess: "Códigos de recuperación regenerados.",
+  settingsTitle: "Configuración de la Cuenta",
+  settingsSub: "Administre su perfil, contraseña y seguridad de acceso en un solo lugar.",
+  settingsProfileSection: "Perfil",
+  settingsPasswordSection: "Contraseña",
+  settingsSecuritySection: "Seguridad",
+  settingsDangerSection: "Zona de Riesgo",
+  settingsDeleteTitle: "Eliminar Cuenta",
+  settingsDeleteBody: "Esto elimina su cuenta de acceso. El historial vinculado de donante/soporte permanece en el sistema, pero perderá el acceso de inmediato.",
+  settingsDeleteAction: "Eliminar Cuenta",
+  settingsDeleteConfirmLabel: "Use su contraseña actual y su código MFA o de recuperación si MFA está activado.",
+  settingsDeleteSuccess: "Cuenta eliminada.",
   // Footer
   footerTagline:
     "Brindando refugio, sanación y esperanza a niños víctimas de trata y abuso en Colombia.",

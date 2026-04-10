@@ -55,6 +55,11 @@ public sealed record MfaRecoveryCodesRegenerateRequest(
     [param: Required] string Code
 );
 
+public sealed record DeleteAccountRequest(
+    [param: Required] string CurrentPassword,
+    string? Code
+);
+
 public sealed record MfaRecoveryCodesResponse(string[] RecoveryCodes);
 
 public sealed record UserDto(Guid Id, string FirstName, string Email, string Username, bool IsDonor, bool IsAdmin, bool MfaEnabled);

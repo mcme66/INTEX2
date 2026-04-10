@@ -321,4 +321,40 @@ public sealed class AuthController(
         await db.SaveChangesAsync(ct);
         return Ok(new MfaRecoveryCodesResponse(recoveryCodes));
     }
+
+    [Authorize]
+    [HttpDelete("account")]
+    public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountRequest req, CancellationToken ct)
+    {
+        var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                  ?? User.FindFirstValue("sub");
+
+        if (!Guid.TryParse(sub, out var userId)) return Unauthorized();
+
+        var user = await db.Users.FindAsync([userId], ct);
+        if (user is null) return Unauthorized();
+
+        if (!VerifyPassword(user, req.CurrentPassword))
+            return BadRequest(new { message = "Current password is incorrect." });
+
+        if (user.MfaEnabled)
+        {
+            if (string.IsNullOrWhiteSpace(req.Code))
+                return BadRequest(new { message = "Authentication code is required to delete an MFA-protected account." });
+
+            if (!VerifyTotp(user, req.Code) && !TryUseRecoveryCode(user, req.Code))
+                return BadRequest(new { message = "Invalid authentication code." });
+        }
+
+        var linkedSupporters = await db.Supporters
+            .Where(s => s.AppUserId == userId)
+            .ToListAsync(ct);
+
+        foreach (var supporter in linkedSupporters)
+            supporter.AppUserId = null;
+
+        db.Users.Remove(user);
+        await db.SaveChangesAsync(ct);
+        return NoContent();
+    }
 }

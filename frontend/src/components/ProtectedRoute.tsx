@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "@/state/auth";
 
 type ProtectedRouteProps = {
-  role: "admin" | "donor";
+  role?: "admin" | "donor";
   element: ReactElement;
 };
 

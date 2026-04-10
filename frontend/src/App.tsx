@@ -19,6 +19,7 @@ import Caseload from "./pages/Caseload.tsx";
 import ProcessRecordingPage from "./pages/ProcessRecording.tsx";
 import HomeVisitationPage from "./pages/HomeVisitation.tsx";
 import Staff from "./pages/Staff.tsx";
+import Settings from "./pages/Settings.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CookieConsent from "./components/CookieConsent";
 import { AuthProvider, useAuth } from "./state/auth";
@@ -62,6 +63,7 @@ const AppRoutes = () => {
         <Route path="/impact" element={<Impact />} />
         <Route path="/volunteer" element={<Volunteer />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/settings" element={<ProtectedRoute element={<Settings />} />} />
         <Route path="/login" element={user ? <Navigate to="/impact" replace /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/impact" replace /> : <Register />} />
         <Route
